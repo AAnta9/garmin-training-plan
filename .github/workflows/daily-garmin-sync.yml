@@ -1,0 +1,41 @@
+name: "09:00 AM Daily Garmin Coach Sync"
+
+on:
+  schedule:
+    # 09:00 AM Europe/Madrid (CET = UTC+1 -> 08:00 UTC)
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-garmin-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fetch Garmin Connect Personal API & Rebuild Dashboard JSON
+        env:
+          GARMIN_API_KEY: ${{ secrets.GARMIN_API_KEY }}
+          TZ: "Europe/Madrid"
+        run: |
+          python3 scripts/sync_garmin.py
+
+      - name: Commit and push updated Garmin data
+        run: |
+          git config user.name "Garmin Hybrid Coach Bot"
+          git config user.email "actions@github.com"
+          git add data/garmin_data.json data/garmin_data.js
+          if git diff --staged --quiet; then
+            echo "No changes in Garmin data."
+          else
+            git commit -m "chore(sync): actualizacion matutina 09:00 Garmin Connect ($(date +'%Y-%m-%d'))"
+            git push
+          fi

@@ -1,0 +1,6 @@
+# Raw Garmin API cache and local tokens
+data_raw/
+.env
+*.pyc
+__pycache__/
+.DS_Store

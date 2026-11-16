@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Garmin Hybrid Coach — Plan de Entrenamiento Híbrido (Carrera + Fuerza)</title>
+  <meta name="description" content="Entrenador personal híbrido conectado a la API oficial de Garmin Connect cada mañana a las 09:00 AM. Análisis de 6 meses de salud, VFC, sueño, carga aguda/crónica y plan en bloques de 4 semanas." />
+  <meta name="theme-color" content="#0b0e11" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./index.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Sticky Header -->
+    <header class="top-header">
+      <div class="header-inner">
+        <div class="brand-group">
+          <div class="brand-mark">G·H</div>
+          <div>
+            <h1 class="brand-title">Garmin Hybrid Coach</h1>
+            <div class="brand-subtitle">
+              <span class="sync-dot"></span>
+              <span id="header-sync-status">Sync 09:00 AM · Garmin Personal API v1.0</span>
+            </div>
+          </div>
+        </div>
+
+        <nav class="desktop-nav" aria-label="Navegación Principal">
+          <button type="button" class="nav-tab-btn active" data-tab-target="tab-plan" id="nav-desktop-plan">
+            Plan Híbrido (Bloques 4 Sem)
+          </button>
+          <button type="button" class="nav-tab-btn" data-tab-target="tab-analytics" id="nav-desktop-analytics">
+            Análisis 6 Meses Garmin
+          </button>
+          <button type="button" class="nav-tab-btn" data-tab-target="tab-activities" id="nav-desktop-activities">
+            Historial Sesiones
+          </button>
+          <button type="button" class="nav-tab-btn" data-tab-target="tab-profile" id="nav-desktop-profile">
+            Zonas FC &amp; Marcas
+          </button>
+        </nav>
+
+        <div class="header-actions">
+          <button type="button" class="icon-btn" id="btn-manual-refresh" title="Refrescar datos desde Garmin JSON">
+            ↻ Sync 09:00
+          </button>
+          <button type="button" class="icon-btn" id="btn-theme-toggle" title="Cambiar modo claro/oscuro">
+            Modo Claro
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-container">
+      <!-- 09:00 AM Daily Morning Coach Check-In & Telemetry (Always visible at top) -->
+      <section class="coach-briefing" aria-label="Informe Matutino 09:00 AM">
+        <div class="briefing-top">
+          <div style="max-width: 780px;">
+            <span class="briefing-badge amber" id="morning-semaphore-badge">
+              ● Semáforo Ámbar · Evaluación Matutina 09:00 AM
+            </span>
+            <h2 class="briefing-headline" id="morning-headline">
+              Cargando telemetría de tu reloj Garmin...
+            </h2>
+            <p class="briefing-copy" id="morning-advice" style="margin-top: 6px;"></p>
+          </div>
+          <div class="readiness-score-box">
+            <div class="readiness-score-label">Readiness Hoy</div>
+            <div class="readiness-score-num" id="morning-readiness-num">68/100</div>
+            <div class="metric-sub" style="margin-top:2px;">Calibrado VFC + Sueño</div>
+          </div>
+        </div>
+
+        <div class="telemetry-grid" id="morning-telemetry-grid"></div>
+      </section>
+
+      <!-- TAB 1: PLAN DE ENTRENAMIENTO HÍBRIDO EN BLOQUES DE 4 SEMANAS -->
+      <section class="tab-panel active" id="tab-plan" aria-label="Plan de Entrenamiento en Bloques de 4 Semanas">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Planificación Híbrida en Bloques de 4 Semanas (Mesociclos 3:1)</h2>
+            <p class="section-subtitle">
+              3 semanas de carga progresiva + 1 semana de descarga. Toca el check (✓) desde el móvil para registrar cada sesión y tus pesos/ritmos.
+            </p>
+          </div>
+        </div>
+
+        <div class="selector-bar">
+          <div class="block-pills" id="block-selector-pills"></div>
+          <div class="week-tabs" id="week-selector-tabs"></div>
+        </div>
+
+        <div class="week-overview-panel" id="week-overview-container"></div>
+
+        <div class="days-grid" id="week-days-grid"></div>
+      </section>
+
+      <!-- TAB 2: ANÁLISIS PROFUNDO 6 MESES DE GARMIN -->
+      <section class="tab-panel" id="tab-analytics" aria-label="Análisis de los últimos 6 meses de Garmin">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Diagnóstico de los Últimos 6 Meses (Mayo – Noviembre 2026)</h2>
+            <p class="section-subtitle">
+              186 días analizados a partir de la API oficial de Garmin Connect: evolución desde HIIT hacia Fuerza + Carrera.
+            </p>
+          </div>
+        </div>
+
+        <div class="telemetry-grid" id="six-month-kpis"></div>
+
+        <!-- Key Diagnostic Takeaways from Coach -->
+        <div class="panel-grid-2">
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">1. Diagnóstico de Carrera: El «Síndrome de la Zona Gris»</h3>
+            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.55;">
+              En los últimos 6 meses has completado <strong>27 carreras (120.8 km)</strong>, pasando de no correr en mayo a terminar dos 10K en octubre y noviembre:
+              <strong>Derbi de las Aficiones (52:53 @ 5:14/km)</strong> y ayer <strong>Ponle Freno Madrid 10K (54:05 @ 5:31/km, FC media 150 ppm, TE 5.0)</strong>.
+              Sin embargo, tu volumen medio ha sido de solo <strong>1.1 salidas/semana (~24 km/mes)</strong> y el 78% de tus salidas han sido a ritmo Tempo/Umbral (145–153 ppm).
+              Para bajar de 50 minutos en 10K sin lesionarte con 100.4 kg de peso corporal, la clave no es apretar más en los rodajes cortos, sino <strong>fijar 3 salidas/semana donde el 80% sea Zona 2 estricta (135–151 ppm)</strong> y subir la cadencia de 162 a 168+ spm.
+            </p>
+          </div>
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">2. Diagnóstico de Fuerza &amp; Recuperación (VFC / Sueño)</h3>
+            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.55;">
+              En agosto hiciste una transición excelente: dejaste las 15 sesiones mensuales de HIIT y consolidaste el bloque de fuerza
+              <strong>«WE ARE BACK!» (Upper/Lower)</strong> con 41 sesiones en 6 meses y marcas muy sólidas:
+              <strong>Peso Muerto 135 kg (3×3), Press Banca 95 kg (4×4), Sentadilla 80–90 kg y RDL 80 kg</strong>.
+              Tu cuello de botella actual es el <strong>sueño medio (6.51 h/noche, score 73.3)</strong>: cuando duermes menos de 6h o compites fuerte (como la noche del 15 Nov con 4.82h), tu VFC cae de su banda equilibrada (50–60 ms) hasta 33–47 ms. Separar la pierna del miércoles respecto a la tirada del domingo evitará la interferencia híbrida.
+            </p>
+          </div>
+        </div>
+
+        <!-- 6-Month Charts Grid -->
+        <div class="panel-grid-2">
+          <div class="surface-card">
+            <div class="section-header">
+              <h3 style="font-size:0.95rem; font-weight:700;">VFC / HRV Nocturna vs Media 7d (Banda Base 50–60 ms)</h3>
+              <span style="font-size:0.75rem; font-family:var(--font-mono); color:var(--accent-run);">Media 6m: 52.0 ms</span>
+            </div>
+            <div class="chart-container" id="chart-hrv-6m"></div>
+          </div>
+
+          <div class="surface-card">
+            <div class="section-header">
+              <h3 style="font-size:0.95rem; font-weight:700;">Carga Crónica / Fitness (CTL Azul) vs Fatiga Aguda (ATL Ámbar)</h3>
+              <span style="font-size:0.75rem; font-family:var(--font-mono); color:var(--accent-garmin);">Modelo Banister EWMA</span>
+            </div>
+            <div class="chart-container" id="chart-load-6m"></div>
+          </div>
+
+          <div class="surface-card">
+            <div class="section-header">
+              <h3 style="font-size:0.95rem; font-weight:700;">Frecuencia Cardíaca en Reposo (RHR 6 Meses)</h3>
+              <span style="font-size:0.75rem; font-family:var(--font-mono); color:var(--accent-danger);">Media 6m: 45.6 ppm (Rango 41–54)</span>
+            </div>
+            <div class="chart-container" id="chart-rhr-6m"></div>
+          </div>
+
+          <div class="surface-card">
+            <div class="section-header">
+              <h3 style="font-size:0.95rem; font-weight:700;">Puntuación de Sueño (Verde) &amp; Body Battery Máxima (Ámbar)</h3>
+              <span style="font-size:0.75rem; font-family:var(--font-mono); color:var(--text-secondary);">Sueño medio: 73.3 · BB máx: 73.4</span>
+            </div>
+            <div class="chart-container" id="chart-sleep-6m"></div>
+          </div>
+        </div>
+
+        <!-- Monthly Progression Table -->
+        <div class="surface-card">
+          <div class="section-header">
+            <h3 style="font-size:0.98rem; font-weight:700;">Evolución Mensual de Entrenamiento (Mayo – Noviembre 2026)</h3>
+            <span class="section-subtitle">Transición desde HIIT hacia Entrenamiento Híbrido (Fuerza + Carrera)</span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Mes</th>
+                  <th>Total Sesiones (Horas)</th>
+                  <th>Carrera (Salidas · Km)</th>
+                  <th>Ritmo Medio Carrera</th>
+                  <th>Fuerza (Sesiones · Horas)</th>
+                  <th>HIIT (Sesiones · Horas)</th>
+                  <th>Carga Garmin</th>
+                </tr>
+              </thead>
+              <tbody id="monthly-progression-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: HISTORIAL DETALLADO DE ACTIVIDADES GARMIN -->
+      <section class="tab-panel" id="tab-activities" aria-label="Historial de Actividades de Garmin">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Últimas Actividades Registradas en tu Reloj Garmin</h2>
+            <p class="section-subtitle">
+               Incluye desglose automático de series/pesos en Fuerza y ritmos/cadencia/zonas en Carrera.
+            </p>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="icon-btn active" data-act-filter="all" id="filter-act-all">Todas</button>
+            <button type="button" class="icon-btn" data-act-filter="running" id="filter-act-run">Carrera</button>
+            <button type="button" class="icon-btn" data-act-filter="strength" id="filter-act-str">Fuerza</button>
+            <button type="button" class="icon-btn" data-act-filter="hiit" id="filter-act-hiit">HIIT</button>
+          </div>
+        </div>
+
+        <div class="surface-card">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Modalidad</th>
+                  <th>Nombre en Garmin</th>
+                  <th>Duración</th>
+                  <th>Volumen</th>
+                  <th>FC Media / Máx</th>
+                  <th>Carga</th>
+                  <th>Detalles de Ejercicios / Ritmo</th>
+                </tr>
+              </thead>
+              <tbody id="activities-history-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: PERFIL FISIOLÓGICO, ZONAS DE FC Y AUTOMATIZACIÓN 09:00 AM -->
+      <section class="tab-panel" id="tab-profile" aria-label="Zonas Fisiológicas y Configuración">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Fisiología del Atleta, Zonas de FC (LTHR) y Marcas Base</h2>
+            <p class="section-subtitle">
+              Extraído de tu perfil biométrico de Garmin Connect (Edad cronológica: 33 años · Fitness Age: 32.4 · Meta: 27.0).
+            </p>
+          </div>
+        </div>
+
+        <div class="panel-grid-2">
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">Zonas Oficiales de Carrera (Método Umbral de Lactato: 163 ppm)</h3>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">
+              FC Máxima configurada en Garmin: <strong>183 ppm</strong> · FC Reposo base: <strong>45.6 ppm</strong>.
+            </p>
+            <div style="display:flex; flex-direction:column; gap:8px;" id="profile-hr-zones-list"></div>
+          </div>
+
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">Marcas de Fuerza Detectadas en Garmin (Línea Base Híbrida)</h3>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">
+              Pesos reales extraídos de tus sesiones <em>WE ARE BACK!</em> y <em>Fuerza</em> en octubre y noviembre 2026:
+            </p>
+            <div style="display:flex; flex-direction:column; gap:8px;" id="profile-strength-prs-list"></div>
+          </div>
+        </div>
+
+        <div class="panel-grid-2">
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">Benchmarks Recientes de Carrera y Objetivo a 12 Semanas</h3>
+            <div style="display:flex; flex-direction:column; gap:8px;" id="profile-run-benchmarks-list"></div>
+          </div>
+
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">Sincronización Automática Diaria 09:00 AM (Garmin Personal API)</h3>
+            <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55;">
+              El repositorio cuenta con el script oficial <code>scripts/sync_garmin.py</code> y el flujo de GitHub Actions
+              <code>.github/workflows/daily-garmin-sync.yml</code> programado todos los días a las <strong>09:00 AM (hora peninsular española)</strong>,
+              además del demonio programado en el entorno activo.
+            </p>
+            <div class="workout-blocks-list" style="font-family:var(--font-mono); font-size:0.77rem;">
+              <div class="workout-step-row">
+                <span class="step-name">Endpoint Token</span>
+                <span class="step-target">POST /personalapitoken-service/.../token</span>
+              </div>
+              <div class="workout-step-row">
+                <span class="step-name">Endpoints Diarios</span>
+                <span class="step-target">dailysummaries · sleep · hrv · bodyBattery · activities</span>
+              </div>
+              <div class="workout-step-row">
+                <span class="step-name">GitHub Actions Secret</span>
+                <span class="step-target">GARMIN_API_KEY (Configurar en Settings &gt; Secrets)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav" aria-label="Navegación Móvil">
+      <button type="button" class="mobile-nav-item active" data-tab-target="tab-plan" id="nav-mobile-plan">
+        <span style="font-size:1.1rem;">📅</span>
+        <span>Plan 4×3</span>
+      </button>
+      <button type="button" class="mobile-nav-item" data-tab-target="tab-analytics" id="nav-mobile-analytics">
+        <span style="font-size:1.1rem;">📈</span>
+        <span>6M Garmin</span>
+      </button>
+      <button type="button" class="mobile-nav-item" data-tab-target="tab-activities" id="nav-mobile-activities">
+        <span style="font-size:1.1rem;">🏋️</span>
+        <span>Historial</span>
+      </button>
+      <button type="button" class="mobile-nav-item" data-tab-target="tab-profile" id="nav-mobile-profile">
+        <span style="font-size:1.1rem;">❤️</span>
+        <span>Zonas &amp; PRs</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="./data/garmin_data.js"></script>
+  <script src="./plan_data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
