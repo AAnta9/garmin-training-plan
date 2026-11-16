@@ -33,6 +33,9 @@
           <button type="button" class="nav-tab-btn active" data-tab-target="tab-plan" id="nav-desktop-plan">
             Plan Híbrido (Bloques 4 Sem)
           </button>
+          <button type="button" class="nav-tab-btn" data-tab-target="tab-1rm" id="nav-desktop-1rm">
+            1RM &amp; Pesos Gimnasio
+          </button>
           <button type="button" class="nav-tab-btn" data-tab-target="tab-analytics" id="nav-desktop-analytics">
             Análisis 6 Meses Garmin
           </button>
@@ -84,9 +87,12 @@
           <div>
             <h2 class="section-title">Planificación Híbrida en Bloques de 4 Semanas (Mesociclos 3:1)</h2>
             <p class="section-subtitle">
-              3 semanas de carga progresiva + 1 semana de descarga. Toca el check (✓) desde el móvil para registrar cada sesión y tus pesos/ritmos.
+              Gimnasio (Lun, Mar, Jue) · Carrera (Mié, Vie, Sáb) · Domingo descanso total. Los pesos se calculan en vivo según tu pestaña <strong>1RM &amp; Pesos</strong>.
             </p>
           </div>
+          <button type="button" class="icon-btn" id="btn-jump-to-1rm" style="border-color:var(--accent-strength); color:var(--accent-strength); font-weight:700;">
+            ⚙️ Ajustar mis 1RM
+          </button>
         </div>
 
         <div class="selector-bar">
@@ -97,6 +103,69 @@
         <div class="week-overview-panel" id="week-overview-container"></div>
 
         <div class="days-grid" id="week-days-grid"></div>
+      </section>
+
+      <!-- TAB 1RM: CALCULADORA Y GESTIÓN DE 1RM PARA RECÁLCULO AUTOMÁTICO -->
+      <section class="tab-panel" id="tab-1rm" aria-label="Calculadora 1RM y Pesos de Gimnasio">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Tus 1RM Actualizados &amp; Recálculo Automático del Plan</h2>
+            <p class="section-subtitle">
+              Modifica aquí tu 1RM real de cualquier ejercicio (o calcúlalo a partir de una serie submáxima). Todos los entrenamientos de <strong>Lunes, Martes y Jueves de las 12 semanas</strong> recalcularán sus kilos al instante (redondeados a discos de 2.5 kg en barra y 1 kg en mancuerna).
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="icon-btn" id="btn-reset-1rm" title="Restaurar valores base">
+              ↺ Restaurar Base
+            </button>
+            <button type="button" class="icon-btn" id="btn-back-to-plan" style="background:var(--accent-run); color:#042f2e; border-color:transparent; font-weight:700;">
+              ✓ Ver Plan Recalculado
+            </button>
+          </div>
+        </div>
+
+        <!-- Submaximal Epley/Brzycki 1RM Estimator Bar -->
+        <div class="calc-bar">
+          <div style="flex: 1 1 100%; margin-bottom: 2px;">
+            <div style="font-size:0.9rem; font-weight:700; color:var(--text-primary);">
+              🧮 Estimador Rápido de 1RM (Fórmula Epley / Brzycki)
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-secondary);">
+              ¿No sabes tu 1RM exacto hoy? Introduce el peso y las repeticiones de una serie reciente (ej. 90 kg × 6 reps) y aplícalo directamente al ejercicio.
+            </div>
+          </div>
+
+          <div class="calc-field" style="flex: 2 1 220px;">
+            <label for="est-lift-select">Ejercicio del Plan</label>
+            <select id="est-lift-select" class="calc-select"></select>
+          </div>
+
+          <div class="calc-field" style="flex: 1 1 120px;">
+            <label for="est-weight-input">Peso levantado (kg)</label>
+            <input type="number" id="est-weight-input" class="calc-input" value="90" min="1" max="400" step="0.5" />
+          </div>
+
+          <div class="calc-field" style="flex: 1 1 110px;">
+            <label for="est-reps-input">Repeticiones (1–15)</label>
+            <input type="number" id="est-reps-input" class="calc-input" value="5" min="1" max="20" step="1" />
+          </div>
+
+          <div class="calc-field" style="flex: 1 1 140px;">
+            <label>1RM Estimado</label>
+            <div id="est-result-output" style="font-family:var(--font-mono); font-size:1.15rem; font-weight:700; color:var(--accent-strength); padding: 6px 0;">
+              105.0 kg
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:flex-end;">
+            <button type="button" class="icon-btn" id="btn-apply-est-1rm" style="background:var(--accent-strength); color:#1e1b4b; border-color:transparent; font-weight:700; padding:9px 14px;">
+              Aplicar a este Ejercicio
+            </button>
+          </div>
+        </div>
+
+        <!-- 12 Exercise 1RM Cards Grid -->
+        <div class="rm-grid" id="rm-cards-grid"></div>
       </section>
 
       <!-- TAB 2: ANÁLISIS PROFUNDO 6 MESES DE GARMIN -->
@@ -298,6 +367,10 @@
       <button type="button" class="mobile-nav-item active" data-tab-target="tab-plan" id="nav-mobile-plan">
         <span style="font-size:1.1rem;">📅</span>
         <span>Plan 4×3</span>
+      </button>
+      <button type="button" class="mobile-nav-item" data-tab-target="tab-1rm" id="nav-mobile-1rm">
+        <span style="font-size:1.1rem;">⚖️</span>
+        <span>1RM &amp; Kg</span>
       </button>
       <button type="button" class="mobile-nav-item" data-tab-target="tab-analytics" id="nav-mobile-analytics">
         <span style="font-size:1.1rem;">📈</span>

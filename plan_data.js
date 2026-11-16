@@ -1,39 +1,135 @@
 /**
- * Plan de Entrenamiento Híbrido (Carrera + Fuerza) en Bloques de 4 Semanas (Mesociclos 3:1).
- * Adaptado al horario real del atleta:
- * - Entrenamiento de Lunes a Sábado | DOMINGO SIEMPRE DESCANSO TOTAL.
- * - Días exclusivos de Gimnasio: LUNES, MARTES y JUEVES.
- * - Días de Carrera: MIÉRCOLES, VIERNES y SÁBADO.
- *
- * Arquitectura Semanal de Mínima Interferencia (Ciclo de 72h de recuperación para piernas):
- * - LUNES (Gimnasio 1 · Upper A): Empuje & Tirón Pesado de Torso -> Suma 48h extra al descanso del domingo (72h totales para las piernas tras la tirada del sábado).
- * - MARTES (Gimnasio 2 · Lower): Fuerza Estructural de Pierna, Isquios y Sóleo -> Piernas 100% frescas tras 3 días sin impacto.
- * - MIÉRCOLES (Carrera 1 · Base Z2): Rodaje Aeróbico Suave Z2 -> Oxigenación activa sin impacto articular de series tras el día de pierna.
- * - JUEVES (Gimnasio 3 · Upper B): Torso B, Hombro, Fondos & Bisagra Explosiva -> Las piernas descansan de cara al bloque específico de viernes-sábado.
- * - VIERNES (Carrera 2 · Calidad): Series / Fartlek / Umbral LTHR / VO2máx -> Con 72 horas completas de recuperación desde la sesión de pierna del martes.
- * - SÁBADO (Carrera 3 · Tirada Larga Z2): Fondo Aeróbico Progresivo en Zona 2 (5 km -> 12 km) -> Entrena la resistencia aeróbica sabiendo que el domingo descansas al 100%.
- * - DOMINGO (Descanso Total): Descanso completo fijo por motivos personales (recuperación del SNC, tendones y sueño).
+ * Configuración de 1RM (Repetición Máxima) y Plan de Entrenamiento Híbrido Dinámico (12 Semanas).
+ * Todos los pesos de los entrenamientos de gimnasio (Lunes, Martes y Jueves) se calculan
+ * automáticamente a partir de los 1RM introducidos por el usuario en la pestaña "1RM & Pesos".
  */
+
+window.DEFAULT_1RM_CONFIG = [
+  {
+    key: "bench",
+    name: "Press Banca Barra (Bench Press)",
+    category: "Tren Superior A (Lunes)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 107.5,
+    note: "Barra olímpica + discos (redondeo a 2.5 kg)"
+  },
+  {
+    key: "squat",
+    name: "Sentadilla Trasera Barra (Back Squat)",
+    category: "Tren Inferior (Martes)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 105.0,
+    note: "Barra olímpica + discos (redondeo a 2.5 kg)"
+  },
+  {
+    key: "deadlift",
+    name: "Peso Muerto Convencional (Deadlift)",
+    category: "Tren Inferior (Martes)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 150.0,
+    note: "Barra olímpica + discos (redondeo a 2.5 kg)"
+  },
+  {
+    key: "rdl",
+    name: "Peso Muerto Rumano (RDL)",
+    category: "Tren Inferior (Martes)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 100.0,
+    note: "Cadena posterior / isquios (redondeo a 2.5 kg)"
+  },
+  {
+    key: "ohp",
+    name: "Press Militar Barra de Pie (OHP)",
+    category: "Tren Superior A/B (Lunes y Jueves)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 62.5,
+    note: "Empuje vertical estricto (redondeo a 2.5 kg)"
+  },
+  {
+    key: "incline_db",
+    name: "Press Inclinado Mancuernas (por mano)",
+    category: "Tren Superior B (Jueves)",
+    unit: "kg/manc",
+    step: 1.0,
+    default_1rm: 38.0,
+    note: "Peso de cada mancuerna individual"
+  },
+  {
+    key: "row_db",
+    name: "Remo con Mancuerna Unilateral",
+    category: "Tren Superior A/B (Lunes y Jueves)",
+    unit: "kg/manc",
+    step: 1.0,
+    default_1rm: 36.0,
+    note: "Peso de la mancuerna en remo a una mano"
+  },
+  {
+    key: "row_bar",
+    name: "Remo con Barra / Polea Baja",
+    category: "Tren Superior A/B (Lunes y Jueves)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 85.0,
+    note: "Tracción horizontal con barra o polea"
+  },
+  {
+    key: "pullup_load",
+    name: "Dominadas (Lastre Máximo 1RM)",
+    category: "Tren Superior A/B (Lunes y Jueves)",
+    unit: "kg lastre",
+    step: 1.25,
+    default_1rm: 15.0,
+    note: "Kg extra en cinturón para 1 repetición máxima (0 = solo peso corporal)"
+  },
+  {
+    key: "split_squat_db",
+    name: "Split Squat Búlgaro (por mancuerna)",
+    category: "Tren Inferior (Martes)",
+    unit: "kg/manc",
+    step: 1.0,
+    default_1rm: 24.0,
+    note: "Peso de cada mancuerna en zancada búlgara"
+  },
+  {
+    key: "hip_thrust",
+    name: "Puente de Glúteo / Hip Thrust Barra",
+    category: "Tren Inferior (Martes)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 90.0,
+    note: "Extensión de cadera pesada"
+  },
+  {
+    key: "soleus",
+    name: "Elevación de Sóleo Sentado (Máquina)",
+    category: "Protección Aquiles (Martes)",
+    unit: "kg",
+    step: 2.5,
+    default_1rm: 50.0,
+    note: "Carga en máquina de gemelo/sóleo sentado"
+  }
+];
 
 window.HYBRID_TRAINING_PLAN = {
   methodology: {
     title: "Periodización Híbrida Concurrente — Gimnasio (L-M-J) · Carrera (X-V-S) · Domingo Descanso Total",
     principles: [
       {
+        name: "Cálculo Dinámico por % de tu 1RM Real",
+        detail: "Todas las sesiones de Lunes, Martes y Jueves calculan automáticamente los kilos exactos (redondeados a discos de 2.5 kg en barra y 1 kg en mancuerna) según los 1RM que introduzcas en la pestaña '1RM & Pesos'."
+      },
+      {
         name: "Doble Ventana de 72 Horas para tus Piernas",
         detail: "1) Tras la Tirada Larga del Sábado, descansas el Domingo y haces Torso el Lunes: tus piernas llegan al Martes de gimnasio con 72h de recuperación. 2) Tras hacer Pierna el Martes, ruedas suave en Z2 el Miércoles y haces Torso el Jueves: llegas a las Series del Viernes con otras 72h de recuperación muscular."
       },
       {
-        name: "Bloque Viernes (Calidad) + Sábado (Tirada Z2) con Domingo Libre",
-        detail: "Al tener el Domingo siempre libre, aprovechamos Viernes para ritmos rápidos (Umbral/VO2máx) y Sábado por la mañana para la Tirada Larga en Zona 2 estricta (135-151 ppm), enseñando al cuerpo a oxidar grasas sin comprometer la recuperación dominical."
-      },
-      {
         name: "Polarización 80/20 & Protección Tendinosa (>100 kg)",
         detail: "Pasamos de 1.1 salidas/semana en 'zona gris' a 3 salidas fijas (Miércoles, Viernes y Sábado) con progresión <=10% semanal, cadencia objetivo >166 spm y fortalecimiento pesado de sóleo e isquios los martes."
-      },
-      {
-        name: "Autorregulación Matutina 09:00 AM por VFC (HRV)",
-        detail: "Cada mañana a las 09:00 AM se evalúa tu VFC respecto a tu banda base (50-60 ms). Si el viernes o sábado estás en ámbar/rojo, se ajusta el margen de pulso para evitar sobreentrenamiento."
       }
     ]
   },
@@ -41,9 +137,9 @@ window.HYBRID_TRAINING_PLAN = {
     {
       id: "block-1",
       number: 1,
-      name: "Bloque 1: Consolidación Aeróbica & Base Híbrida",
+      name: "Bloque 1: Consolidación Aeróbica & Base Híbrida (75%–85% 1RM)",
       dates: "16 Nov 2026 – 13 Dic 2026 (Semanas 1 a 4)",
-      focus: "Asimilar el 10K Ponle Freno, consolidar el esquema L-M-J (Gimnasio) + X-V-S (Carrera) y construir base aeróbica en Zona 2 con Domingo de descanso total.",
+      focus: "Asimilar el 10K Ponle Freno, consolidar el esquema L-M-J (Gimnasio al 75-85% 1RM) + X-V-S (Carrera) y construir base aeróbica en Zona 2 con Domingo de descanso total.",
       target_run_km_range: "12.5 → 18.0 km/sem",
       target_strength_sessions: "3 sesiones/sem (Lun: Upper A · Mar: Lower · Jue: Upper B)",
       weeks: [
@@ -51,10 +147,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 1,
           label: "Semana 1 (Adaptación Post-10K)",
           dates: "16 Nov – 22 Nov 2026",
-          phase_type: "Recuperación Activa & Fijación de Rutina L-M-J / X-V-S",
+          phase_type: "Recuperación Activa & Base Fuerza (75–78% 1RM)",
           run_km_target: 12.5,
           strength_sessions_target: 3,
-          coach_note: "Vienes de correr el domingo 15 Nov el 10K Ponle Freno (54:05, Carga 215, TE 5.0). Esta semana cuidamos piernas el martes (RIR 2-3), rodamos suave en Z2 el miércoles, viernes y sábado, y el domingo descansas por completo.",
+          coach_note: "Vienes de correr el domingo 15 Nov el 10K Ponle Freno (54:05, Carga 215, TE 5.0). Esta semana trabajamos entre el 74% y 78% de tu 1RM (RIR 2-3), rodamos suave en Z2 el miércoles, viernes y sábado, y el domingo descansas por completo.",
           days: [
             {
               id: "b1-w1-d1",
@@ -62,17 +158,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Empuje & Tirón Pesado (Sin impacto en piernas)",
+              title: "Tren Superior A — Base Empuje & Tirón ({bench:0.78} Banca)",
               duration_min: 55,
-              target_zone: "FC media < 110 ppm | RIR 2",
+              target_zone: "75–78% 1RM | RIR 2",
               completed_in_garmin: true,
-              garmin_match: "Completado hoy en Garmin: Fuerza 56.4 min (Press Banca 3x8 @ 85kg, Dominadas 4x6, Press Militar 3x8 @ 45kg, Carga 18)",
-              summary: "Día 1 de gimnasio (Lunes): estímulo neural en torso dejando descansar las piernas.",
+              summary: "Día 1 de gimnasio (Lunes): estímulo neural en torso al 78% 1RM dejando descansar las piernas.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 6-8 reps @ 85 kg (RIR 2)" },
-                { name: "Dominadas Estrictras (Pull-ups)", target: "4 series × 6 reps @ Peso Corporal" },
-                { name: "Press Militar Barra de Pie", target: "3 series × 8 reps @ 45 kg" },
-                { name: "Remo con Mancuerna Unilateral", target: "3 series × 10 reps @ 25 kg" },
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "6-8", pct: 0.78, rir: "RIR 2" },
+                { name: "Dominadas Estrictras (Pull-ups)", lift: "pullup_load", sets: 4, reps: "6-7", pct: 0.0, rir: "Peso Corporal (RIR 2)" },
+                { name: "Press Militar Barra de Pie", lift: "ohp", sets: 3, reps: "8", pct: 0.74, rir: "RIR 2" },
+                { name: "Remo con Mancuerna Unilateral", lift: "row_db", sets: 3, reps: "10", pct: 0.75, rir: "RIR 2" },
                 { name: "Movilidad Torácica & Tobillo", target: "8 min vuelta a la calma" }
               ]
             },
@@ -82,15 +177,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior Híbrido — Fuerza Estructural & Tendón (Post-10K)",
+              title: "Tren Inferior Híbrido — Fuerza Estructural ({squat:0.76} Sentadilla)",
               duration_min: 50,
-              target_zone: "RIR 2-3 (Volumen moderado sin llegar al fallo)",
-              summary: "Día 2 de gimnasio (Martes): trabajamos fuerza estructural de pierna, isquios y sóleo sin generar agujetas para el rodaje de mañana miércoles.",
+              target_zone: "74–76% 1RM | RIR 2-3",
+              summary: "Día 2 de gimnasio (Martes): fuerza estructural de pierna, isquios y sóleo al 75% 1RM sin generar agujetas para el rodaje de mañana miércoles.",
               steps: [
-                { name: "Sentadilla Trasera Barra (Back Squat)", target: "3 series × 4 reps @ 77.5 - 80 kg (RIR 2-3, subida explosiva)" },
-                { name: "Peso Muerto Rumano (RDL)", target: "3 series × 5 reps @ 75 - 80 kg (controlando 2s bajada)" },
-                { name: "Split Squat Búlgaro / Pie Elevado", target: "3 series × 8 reps/pierna @ 15 kg mancuernas" },
-                { name: "Elevación de Talones Sentado (Sóleo)", target: "4 series × 12-15 reps @ 30-35 kg (1s pausa arriba)" },
+                { name: "Sentadilla Trasera Barra (Back Squat)", lift: "squat", sets: 3, reps: "4-5", pct: 0.76, rir: "RIR 2-3 (subida explosiva)" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 3, reps: "6", pct: 0.75, rir: "RIR 2 (bajada 2s)" },
+                { name: "Split Squat Búlgaro", lift: "split_squat_db", sets: 3, reps: "8/pierna", pct: 0.70, rir: "RIR 2" },
+                { name: "Elevación de Talones Sentado (Sóleo)", lift: "soleus", sets: 4, reps: "12-15", pct: 0.72, rir: "1s pausa arriba" },
                 { name: "Plancha Abdominal RKC + Deadbug", target: "3 series × 40s" }
               ]
             },
@@ -117,16 +212,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Hombro, Espalda, Fondos & Potencia Cadera",
+              title: "Tren Superior B — Hombro, Espalda & Fondos ({ohp:0.82} Militar)",
               duration_min: 50,
-              target_zone: "RIR 2 | FC media < 115 ppm",
+              target_zone: "76–82% 1RM | RIR 2",
               summary: "Día 3 de gimnasio (Jueves): cerramos el trabajo de fuerza semanal dejando las piernas descansadas para viernes y sábado.",
               steps: [
-                { name: "Press Militar Barra", target: "4 series × 4 reps @ 52.5 - 55 kg (RIR 2)" },
-                { name: "Press Inclinado Mancuernas", target: "3 series × 10 reps @ 30 kg c/u" },
-                { name: "Jalón al Pecho / Dominadas Neutras", target: "4 series × 8-10 reps" },
-                { name: "Fondos en Paralelas (Dips)", target: "3 series × 7-8 reps @ Peso Corporal" },
-                { name: "Kettlebell Swings (Potencia Cadera)", target: "3 series × 12 reps @ 22.5 - 24 kg" }
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4-5", pct: 0.82, rir: "RIR 2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "10", pct: 0.76, rir: "RIR 2" },
+                { name: "Remo en Polea / Barra", lift: "row_bar", sets: 4, reps: "8-10", pct: 0.75, rir: "RIR 2" },
+                { name: "Fondos en Paralelas (Dips)", target: "3 series × 7-8 reps @ Peso Corporal (RIR 2)" },
+                { name: "Kettlebell Swings (Potencia Cadera)", target: "3 series × 12 reps @ 24 kg (explosivos)" }
               ]
             },
             {
@@ -179,12 +274,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 2,
-          label: "Semana 2 (Carga Base 1)",
+          label: "Semana 2 (Carga Base 80–82% 1RM)",
           dates: "23 Nov – 29 Nov 2026",
-          phase_type: "Acumulación Base Aeróbica (L-M-J Gym · X-V-S Run)",
+          phase_type: "Acumulación Base (80–82% 1RM · Fartlek Viernes)",
           run_km_target: 15.0,
           strength_sessions_target: 3,
-          coach_note: "Pierna pesada el martes, rodaje Z2 el miércoles, torso el jueves, Fartlek controlado el viernes (72h post-pierna), tirada larga Z2 el sábado y descanso total el domingo.",
+          coach_note: "Subimos intensidad en gimnasio al 80–82% 1RM (Lunes Banca {bench:0.82}, Martes Peso Muerto {deadlift:0.82} y Sentadilla {squat:0.78}). El viernes estrenamos Fartlek controlado.",
           days: [
             {
               id: "b1-w2-d1",
@@ -192,15 +287,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Fuerza Máxima",
+              title: "Tren Superior A — Progresión 4×5 ({bench:0.82} Banca)",
               duration_min: 55,
-              target_zone: "RIR 2",
-              summary: "Progresión lineal en Press Banca y tracción vertical con piernas frescas tras el domingo de descanso.",
+              target_zone: "80–82% 1RM | RIR 2",
+              summary: "Progresión lineal al 82% 1RM en Press Banca y tracción vertical.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 5 reps @ 87.5 - 90 kg (RIR 2)" },
-                { name: "Dominadas Estrictras", target: "4 series × 6-7 reps @ Peso Corporal" },
-                { name: "Press Militar Mancuernas Sentado", target: "3 series × 8-10 reps @ 22.5 kg c/u" },
-                { name: "Remo en Polea / Barra", target: "3 series × 10 reps @ 65 kg" },
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "5", pct: 0.82, rir: "RIR 2" },
+                { name: "Dominadas Lastradas / Estrictras", lift: "pullup_load", sets: 4, reps: "6", pct: 0.50, rir: "RIR 2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "6-8", pct: 0.78, rir: "RIR 2" },
+                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8-10", pct: 0.78, rir: "RIR 2" },
                 { name: "Curl Bíceps + Extensión Tríceps", target: "2 superseries × 12 reps" }
               ]
             },
@@ -210,15 +305,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior — Peso Muerto, Sentadilla & Cadena Posterior",
+              title: "Tren Inferior — Peso Muerto ({deadlift:0.82}) & Sentadilla ({squat:0.78})",
               duration_min: 52,
-              target_zone: "RIR 2",
+              target_zone: "78–82% 1RM | RIR 2",
               summary: "Sesión principal de pierna el martes: tienes 72 horas hasta el Fartlek del viernes y 96 horas hasta la tirada del sábado.",
               steps: [
-                { name: "Peso Muerto Barra (Deadlift)", target: "3 series × 3 reps @ 125 - 130 kg (RIR 2, agarre firme)" },
-                { name: "Sentadilla Trasera Barra", target: "3 series × 5 reps @ 80 kg" },
+                { name: "Peso Muerto Barra (Deadlift)", lift: "deadlift", sets: 3, reps: "3-4", pct: 0.82, rir: "RIR 2" },
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "5", pct: 0.78, rir: "RIR 2" },
                 { name: "Curl Femoral Sentado/Tumbado", target: "3 series × 10 reps (excéntrica 3s para proteger isquios)" },
-                { name: "Elevación de Sóleo Sentado", target: "4 series × 12 reps @ 35 kg" },
+                { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 4, reps: "12", pct: 0.76, rir: "RIR 2" },
                 { name: "Hanging Knee Raises (Core)", target: "3 series × 10 reps" }
               ]
             },
@@ -244,15 +339,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B + Acondicionamiento Aláctico",
+              title: "Tren Superior B ({ohp:0.84} Militar) + Potencia Aláctica",
               duration_min: 50,
-              target_zone: "RIR 1-2",
-              summary: "Tercer y último día de gimnasio de la semana: empuje vertical, fondos y potencia de cadera.",
+              target_zone: "80–84% 1RM | RIR 1-2",
+              summary: "Tercer y último día de gimnasio de la semana: empuje vertical, press inclinado y potencia de cadera.",
               steps: [
-                { name: "Press Militar Barra", target: "4 series × 4 reps @ 55 kg" },
-                { name: "Press Banca Inclinado Mancuernas", target: "3 series × 10 reps @ 30-32.5 kg" },
-                { name: "Dominadas / Pullover Polea", target: "4 series × 10-12 reps" },
-                { name: "Fondos en Paralelas", target: "4 series × 7 reps" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.84, rir: "RIR 1-2" },
+                { name: "Press Banca Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8-10", pct: 0.80, rir: "RIR 2" },
+                { name: "Remo con Mancuerna Unilateral", lift: "row_db", sets: 4, reps: "8-10", pct: 0.80, rir: "RIR 2" },
+                { name: "Fondos en Paralelas", target: "4 series × 7-8 reps @ Peso Corporal" },
                 { name: "Salto a la Comba + KB Swings", target: "3 rondas: 45s comba + 12 Swings @ 24 kg (descanso 60s)" }
               ]
             },
@@ -266,7 +361,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 28,
               distance_km: 4.5,
               target_zone: "Z2 Base + Cambios Z3/Z4 (154 - 163 ppm)",
-              summary: "Piernas frescas (72h después del martes): reactivamos ritmos de 5:10-5:20/km en bloques cortos de 2 minutos sin vaciar glucógeno para mañana.",
+              summary: "Piernas frescas (72h después del martes): reactivamos ritmos de 5:10-5:20/km en bloques cortos de 2 minutos.",
               steps: [
                 { name: "Calentamiento Z1/Z2", target: "8 min suaves @ 6:20/km" },
                 { name: "Bloque Principal (5 cambios)", target: "5 × [2 min @ 5:10-5:20/km (FC 155-162) + 2 min trote suave @ 6:35/km]" },
@@ -307,12 +402,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 3,
-          label: "Semana 3 (Pico Bloque 1)",
+          label: "Semana 3 (Pico Bloque 1 · 85% 1RM)",
           dates: "30 Nov – 06 Dic 2026",
-          phase_type: "Sobrecarga Progresiva Controlada (L-M-J Gym · X-V-S Run)",
+          phase_type: "Sobrecarga Progresiva (85% 1RM · 18 km Carrera)",
           run_km_target: 18.0,
           strength_sessions_target: 3,
-          coach_note: "Semana pico del Bloque 1: Lunes Banca 92.5 kg, Martes Sentadilla 82.5 kg + RDL 82.5 kg, Miércoles 4.5 km Z2, Jueves Militar 55-57.5 kg, Viernes 3×1000m Tempo, Sábado 8 km Z2 y Domingo Descanso Total.",
+          coach_note: "Semana pico del Bloque 1 al 85% 1RM: Lunes Banca ({bench:0.85}), Martes Sentadilla ({squat:0.84}) + RDL ({rdl:0.82}), Jueves Militar ({ohp:0.86}), Viernes 3×1000m Tempo y Sábado 8 km Z2.",
           days: [
             {
               id: "b1-w3-d1",
@@ -320,15 +415,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Intensidad 4×4 (92.5 kg Banca)",
+              title: "Tren Superior A — Intensidad 4×4 ({bench:0.85} Banca)",
               duration_min: 55,
-              target_zone: "RIR 1-2",
-              summary: "Acercándonos a tu récord de octubre (95 kg en Press Banca).",
+              target_zone: "85% 1RM | RIR 1-2",
+              summary: "Trabajo pesado al 85% de tu 1RM en Press Banca y tracción.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 4 reps @ 92.5 kg (RIR 1-2)" },
-                { name: "Dominadas Estrictras", target: "4 series × 7 reps @ Peso Corporal" },
-                { name: "Press Militar Barra", target: "3 series × 6 reps @ 50 kg" },
-                { name: "Remo con Mancuerna", target: "3 series × 10 reps @ 27.5 kg" }
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "4", pct: 0.85, rir: "RIR 1-2" },
+                { name: "Dominadas Lastradas / Estrictras", lift: "pullup_load", sets: 4, reps: "5-6", pct: 0.65, rir: "RIR 1-2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "6", pct: 0.80, rir: "RIR 2" },
+                { name: "Remo con Mancuerna Unilateral", lift: "row_db", sets: 3, reps: "8-10", pct: 0.82, rir: "RIR 2" }
               ]
             },
             {
@@ -337,15 +432,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior — Fuerza & Estabilidad Unilateral",
+              title: "Tren Inferior — Fuerza 84% 1RM ({squat:0.84} Sentadilla)",
               duration_min: 52,
-              target_zone: "RIR 2",
-              summary: "Consolidamos 82.5 kg en Sentadilla 4×3 y 82.5 kg en Peso Muerto Rumano tras 72h sin impacto en piernas.",
+              target_zone: "82–84% 1RM | RIR 2",
+              summary: "Consolidamos el 84% 1RM en Sentadilla 4×3 y 82% en Peso Muerto Rumano tras 72h sin impacto en piernas.",
               steps: [
-                { name: "Sentadilla Trasera Barra", target: "4 series × 3 reps @ 82.5 kg (RIR 2)" },
-                { name: "Peso Muerto Rumano (RDL)", target: "4 series × 4 reps @ 82.5 kg" },
-                { name: "Puente de Glúteo / Hip Thrust", target: "3 series × 10 reps @ 40-50 kg" },
-                { name: "Elevación de Sóleo Sentado", target: "4 series × 12 reps @ 35-40 kg" }
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 4, reps: "3-4", pct: 0.84, rir: "RIR 2" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 4, reps: "5", pct: 0.82, rir: "RIR 2" },
+                { name: "Puente de Glúteo / Hip Thrust", lift: "hip_thrust", sets: 3, reps: "8-10", pct: 0.80, rir: "RIR 2" },
+                { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 4, reps: "10-12", pct: 0.80, rir: "RIR 1-2" }
               ]
             },
             {
@@ -370,15 +465,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Pico de Volumen Bloque 1",
+              title: "Tren Superior B — Pico Bloque 1 ({ohp:0.86} Militar)",
               duration_min: 52,
-              target_zone: "RIR 1-2",
+              target_zone: "82–86% 1RM | RIR 1-2",
               summary: "Sesión fuerte de torso cerrando los 3 días de gimnasio de la semana.",
               steps: [
-                { name: "Press Militar Barra", target: "4 series × 3-4 reps @ 55 - 57.5 kg" },
-                { name: "Press Inclinado Mancuernas", target: "4 series × 8-10 reps @ 32.5 kg" },
-                { name: "Dominadas + Jalón", target: "4 series × 8 reps" },
-                { name: "Fondos en Paralelas", target: "4 series × 8 reps" }
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3-4", pct: 0.86, rir: "RIR 1-2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 4, reps: "8", pct: 0.84, rir: "RIR 1-2" },
+                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.82, rir: "RIR 2" },
+                { name: "Fondos en Paralelas", target: "4 series × 8 reps @ Peso Corporal" }
               ]
             },
             {
@@ -432,12 +527,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 4,
-          label: "Semana 4 (Descarga 3:1)",
+          label: "Semana 4 (Descarga 3:1 · 70–75% 1RM)",
           dates: "07 Dic – 13 Dic 2026",
-          phase_type: "Supercompensación & Descarga (-25% Volumen)",
+          phase_type: "Supercompensación & Descarga (70–75% 1RM · -25% Volumen)",
           run_km_target: 13.5,
           strength_sessions_target: 3,
-          coach_note: "Semana de descarga del Bloque 1: mantienes Lunes, Martes y Jueves de gimnasio a mitad de series (RIR 3), carreras suaves Miércoles-Viernes-Sábado y Domingo de descanso total.",
+          coach_note: "Semana de descarga del Bloque 1: mantienes Lunes, Martes y Jueves de gimnasio al 70–75% 1RM con mitad de series (RIR 3-4) para supercompensar.",
           days: [
             {
               id: "b1-w4-d1",
@@ -445,15 +540,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Descarga Upper A",
-              title: "Tren Superior A — Descarga Neural (3×5 RIR 3)",
+              title: "Tren Superior A — Descarga Neural ({bench:0.75} Banca)",
               duration_min: 40,
-              target_zone: "RIR 3",
-              summary: "Mantenemos tensión mecánica con 85 kg pero reducimos las series a la mitad.",
+              target_zone: "72–75% 1RM | RIR 3",
+              summary: "Mantenemos velocidad de barra al 75% 1RM reduciendo las series a la mitad.",
               steps: [
-                { name: "Press Banca Barra", target: "3 series × 5 reps @ 85 kg (fáciles, RIR 3)" },
-                { name: "Dominadas", target: "3 series × 5 reps" },
-                { name: "Press Militar", target: "2 series × 6 reps @ 45 kg" },
-                { name: "Remo Mancuerna", target: "2 series × 10 reps @ 25 kg" }
+                { name: "Press Banca Barra", lift: "bench", sets: 3, reps: "5", pct: 0.75, rir: "RIR 3 (rápidas)" },
+                { name: "Dominadas Estrictras", lift: "pullup_load", sets: 3, reps: "5", pct: 0.0, rir: "Peso Corporal (RIR 3)" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 2, reps: "6", pct: 0.72, rir: "RIR 3" },
+                { name: "Remo con Mancuerna", lift: "row_db", sets: 2, reps: "10", pct: 0.70, rir: "RIR 3" }
               ]
             },
             {
@@ -462,14 +557,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Descarga Lower",
-              title: "Tren Inferior — Descarga & Salud Tendinosa",
+              title: "Tren Inferior — Descarga & Salud Tendinosa ({squat:0.72})",
               duration_min: 38,
-              target_zone: "RIR 3",
+              target_zone: "70–72% 1RM | RIR 3-4",
               summary: "Piernas frescas y articulaciones recuperadas.",
               steps: [
-                { name: "Sentadilla Trasera", target: "3 series × 3 reps @ 75 kg (velocidad alta)" },
-                { name: "Peso Muerto Rumano", target: "2 series × 5 reps @ 70 kg" },
-                { name: "Sóleo Sentado Isométrico + Dinámico", target: "3 series × 12 reps @ 30 kg" }
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "3", pct: 0.72, rir: "RIR 3-4 (velocidad alta)" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 2, reps: "5", pct: 0.70, rir: "RIR 3" },
+                { name: "Sóleo Sentado Isométrico + Dinámico", lift: "soleus", sets: 3, reps: "12", pct: 0.68, rir: "RIR 3" }
               ]
             },
             {
@@ -493,13 +588,13 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Descarga Upper B",
-              title: "Tren Superior B — Bombeo & Movilidad",
+              title: "Tren Superior B — Bombeo & Movilidad ({incline_db:0.72})",
               duration_min: 38,
-              target_zone: "RIR 3",
+              target_zone: "70–72% 1RM | RIR 3",
               summary: "Sesión ligera y técnica cerrando el gimnasio de la semana.",
               steps: [
-                { name: "Press Inclinado Mancuernas", target: "3 series × 8 reps @ 27.5 kg" },
-                { name: "Jalón al Pecho", target: "3 series × 10 reps" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.72, rir: "RIR 3" },
+                { name: "Remo en Polea / Barra", lift: "row_bar", sets: 3, reps: "10", pct: 0.70, rir: "RIR 3" },
                 { name: "Fondos + Core", target: "2 series × 6 reps + Planchas" }
               ]
             },
@@ -556,20 +651,20 @@ window.HYBRID_TRAINING_PLAN = {
     {
       id: "block-2",
       number: 2,
-      name: "Bloque 2: Desarrollo de Umbral (LTHR) & Fuerza-Potencia",
+      name: "Bloque 2: Desarrollo de Umbral (LTHR) & Fuerza Máxima (85%–92% 1RM)",
       dates: "14 Dic 2026 – 10 Ene 2027 (Semanas 5 a 8)",
-      focus: "Desplazar tu ritmo de Umbral de Lactato (163 ppm) hacia 5:05-5:10/km los viernes + tiradas sabatinas Z2, con gimnasio L-M-J y domingo de descanso total.",
+      focus: "Desplazar tu ritmo de Umbral de Lactato (163 ppm) hacia 5:05-5:10/km los viernes + tiradas sabatinas Z2, trabajando del 85% al 92% 1RM los Lunes-Martes-Jueves.",
       target_run_km_range: "18.0 → 22.0 km/sem",
       target_strength_sessions: "3 sesiones/sem (Lun: Upper A · Mar: Lower · Jue: Upper B)",
       weeks: [
         {
           week_number: 5,
-          label: "Semana 5 (Inicio Umbral)",
+          label: "Semana 5 (Inicio Umbral · 85% 1RM)",
           dates: "14 Dic – 20 Dic 2026",
-          phase_type: "Construcción de Umbral (L-M-J Gym · X-V-S Run)",
+          phase_type: "Construcción de Umbral & Fuerza (84–86% 1RM)",
           run_km_target: 18.0,
           strength_sessions_target: 3,
-          coach_note: "Lunes igualamos 95 kg en Banca, Martes Sentadilla 85 kg + RDL 85 kg, Miércoles 4 km Z2, Jueves Upper B, Viernes 3×1.500m Umbral, Sábado 8.5 km Z2 y Domingo Descanso Total.",
+          coach_note: "Lunes Banca al 86% 1RM ({bench:0.86}), Martes Sentadilla al 85% ({squat:0.85}) + RDL ({rdl:0.84}), Miércoles 4 km Z2, Jueves Upper B, Viernes 3×1.500m Umbral y Sábado 8.5 km Z2.",
           days: [
             {
               id: "b2-w5-d1",
@@ -577,15 +672,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Bloque Fuerza (95 kg Banca)",
+              title: "Tren Superior A — Bloque Fuerza ({bench:0.86} Banca)",
               duration_min: 55,
-              target_zone: "RIR 1-2",
-              summary: "Igualamos tu mejor marca de octubre con mayor control técnico.",
+              target_zone: "84–86% 1RM | RIR 1-2",
+              summary: "Subimos al 86% de tu 1RM en Press Banca en series de 4 repeticiones.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 4 reps @ 95 kg" },
-                { name: "Dominadas Lastradas / Estrictras", target: "4 series × 6 reps (+2.5 a 5 kg si es fluido)" },
-                { name: "Press Militar Barra", target: "3 series × 6 reps @ 52.5 kg" },
-                { name: "Remo con Barra / Mancuerna", target: "3 series × 8 reps @ 30 kg" }
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "4", pct: 0.86, rir: "RIR 1-2" },
+                { name: "Dominadas Lastradas", lift: "pullup_load", sets: 4, reps: "5-6", pct: 0.70, rir: "RIR 2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "5-6", pct: 0.82, rir: "RIR 2" },
+                { name: "Remo con Mancuerna Unilateral", lift: "row_db", sets: 3, reps: "8", pct: 0.84, rir: "RIR 2" }
               ]
             },
             {
@@ -594,15 +689,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior — Fuerza + Rigidez Reactiva (Stiffness)",
+              title: "Tren Inferior — Fuerza ({squat:0.85} Sentadilla) + Stiffness",
               duration_min: 50,
-              target_zone: "RIR 2",
+              target_zone: "84–85% 1RM | RIR 2",
               summary: "Mejoramos la reactividad elástica del tobillo y cadera con 72h de margen hasta las series del viernes.",
               steps: [
-                { name: "Sentadilla Trasera Barra", target: "4 series × 3 reps @ 85 kg" },
-                { name: "Peso Muerto Rumano (RDL)", target: "3 series × 5 reps @ 85 kg" },
-                { name: "Split Squat Búlgaro", target: "3 series × 8 reps/pierna @ 17.5 kg" },
-                { name: "Sóleo Sentado Pesado + Saltos Pogo Suaves", target: "4 × (10 reps @ 40 kg + 15 pequeños rebotes de tobillo)" }
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 4, reps: "3", pct: 0.85, rir: "RIR 2" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 3, reps: "5", pct: 0.84, rir: "RIR 2" },
+                { name: "Split Squat Búlgaro", lift: "split_squat_db", sets: 3, reps: "8/pierna", pct: 0.78, rir: "RIR 2" },
+                { name: "Sóleo Sentado Pesado + Rebotes Pogo", lift: "soleus", sets: 4, reps: "10 (+15 rebotes)", pct: 0.82, rir: "RIR 1-2" }
               ]
             },
             {
@@ -626,14 +721,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B + Potencia Híbrida",
+              title: "Tren Superior B ({ohp:0.86} Militar) + Potencia Híbrida",
               duration_min: 50,
-              target_zone: "RIR 2",
+              target_zone: "84–86% 1RM | RIR 2",
               summary: "Fuerza de torso y cadena posterior explosiva.",
               steps: [
-                { name: "Press Militar Barra", target: "4 series × 4 reps @ 55 - 57.5 kg" },
-                { name: "Press Inclinado Mancuernas", target: "3 series × 8 reps @ 32.5 kg" },
-                { name: "Dominadas / Jalón", target: "4 series × 8 reps" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.86, rir: "RIR 1-2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" },
+                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.84, rir: "RIR 2" },
                 { name: "Fondos + Kettlebell Swings", target: "3 superseries: 8 Fondos + 15 Swings @ 24 kg" }
               ]
             },
@@ -687,12 +782,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 6,
-          label: "Semana 6 (Consolidación Umbral)",
+          label: "Semana 6 (Consolidación · 88% 1RM)",
           dates: "21 Dic – 27 Dic 2026",
-          phase_type: "Carga Específica Híbrida (L-M-J Gym · X-V-S Run)",
+          phase_type: "Carga Específica Híbrida (88% 1RM · 20 km Carrera)",
           run_km_target: 20.0,
           strength_sessions_target: 3,
-          coach_note: "Rompemos la barrera de los 20 km semanales: Lunes 97.5 kg Banca, Martes 135 kg Peso Muerto, Miércoles 4.5 km Z2, Jueves Upper B, Viernes 2×2km+1km Umbral, Sábado 9.5 km Z2 y Domingo Descanso Total.",
+          coach_note: "Rompemos la barrera de los 20 km semanales: Lunes Banca al 88% ({bench:0.88}), Martes Peso Muerto al 88% ({deadlift:0.88}), Viernes 2×2km+1km Umbral y Sábado 9.5 km Z2.",
           days: [
             {
               id: "b2-w6-d1",
@@ -700,15 +795,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Serie Top @ 97.5 kg",
+              title: "Tren Superior A — Serie Top 88% 1RM ({bench:0.88} Banca)",
               duration_min: 55,
-              target_zone: "RIR 1-2",
-              summary: "Nuevo récord personal en Press Banca en bloques de 3 repeticiones.",
+              target_zone: "88% 1RM | RIR 1-2",
+              summary: "Bloques de 3 repeticiones al 88% de tu 1RM en Press Banca.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 3 reps @ 97.5 kg (RIR 1-2)" },
-                { name: "Dominadas", target: "4 series × 7 reps" },
-                { name: "Press Militar", target: "3 series × 6 reps @ 52.5 kg" },
-                { name: "Remo con Barra", target: "3 series × 8 reps @ 70 kg" }
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "3", pct: 0.88, rir: "RIR 1-2" },
+                { name: "Dominadas Lastradas", lift: "pullup_load", sets: 4, reps: "5", pct: 0.75, rir: "RIR 1-2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "5", pct: 0.84, rir: "RIR 2" },
+                { name: "Remo con Barra", lift: "row_bar", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" }
               ]
             },
             {
@@ -717,14 +812,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior — Peso Muerto 135 kg & Sentadilla",
+              title: "Tren Inferior — Peso Muerto ({deadlift:0.88}) & Sentadilla ({squat:0.82})",
               duration_min: 50,
-              target_zone: "RIR 2",
-              summary: "Consolidamos los 135 kg en Peso Muerto (3×3) con velocidad de barra alta.",
+              target_zone: "82–88% 1RM | RIR 2",
+              summary: "3×3 al 88% 1RM en Peso Muerto con velocidad de barra alta.",
               steps: [
-                { name: "Peso Muerto Barra", target: "3 series × 3 reps @ 135 kg" },
-                { name: "Sentadilla Trasera", target: "3 series × 5 reps @ 82.5 kg" },
-                { name: "Curl Femoral + Sóleo Sentado", target: "4 superseries × 10-12 reps" }
+                { name: "Peso Muerto Barra (Deadlift)", lift: "deadlift", sets: 3, reps: "3", pct: 0.88, rir: "RIR 1-2" },
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "5", pct: 0.82, rir: "RIR 2" },
+                { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 4, reps: "10-12", pct: 0.85, rir: "RIR 1-2" }
               ]
             },
             {
@@ -748,13 +843,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Sesión Matutina Nochebuena",
+              title: "Tren Superior B ({ohp:0.88} Militar) — Nochebuena",
               duration_min: 45,
-              target_zone: "RIR 2",
+              target_zone: "85–88% 1RM | RIR 2",
               summary: "Completamos los 3 días de gimnasio (L-M-J) al mediodía.",
               steps: [
-                { name: "Press Militar + Dominadas", target: "4 superseries × 5-7 reps @ 55 kg" },
-                { name: "Press Inclinado + Remo", target: "3 superseries × 10 reps @ 32.5 kg" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3-4", pct: 0.88, rir: "RIR 1-2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
+                { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8-10", pct: 0.85, rir: "RIR 2" },
                 { name: "Fondos + Core", target: "3 series × 8 reps" }
               ]
             },
@@ -809,12 +905,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 7,
-          label: "Semana 7 (Pico Bloque 2)",
+          label: "Semana 7 (Pico Bloque 2 · 90–92% 1RM)",
           dates: "28 Dic 2026 – 03 Ene 2027",
-          phase_type: "Pico de Umbral & Fuerza (L-M-J Gym · X-V-S Run)",
+          phase_type: "Pico de Umbral & Fuerza (90–92% 1RM · 22 km Carrera)",
           run_km_target: 22.0,
           strength_sessions_target: 3,
-          coach_note: "Semana cumbre del Bloque 2: Lunes intento de 100 kg en Press Banca, Martes Sentadilla 90 kg, Miércoles 5 km Z2, Jueves Upper B, Viernes Tempo continuo 4 km @ 5:05/km, Sábado 10.5 km Z2 y Domingo Descanso Total.",
+          coach_note: "Semana cumbre del Bloque 2: Lunes Banca al 92% 1RM ({bench:0.92}), Martes Sentadilla al 90% ({squat:0.90}), Viernes Tempo continuo 4 km @ 5:05/km y Sábado 10.5 km Z2.",
           days: [
             {
               id: "b2-w7-d1",
@@ -822,15 +918,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Objetivo 100 kg Press Banca",
+              title: "Tren Superior A — Pico 92% 1RM ({bench:0.92} Press Banca)",
               duration_min: 55,
-              target_zone: "RIR 1",
-              summary: "Hito de fuerza híbrida: 100 kg en Press Banca manteniendo 22 km de carrera semanal.",
+              target_zone: "90–92% 1RM | RIR 1",
+              summary: "Series pesadas de 2-3 repeticiones al 92% de tu 1RM manteniendo 22 km de carrera semanal.",
               steps: [
-                { name: "Press Banca Barra", target: "2×3 @ 95 kg + 2×2 @ 100 kg (RIR 1)" },
-                { name: "Dominadas", target: "4 series × 7-8 reps" },
-                { name: "Press Militar", target: "3 series × 5 reps @ 55 kg" },
-                { name: "Remo con Mancuerna", target: "3 series × 10 reps @ 30 kg" }
+                { name: "Press Banca Barra (Pico)", lift: "bench", sets: 4, reps: "2-3", pct: 0.92, rir: "RIR 1" },
+                { name: "Dominadas Lastradas", lift: "pullup_load", sets: 4, reps: "4-5", pct: 0.85, rir: "RIR 1-2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "5", pct: 0.86, rir: "RIR 1-2" },
+                { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8-10", pct: 0.86, rir: "RIR 2" }
               ]
             },
             {
@@ -839,15 +935,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior — Sentadilla 90 kg & RDL 87.5 kg",
+              title: "Tren Inferior — Sentadilla 90% 1RM ({squat:0.90}) & RDL ({rdl:0.86})",
               duration_min: 52,
-              target_zone: "RIR 1-2",
+              target_zone: "86–90% 1RM | RIR 1-2",
               summary: "Fuerza máxima controlada en tren inferior con 72h de margen hasta el Tempo Run del viernes.",
               steps: [
-                { name: "Sentadilla Trasera Barra", target: "4 series × 3 reps @ 87.5 - 90 kg" },
-                { name: "Peso Muerto Rumano", target: "3 series × 5 reps @ 85 - 87.5 kg" },
-                { name: "Zancadas / Split Squat", target: "3 series × 8 reps @ 17.5 kg" },
-                { name: "Sóleo Sentado", target: "4 series × 12 reps @ 40 kg" }
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 4, reps: "2-3", pct: 0.90, rir: "RIR 1-2" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 3, reps: "5", pct: 0.86, rir: "RIR 2" },
+                { name: "Split Squat Búlgaro", lift: "split_squat_db", sets: 3, reps: "8/pierna", pct: 0.82, rir: "RIR 2" },
+                { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 4, reps: "10-12", pct: 0.88, rir: "RIR 1-2" }
               ]
             },
             {
@@ -871,14 +967,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Hombro, Espalda & Brazos (Fin de Año)",
+              title: "Tren Superior B ({ohp:0.90} Militar) — Fin de Año",
               duration_min: 50,
-              target_zone: "RIR 2",
+              target_zone: "86–90% 1RM | RIR 1-2",
               summary: "Última sesión de gimnasio del año el jueves al mediodía.",
               steps: [
-                { name: "Press Militar Barra", target: "4 series × 4 reps @ 57.5 kg" },
-                { name: "Press Inclinado Mancuernas", target: "3 series × 8-10 reps @ 32.5 kg" },
-                { name: "Dominadas + Remo", target: "4 series × 8 reps" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3", pct: 0.90, rir: "RIR 1-2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.88, rir: "RIR 1-2" },
+                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.86, rir: "RIR 2" },
                 { name: "Fondos en Paralelas", target: "3 series × 8 reps" }
               ]
             },
@@ -932,12 +1028,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 8,
-          label: "Semana 8 (Descarga 3:1)",
+          label: "Semana 8 (Descarga 3:1 · 75% 1RM)",
           dates: "04 Ene – 10 Ene 2027",
-          phase_type: "Descarga & Asimilación Bloque 2 (L-M-J Gym · X-V-S Run)",
+          phase_type: "Descarga & Asimilación Bloque 2 (72–75% 1RM)",
           run_km_target: 15.5,
           strength_sessions_target: 3,
-          coach_note: "Semana de descarga del Bloque 2: reducimos volumen un 30% manteniendo Lunes-Martes-Jueves en gimnasio, Miércoles-Viernes-Sábado de carrera y Domingo de descanso total.",
+          coach_note: "Semana de descarga del Bloque 2: bajamos cargas al 72–75% 1RM (RIR 3-4) manteniendo Lunes-Martes-Jueves en gimnasio y Miércoles-Viernes-Sábado de carrera.",
           days: [
             {
               id: "b2-w8-d1",
@@ -945,14 +1041,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Descarga Upper A",
-              title: "Tren Superior A — Descarga Activa (RIR 3)",
+              title: "Tren Superior A — Descarga Activa ({bench:0.75} Banca)",
               duration_min: 40,
-              target_zone: "RIR 3",
+              target_zone: "75% 1RM | RIR 3",
               summary: "3 series fluidas sin fatiga acumulada.",
               steps: [
-                { name: "Press Banca Barra", target: "3 series × 5 reps @ 85 kg" },
-                { name: "Dominadas", target: "3 series × 6 reps" },
-                { name: "Press Militar", target: "2 series × 6 reps @ 47.5 kg" }
+                { name: "Press Banca Barra", lift: "bench", sets: 3, reps: "5", pct: 0.75, rir: "RIR 3" },
+                { name: "Dominadas Estrictras", lift: "pullup_load", sets: 3, reps: "6", pct: 0.0, rir: "Peso Corporal" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 2, reps: "6", pct: 0.74, rir: "RIR 3" }
               ]
             },
             {
@@ -961,14 +1057,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Descarga Lower",
-              title: "Tren Inferior Ligero & Movilidad",
+              title: "Tren Inferior Ligero ({squat:0.74} Sentadilla) & Movilidad",
               duration_min: 38,
-              target_zone: "RIR 3",
+              target_zone: "72–74% 1RM | RIR 3-4",
               summary: "Mantenimiento neuromuscular sin daño muscular.",
               steps: [
-                { name: "Sentadilla Trasera", target: "3 series × 3 reps @ 77.5 kg" },
-                { name: "Peso Muerto Rumano", target: "2 series × 5 reps @ 75 kg" },
-                { name: "Sóleo Sentado", target: "3 series × 12 reps @ 35 kg" }
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "3", pct: 0.74, rir: "RIR 3-4" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 2, reps: "5", pct: 0.72, rir: "RIR 3" },
+                { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 3, reps: "12", pct: 0.72, rir: "RIR 3" }
               ]
             },
             {
@@ -992,12 +1088,13 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Descarga Upper B",
-              title: "Tren Superior B Ligero",
+              title: "Tren Superior B Ligero ({incline_db:0.74})",
               duration_min: 38,
-              target_zone: "RIR 3",
+              target_zone: "72–74% 1RM | RIR 3",
               summary: "Bombeo articular sin estrés sistémico.",
               steps: [
-                { name: "Press Inclinado + Remo", target: "3 superseries × 8 reps" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.74, rir: "RIR 3" },
+                { name: "Remo en Polea / Barra", lift: "row_bar", sets: 3, reps: "8-10", pct: 0.72, rir: "RIR 3" },
                 { name: "Fondos + Core", target: "2 series × 7 reps" }
               ]
             },
@@ -1054,9 +1151,9 @@ window.HYBRID_TRAINING_PLAN = {
     {
       id: "block-3",
       number: 3,
-      name: "Bloque 3: Pico Específico VO2máx & Objetivo 10K Sub-50'",
+      name: "Bloque 3: Pico Específico VO2máx & Mantenimiento Neural (85%–92% 1RM)",
       dates: "11 Ene 2027 – 07 Feb 2027 (Semanas 9 a 12)",
-      focus: "Series específicas de VO2máx y ritmo 10K (<5:00/km) los viernes, tiradas largas de hasta 12 km los sábados, mantenimiento neural L-M-J y domingo siempre descanso total.",
+      focus: "Series específicas de VO2máx y ritmo 10K (<5:00/km) los viernes, tiradas largas de hasta 12 km los sábados y mantenimiento neural de fuerza L-M-J con bajo volumen.",
       target_run_km_range: "21.5 → 24.0 km/sem (Tapering Sem 12)",
       target_strength_sessions: "3 sesiones/sem (Lun: Upper A · Mar: Lower Neural · Jue: Upper B)",
       weeks: [
@@ -1064,10 +1161,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 9,
           label: "Semana 9 (VO2máx 800m)",
           dates: "11 Ene – 17 Ene 2027",
-          phase_type: "Potencia Aeróbica VO2máx (L-M-J Gym · X-V-S Run)",
+          phase_type: "Potencia Aeróbica VO2máx & Fuerza Neural (86–90% 1RM)",
           run_km_target: 21.5,
           strength_sessions_target: 3,
-          coach_note: "Martes pierna neural (3×3 con alta carga y bajo volumen) para que el viernes llegues pletórico al 6×800m y el sábado completes 10.5 km en Z2.",
+          coach_note: "Martes pierna neural (3×3 al 86% 1RM en Sentadilla {squat:0.86} con bajo volumen) para llegar pletórico al 6×800m del viernes.",
           days: [
             {
               id: "b3-w9-d1",
@@ -1075,15 +1172,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Fuerza Pura 4×3",
+              title: "Tren Superior A — Fuerza Pura 4×3 ({bench:0.90} Banca)",
               duration_min: 50,
-              target_zone: "RIR 2",
+              target_zone: "88–90% 1RM | RIR 2",
               summary: "Mantenimiento de alta intensidad en torso.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 3 reps @ 97.5 kg" },
-                { name: "Dominadas Lastradas", target: "4 series × 5 reps (+5 kg)" },
-                { name: "Press Militar", target: "3 series × 5 reps @ 55 kg" },
-                { name: "Remo Mancuerna", target: "3 series × 8 reps @ 30 kg" }
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "3", pct: 0.90, rir: "RIR 1-2" },
+                { name: "Dominadas Lastradas", lift: "pullup_load", sets: 4, reps: "5", pct: 0.80, rir: "RIR 2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "5", pct: 0.85, rir: "RIR 2" },
+                { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" }
               ]
             },
             {
@@ -1092,14 +1189,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower Neural",
-              title: "Tren Inferior — Mantenimiento Neural (Bajo Volumen)",
+              title: "Tren Inferior — Mantenimiento Neural ({squat:0.86} Sentadilla)",
               duration_min: 45,
-              target_zone: "RIR 2-3",
+              target_zone: "84–86% 1RM | RIR 2-3",
               summary: "Pocas repeticiones, alta carga y cero fatiga metabólica para llegar fresco al viernes.",
               steps: [
-                { name: "Sentadilla Trasera Barra", target: "3 series × 3 reps @ 87.5 kg (RIR 2)" },
-                { name: "Peso Muerto Rumano", target: "3 series × 4 reps @ 85 kg" },
-                { name: "Sóleo Sentado Pesado", target: "4 series × 10 reps @ 42.5 kg" }
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "3", pct: 0.86, rir: "RIR 2" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 3, reps: "4", pct: 0.84, rir: "RIR 2" },
+                { name: "Elevación de Sóleo Sentado Pesado", lift: "soleus", sets: 4, reps: "10", pct: 0.88, rir: "RIR 1-2" }
               ]
             },
             {
@@ -1123,14 +1220,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B + Core Antirotación",
+              title: "Tren Superior B ({ohp:0.88} Militar) + Core Antirotación",
               duration_min: 48,
-              target_zone: "RIR 2",
+              target_zone: "85–88% 1RM | RIR 2",
               summary: "Estabilidad de tronco para mantener la postura en los kilómetros finales del 10K.",
               steps: [
-                { name: "Press Militar Barra", target: "4 series × 4 reps @ 57.5 kg" },
-                { name: "Press Inclinado Mancuernas", target: "3 series × 8 reps @ 32.5 kg" },
-                { name: "Dominadas + Fondos", target: "3 superseries × 7 reps" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.88, rir: "RIR 2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
+                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" },
                 { name: "Press Pallof + Plancha Lateral", target: "3 series × 12 reps/lado" }
               ]
             },
@@ -1184,12 +1281,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 10,
-          label: "Semana 10 (Específico 5×1000m)",
+          label: "Semana 10 (Específico 5×1000m · 90–92% 1RM)",
           dates: "18 Ene – 24 Ene 2027",
-          phase_type: "Especificidad 10K (L-M-J Gym · X-V-S Run)",
+          phase_type: "Especificidad 10K & Pico Neural (90–92% 1RM)",
           run_km_target: 23.5,
           strength_sessions_target: 3,
-          coach_note: "Martes Peso Muerto 140 kg (bajo volumen), Miércoles 5 km Z2, Jueves Upper B, Viernes sesión reina 5 × 1.000m @ 4:50-4:55/km, Sábado tirada de 11.5 km Z2 y Domingo Descanso Total.",
+          coach_note: "Martes Peso Muerto al 92% 1RM ({deadlift:0.92}, bajo volumen), Viernes sesión reina 5 × 1.000m @ 4:50-4:55/km y Sábado tirada de 11.5 km Z2.",
           days: [
             {
               id: "b3-w10-d1",
@@ -1197,14 +1294,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — Pesado Controlado",
+              title: "Tren Superior A — Pesado Controlado ({bench:0.92} Banca)",
               duration_min: 50,
-              target_zone: "RIR 2",
+              target_zone: "90–92% 1RM | RIR 1-2",
               summary: "Mantenimiento de fuerza máxima en banca y dominadas.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 3 reps @ 97.5 - 100 kg" },
-                { name: "Dominadas", target: "4 series × 7-8 reps" },
-                { name: "Press Militar + Remo", target: "3 superseries × 6-8 reps" }
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "2-3", pct: 0.92, rir: "RIR 1-2" },
+                { name: "Dominadas Lastradas", lift: "pullup_load", sets: 4, reps: "4-5", pct: 0.85, rir: "RIR 1-2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "5", pct: 0.86, rir: "RIR 2" },
+                { name: "Remo con Barra", lift: "row_bar", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" }
               ]
             },
             {
@@ -1213,14 +1311,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior — Peso Muerto 140 kg & Sentadilla",
+              title: "Tren Inferior — Peso Muerto 92% 1RM ({deadlift:0.92}) & Sentadilla ({squat:0.84})",
               duration_min: 45,
-              target_zone: "RIR 2",
-              summary: "Nuevo hito en Peso Muerto (140 kg) con bajo volumen total y 72h antes del 5×1000m del viernes.",
+              target_zone: "84–92% 1RM | RIR 2",
+              summary: "Series cortas de 2-3 repeticiones al 92% 1RM en Peso Muerto a 72h del 5×1000m del viernes.",
               steps: [
-                { name: "Peso Muerto Barra", target: "3 series × 2-3 reps @ 137.5 - 140 kg" },
-                { name: "Sentadilla Trasera", target: "3 series × 3 reps @ 85 kg" },
-                { name: "Sóleo Sentado + Isquios", target: "3 series × 10 reps" }
+                { name: "Peso Muerto Barra (Deadlift)", lift: "deadlift", sets: 3, reps: "2-3", pct: 0.92, rir: "RIR 1-2" },
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "3", pct: 0.84, rir: "RIR 2" },
+                { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 3, reps: "10", pct: 0.88, rir: "RIR 2" }
               ]
             },
             {
@@ -1244,14 +1342,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B + Potencia",
+              title: "Tren Superior B ({ohp:0.90} Militar) + Potencia",
               duration_min: 48,
-              target_zone: "RIR 2",
+              target_zone: "86–90% 1RM | RIR 2",
               summary: "Tercer día de gimnasio (Jueves): torso fuerte sin fatiga de piernas.",
               steps: [
-                { name: "Press Militar Barra", target: "4 series × 3 reps @ 57.5 - 60 kg" },
-                { name: "Press Inclinado Mancuernas", target: "3 series × 8 reps @ 32.5 kg" },
-                { name: "Dominadas + Fondos", target: "3 superseries × 8 reps" }
+                { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3", pct: 0.90, rir: "RIR 1-2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.88, rir: "RIR 2" },
+                { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" }
               ]
             },
             {
@@ -1304,12 +1402,12 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           week_number: 11,
-          label: "Semana 11 (Simulacro Específico)",
+          label: "Semana 11 (Simulacro Específico · 85–88% 1RM)",
           dates: "25 Ene – 31 Ene 2027",
-          phase_type: "Pico Específico (Última semana fuerte L-M-J / X-V-S)",
+          phase_type: "Pico Específico 10K (85–88% 1RM · 24 km Carrera)",
           run_km_target: 24.0,
           strength_sessions_target: 3,
-          coach_note: "Última semana de carga alta antes del Tapering: Gimnasio L-M-J, Miércoles 4.5 km Z2, Viernes simulacro 3×2.000m @ 4:56/km, Sábado tirada pico de 12 km Z2 y Domingo Descanso Total.",
+          coach_note: "Última semana fuerte antes del Tapering: Gimnasio L-M-J al 85–88% 1RM, Viernes simulacro 3×2.000m @ 4:56/km y Sábado tirada pico de 12 km Z2.",
           days: [
             {
               id: "b3-w11-d1",
@@ -1317,14 +1415,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Upper A",
-              title: "Tren Superior A — 4×3 @ 97.5 kg",
+              title: "Tren Superior A — 4×3 ({bench:0.88} Banca)",
               duration_min: 48,
-              target_zone: "RIR 2",
+              target_zone: "88% 1RM | RIR 2",
               summary: "Fuerza sólida sin llegar al fallo.",
               steps: [
-                { name: "Press Banca Barra", target: "4 series × 3 reps @ 97.5 kg" },
-                { name: "Dominadas", target: "4 series × 7 reps" },
-                { name: "Press Militar + Remo", target: "3 series × 6-8 reps" }
+                { name: "Press Banca Barra", lift: "bench", sets: 4, reps: "3", pct: 0.88, rir: "RIR 2" },
+                { name: "Dominadas Lastradas", lift: "pullup_load", sets: 4, reps: "5", pct: 0.75, rir: "RIR 2" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "5", pct: 0.84, rir: "RIR 2" }
               ]
             },
             {
@@ -1333,14 +1431,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · Lower",
-              title: "Tren Inferior — Activación 3×3 (Sin fatiga residual)",
+              title: "Tren Inferior — Activación 3×3 ({squat:0.84} Sentadilla)",
               duration_min: 42,
-              target_zone: "RIR 2-3",
+              target_zone: "82–84% 1RM | RIR 2-3",
               summary: "Última sesión pesada de pierna a 72h del 3×2.000m del viernes.",
               steps: [
-                { name: "Sentadilla Trasera", target: "3 series × 3 reps @ 85 kg" },
-                { name: "Peso Muerto Rumano", target: "3 series × 4 reps @ 82.5 kg" },
-                { name: "Sóleo Sentado", target: "3 series × 12 reps @ 40 kg" }
+                { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "3", pct: 0.84, rir: "RIR 2-3" },
+                { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 3, reps: "4", pct: 0.82, rir: "RIR 2-3" },
+                { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 3, reps: "12", pct: 0.82, rir: "RIR 2" }
               ]
             },
             {
@@ -1364,13 +1462,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Mantenimiento",
+              title: "Tren Superior B — Mantenimiento ({ohp:0.85} Militar)",
               duration_min: 45,
-              target_zone: "RIR 2",
+              target_zone: "84–85% 1RM | RIR 2",
               summary: "Sesión limpia de torso cerrando el gimnasio semanal.",
               steps: [
-                { name: "Press Militar + Dominadas", target: "3 superseries × 5-7 reps" },
-                { name: "Press Inclinado + Remo", target: "3 superseries × 8 reps" }
+                { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "4-5", pct: 0.85, rir: "RIR 2" },
+                { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.84, rir: "RIR 2" },
+                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8", pct: 0.82, rir: "RIR 2" }
               ]
             },
             {
@@ -1425,10 +1524,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 12,
           label: "Semana 12 (Tapering + Test 10K Sábado)",
           dates: "01 Feb – 07 Feb 2027",
-          phase_type: "Tapering (L-M-J Gym) & Objetivo 10K Sub-50' el Sábado",
+          phase_type: "Tapering (70–80% 1RM) & Objetivo 10K Sub-50' el Sábado",
           run_km_target: 16.5,
           strength_sessions_target: 3,
-          coach_note: "Semana de Tapering respetando tus días L-M-J de gimnasio (activación neural RIR 3-4) y X-V-S de carrera: el Sábado 06 Feb atacas el 10K Sub-50' y el Domingo 07 Feb disfrutas de tu descanso total.",
+          coach_note: "Semana de Tapering respetando tus días L-M-J de gimnasio (activación neural 70–80% 1RM, RIR 3-4) y X-V-S de carrera: el Sábado 06 Feb atacas el 10K Sub-50' y el Domingo 07 Feb disfrutas de tu descanso total.",
           days: [
             {
               id: "b3-w12-d1",
@@ -1436,14 +1535,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Lunes",
               modality: "strength",
               modality_label: "Gimnasio 1 · Tapering Upper",
-              title: "Tren Superior — Activación Neural 3×3",
+              title: "Tren Superior — Activación Neural 3×3 ({bench:0.80} Banca)",
               duration_min: 38,
-              target_zone: "RIR 3",
+              target_zone: "78–80% 1RM | RIR 3",
               summary: "Mantener tono neuromuscular sin desgaste.",
               steps: [
-                { name: "Press Banca Barra", target: "3 series × 3 reps @ 90 kg (rápidas)" },
-                { name: "Dominadas", target: "3 series × 6 reps" },
-                { name: "Press Militar", target: "2 series × 5 reps @ 50 kg" }
+                { name: "Press Banca Barra", lift: "bench", sets: 3, reps: "3", pct: 0.80, rir: "RIR 3 (rápidas)" },
+                { name: "Dominadas Estrictras", lift: "pullup_load", sets: 3, reps: "6", pct: 0.0, rir: "Peso Corporal" },
+                { name: "Press Militar Barra", lift: "ohp", sets: 2, reps: "5", pct: 0.78, rir: "RIR 3" }
               ]
             },
             {
@@ -1452,13 +1551,13 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · PAP Lower",
-              title: "Potenciación Tren Inferior (Cero Agujetas, 96h antes del 10K)",
+              title: "Potenciación Tren Inferior ({squat:0.72} Sentadilla, 96h antes del 10K)",
               duration_min: 30,
-              target_zone: "RIR 4",
+              target_zone: "70–72% 1RM | RIR 4",
               summary: "Último toque de pierna el martes (a 4 días completos del 10K del sábado): cargas moderadas a máxima velocidad.",
               steps: [
-                { name: "Sentadilla Trasera (Velocidad)", target: "3 series × 2 reps @ 75 kg (explosivas)" },
-                { name: "Sóleo Sentado Ligero", target: "2 series × 10 reps @ 30 kg" },
+                { name: "Sentadilla Trasera (Velocidad)", lift: "squat", sets: 3, reps: "2", pct: 0.72, rir: "RIR 4 (explosivas)" },
+                { name: "Sóleo Sentado Ligero", lift: "soleus", sets: 2, reps: "10", pct: 0.65, rir: "RIR 4" },
                 { name: "Movilidad Completa Cadera/Tobillo", target: "10 min" }
               ]
             },
@@ -1485,13 +1584,13 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Movilidad & Core",
-              title: "Sesión Ligera de Torso, Core & Movilidad en Gimnasio",
+              title: "Sesión Ligera de Torso ({incline_db:0.68}), Core & Movilidad",
               duration_min: 30,
-              target_zone: "RIR 4",
+              target_zone: "65–68% 1RM | RIR 4",
               summary: "Aprovechamos el jueves de gimnasio para bombeo suave de torso y liberación miofascial.",
               steps: [
-                { name: "Press Inclinado + Jalón Ligero", target: "2 superseries × 8 reps (RIR 4)" },
-                { name: "Core Planchas + Deadbug", target: "3 series suaves" },
+                { name: "Press Inclinado Mancuernas Ligero", lift: "incline_db", sets: 2, reps: "8", pct: 0.68, rir: "RIR 4" },
+                { name: "Remo Polea Ligero", lift: "row_bar", sets: 2, reps: "8", pct: 0.65, rir: "RIR 4" },
                 { name: "Estiramientos Dinámicos & Foam Roller", target: "12 min" }
               ]
             },

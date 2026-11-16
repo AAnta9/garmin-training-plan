@@ -2,20 +2,24 @@
  * Controlador principal de la Web App: Garmin Hybrid Coach (Entrenador Personal Híbrido).
  * Gestiona:
  * 1. Check-in Matutino 09:00 AM y semáforo de Readiness / Autorregulación.
- * 2. Navegación interactiva de los 3 Bloques de 4 Semanas (12 semanas) y seguimiento móvil
+ * 2. Gestión interactiva de 1RM ("1RM & Pesos Gimnasio") con calculadora submáxima Epley/Brzycki
+ *    y recálculo automático en tiempo real de cada serie de las 12 semanas (redondeo a discos reales).
+ * 3. Navegación interactiva de los 3 Bloques de 4 Semanas (12 semanas) y seguimiento móvil
  *    (check de sesión completada, registro de cargas/sensaciones y persistencia en localStorage).
- * 3. Gráficas SVG interactivas de los últimos 6 meses de Garmin (VFC/HRV, Sueño, Carga Aguda/Crónica ACWR,
+ * 4. Gráficas SVG interactivas de los últimos 6 meses de Garmin (VFC/HRV, Sueño, Carga Aguda/Crónica ACWR,
  *    CTL/ATL/TSB, Evolución Mensual Carrera vs Fuerza vs HIIT).
- * 4. Explorador del historial de actividades reales de Garmin con filtro por deporte.
+ * 5. Explorador del historial de actividades reales de Garmin con filtro por deporte.
  */
 
 (function () {
   const STORAGE_KEY_COMPLETED = "garmin_hybrid_completed_v1";
   const STORAGE_KEY_NOTES = "garmin_hybrid_notes_v1";
   const STORAGE_KEY_THEME = "garmin_hybrid_theme_v1";
+  const STORAGE_KEY_1RM = "garmin_hybrid_1rm_v1";
 
   let garminData = window.GARMIN_DATA || null;
   let planData = window.HYBRID_TRAINING_PLAN || null;
+  let default1RmList = window.DEFAULT_1RM_CONFIG || [];
 
   let activeTab = "tab-plan";
   let selectedBlockIdx = 0;
@@ -24,13 +28,45 @@
 
   let completedMap = {};
   let notesMap = {};
+  let oneRmMap = {};
+
+  function getLiftConfig(liftKey) {
+    return (
+      default1RmList.find((item) => item.key === liftKey) || {
+        key: liftKey,
+        name: liftKey,
+        unit: "kg",
+        step: 2.5,
+        default_1rm: 60
+      }
+    );
+  }
+
+  function initDefault1RmMap() {
+    const map = {};
+    default1RmList.forEach((item) => {
+      map[item.key] = item.default_1rm;
+    });
+    return map;
+  }
 
   function loadLocalState() {
+    oneRmMap = initDefault1RmMap();
     try {
       const rawComp = localStorage.getItem(STORAGE_KEY_COMPLETED);
       if (rawComp) completedMap = JSON.parse(rawComp);
       const rawNotes = localStorage.getItem(STORAGE_KEY_NOTES);
       if (rawNotes) notesMap = JSON.parse(rawNotes);
+      const raw1Rm = localStorage.getItem(STORAGE_KEY_1RM);
+      if (raw1Rm) {
+        const parsed = JSON.parse(raw1Rm);
+        Object.keys(parsed).forEach((k) => {
+          const val = parseFloat(parsed[k]);
+          if (!Number.isNaN(val) && val >= 0) {
+            oneRmMap[k] = val;
+          }
+        });
+      }
     } catch (e) {
       console.warn("No se pudo leer localStorage:", e);
     }
@@ -39,7 +75,8 @@
       completedMap["b1-w1-d1"] = true;
     }
     if (!notesMap["b1-w1-d1"]) {
-      notesMap["b1-w1-d1"] = "Sincronizado de Garmin: 56.4 min, 13 series, Press Banca 85kg (3x8), Dominadas 4x6, Militar 45kg";
+      notesMap["b1-w1-d1"] =
+        "Sincronizado de Garmin: 56.4 min, 13 series, Press Banca 85kg (3x8), Dominadas 4x6, Militar 45kg";
     }
   }
 
@@ -47,9 +84,72 @@
     try {
       localStorage.setItem(STORAGE_KEY_COMPLETED, JSON.stringify(completedMap));
       localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(notesMap));
+      localStorage.setItem(STORAGE_KEY_1RM, JSON.stringify(oneRmMap));
     } catch (e) {
       console.warn("No se pudo guardar en localStorage:", e);
     }
+  }
+
+  function roundToStep(value, step) {
+    const s = step || 2.5;
+    return Math.round(value / s) * s;
+  }
+
+  function formatNumberClean(num) {
+    if (Number.isInteger(num)) return String(num);
+    return num.toFixed(2).replace(/\.?0+$/, "");
+  }
+
+  function calcLiftWeight(liftKey, pct) {
+    const cfg = getLiftConfig(liftKey);
+    const base1Rm = oneRmMap[liftKey] !== undefined ? oneRmMap[liftKey] : cfg.default_1rm;
+    if (liftKey === "pullup_load") {
+      if (!pct || pct <= 0 || base1Rm <= 0) return 0;
+      return roundToStep(base1Rm * pct, cfg.step || 1.25);
+    }
+    const raw = base1Rm * pct;
+    return Math.max(cfg.step || 1, roundToStep(raw, cfg.step || 2.5));
+  }
+
+  function formatWeightForLift(liftKey, pct) {
+    const cfg = getLiftConfig(liftKey);
+    const w = calcLiftWeight(liftKey, pct);
+    if (liftKey === "pullup_load") {
+      if (w <= 0) return "Peso Corporal";
+      return `+${formatNumberClean(w)} kg lastre`;
+    }
+    return `${formatNumberClean(w)} ${cfg.unit}`;
+  }
+
+  /**
+   * Reemplaza marcadores dinámicos como {bench:0.85} o {squat:0.80} en títulos y notas
+   * por el peso real calculado según los 1RM actuales del usuario.
+   */
+  function resolveDynamicText(text) {
+    if (!text || typeof text !== "string") return "";
+    return text.replace(/\{([a-z0-9_]+):([0-9.]+)\}/gi, (_, liftKey, pctStr) => {
+      const pct = parseFloat(pctStr);
+      if (Number.isNaN(pct)) return _;
+      return formatWeightForLift(liftKey, pct);
+    });
+  }
+
+  /**
+   * Genera la prescripción visual de un paso de entrenamiento.
+   * Si tiene `lift`, calcula el peso exacto a partir del 1RM del usuario.
+   */
+  function formatStepPrescription(st) {
+    if (!st.lift) {
+      return resolveDynamicText(st.target || "");
+    }
+    const weightStr = formatWeightForLift(st.lift, st.pct);
+    const pctInt = Math.round((st.pct || 0) * 100);
+    const pctBadge =
+      st.lift === "pullup_load" && (!st.pct || st.pct <= 0)
+        ? "BW"
+        : `${pctInt}% 1RM`;
+    const rirPart = st.rir ? ` · ${st.rir}` : "";
+    return `${st.sets} series × ${st.reps} reps @ <strong style="color:var(--accent-strength);">${weightStr}</strong> <span style="opacity:0.82;">(${pctBadge}${rirPart})</span>`;
   }
 
   function initTheme() {
@@ -116,7 +216,6 @@
     const scoreEl = document.getElementById("morning-readiness-num");
     if (scoreEl) scoreEl.textContent = `${check.readiness_score || 68}/100`;
 
-    // Telemetry strip
     const stripEl = document.getElementById("morning-telemetry-grid");
     if (stripEl) {
       const tiles = [
@@ -241,13 +340,13 @@
             ${currentWeek.label} — ${currentWeek.phase_type}
           </div>
           <div style="font-size:0.84rem; color:var(--text-secondary); margin-top:4px; max-width:740px;">
-            <strong>Nota del Entrenador:</strong> ${currentWeek.coach_note}
+            <strong>Nota del Entrenador:</strong> ${resolveDynamicText(currentWeek.coach_note)}
           </div>
         </div>
         <div style="display:flex; flex-direction:column; gap:6px; min-width:230px;">
           <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-family:var(--font-mono);">
             <span>Meta Carrera: <strong>${currentWeek.run_km_target} km</strong></span>
-            <span>Fuerza: <strong>${currentWeek.strength_sessions_target} ses</strong></span>
+            <span>Gimnasio (L-M-J): <strong>${currentWeek.strength_sessions_target} ses</strong></span>
           </div>
           <div class="week-progress-wrap">
             <div class="progress-bar-bg">
@@ -259,7 +358,7 @@
       `;
     }
 
-    // 4. Render 7 Day Cards
+    // 4. Render 7 Day Cards with dynamically calculated 1RM weights
     const daysGrid = document.getElementById("week-days-grid");
     if (daysGrid) {
       daysGrid.innerHTML = days
@@ -267,12 +366,15 @@
           const isDone = !!completedMap[d.id];
           const isToday = d.id === "b1-w1-d1";
           const noteVal = (notesMap[d.id] || "").replace(/"/g, "&quot;");
+          const resolvedTitle = resolveDynamicText(d.title);
+          const resolvedSummary = resolveDynamicText(d.summary);
+
           const stepsHtml = (d.steps || [])
             .map(
               (st) => `
             <div class="workout-step-row">
               <span class="step-name">${st.name}</span>
-              <span class="step-target">${st.target}</span>
+              <span class="step-target">${formatStepPrescription(st)}</span>
             </div>
           `
             )
@@ -287,7 +389,7 @@
                   <span class="modality-tag ${d.modality}">${d.modality_label}</span>
                   ${isToday ? '<span class="modality-tag" style="background:rgba(14,165,233,0.16);color:var(--accent-garmin);">HOY</span>' : ""}
                 </div>
-                <h3 class="day-workout-title">${d.title}</h3>
+                <h3 class="day-workout-title">${resolvedTitle}</h3>
               </div>
               <button type="button" class="check-btn ${isDone ? "checked" : ""}" data-toggle-day="${d.id}" id="check-${d.id}" title="Marcar sesión como completada">
                 ✓
@@ -300,7 +402,7 @@
               <span>🎯 ${d.target_zone}</span>
             </div>
 
-            <p class="day-prescription">${d.summary}</p>
+            <p class="day-prescription">${resolvedSummary}</p>
 
             <div class="workout-blocks-list">
               ${stepsHtml}
@@ -340,6 +442,149 @@
     }
   }
 
+  /**
+   * Renderiza la pestaña interactiva "1RM & Pesos Gimnasio"
+   * y el estimador submáximo Epley/Brzycki.
+   */
+  function renderOneRmTab() {
+    const selectEl = document.getElementById("est-lift-select");
+    if (selectEl && selectEl.options.length === 0) {
+      selectEl.innerHTML = default1RmList
+        .map((item) => `<option value="${item.key}">${item.name} (${item.unit})</option>`)
+        .join("");
+    }
+
+    updateSubmaxEstimatorPreview();
+
+    const gridEl = document.getElementById("rm-cards-grid");
+    if (!gridEl) return;
+
+    const pctList = [0.7, 0.75, 0.8, 0.85, 0.9];
+
+    gridEl.innerHTML = default1RmList
+      .map((item) => {
+        const currentVal = oneRmMap[item.key] !== undefined ? oneRmMap[item.key] : item.default_1rm;
+        const pillsHtml = pctList
+          .map((p) => {
+            const wLabel = formatWeightForLift(item.key, p);
+            return `
+            <div class="rm-pct-pill">
+              <span class="pct-label">${Math.round(p * 100)}% 1RM</span>
+              <span class="pct-val">${wLabel}</span>
+            </div>
+          `;
+          })
+          .join("");
+
+        return `
+        <article class="rm-card" id="rm-card-${item.key}">
+          <div class="rm-card-header">
+            <div>
+              <div class="rm-lift-name">${item.name}</div>
+              <div style="font-size:0.74rem; color:var(--text-muted); margin-top:2px;">${item.note}</div>
+            </div>
+            <span class="rm-lift-cat">${item.category}</span>
+          </div>
+
+          <div class="rm-input-row">
+            <button type="button" class="rm-step-btn" data-rm-step="${item.key}" data-rm-dir="-1" title="Restar ${item.step} ${item.unit}">
+              −
+            </button>
+            <input
+              type="number"
+              class="rm-number-input"
+              id="rm-input-${item.key}"
+              data-rm-input="${item.key}"
+              value="${formatNumberClean(currentVal)}"
+              min="0"
+              max="500"
+              step="${item.step}"
+            />
+            <button type="button" class="rm-step-btn" data-rm-step="${item.key}" data-rm-dir="1" title="Sumar ${item.step} ${item.unit}">
+              +
+            </button>
+            <span class="rm-unit-label">${item.unit}</span>
+          </div>
+
+          <div class="rm-pct-pills">
+            ${pillsHtml}
+          </div>
+        </article>
+      `;
+      })
+      .join("");
+
+    // Bind - / + step buttons
+    gridEl.querySelectorAll("[data-rm-step]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-rm-step");
+        const dir = parseInt(btn.getAttribute("data-rm-dir"), 10);
+        const cfg = getLiftConfig(key);
+        const cur = oneRmMap[key] !== undefined ? oneRmMap[key] : cfg.default_1rm;
+        const next = Math.max(0, roundToStep(cur + dir * (cfg.step || 2.5), cfg.step || 2.5));
+        oneRmMap[key] = next;
+        saveLocalState();
+        renderOneRmTab();
+        renderTrainingPlan();
+        renderProfileAndZones();
+      });
+    });
+
+    // Bind direct numeric input change
+    gridEl.querySelectorAll("[data-rm-input]").forEach((inp) => {
+      inp.addEventListener("change", () => {
+        const key = inp.getAttribute("data-rm-input");
+        const cfg = getLiftConfig(key);
+        const val = parseFloat(inp.value);
+        if (!Number.isNaN(val) && val >= 0) {
+          oneRmMap[key] = val;
+          saveLocalState();
+          renderOneRmTab();
+          renderTrainingPlan();
+          renderProfileAndZones();
+        } else {
+          inp.value = formatNumberClean(oneRmMap[key] || cfg.default_1rm);
+        }
+      });
+    });
+  }
+
+  function computeEstimated1Rm() {
+    const selectEl = document.getElementById("est-lift-select");
+    const weightEl = document.getElementById("est-weight-input");
+    const repsEl = document.getElementById("est-reps-input");
+    if (!selectEl || !weightEl || !repsEl) return null;
+
+    const liftKey = selectEl.value || "bench";
+    const cfg = getLiftConfig(liftKey);
+    const weight = parseFloat(weightEl.value);
+    const reps = parseInt(repsEl.value, 10);
+
+    if (Number.isNaN(weight) || weight <= 0 || Number.isNaN(reps) || reps <= 0) {
+      return null;
+    }
+    if (reps === 1) {
+      return { liftKey, cfg, est: roundToStep(weight, cfg.step || 2.5) };
+    }
+    // Media entre fórmula Epley y Brzycki para mayor precisión entre 2 y 12 repeticiones
+    const epley = weight * (1 + reps / 30);
+    const brzycki = reps < 36 ? weight * (36 / (37 - reps)) : epley;
+    const rawEst = (epley + brzycki) / 2;
+    const est = roundToStep(rawEst, cfg.step || 2.5);
+    return { liftKey, cfg, est };
+  }
+
+  function updateSubmaxEstimatorPreview() {
+    const outEl = document.getElementById("est-result-output");
+    if (!outEl) return;
+    const res = computeEstimated1Rm();
+    if (!res) {
+      outEl.textContent = "—";
+      return;
+    }
+    outEl.textContent = `${formatNumberClean(res.est)} ${res.cfg.unit}`;
+  }
+
   // SVG Chart Helper for Time Series
   function renderLineChartSVG(containerId, seriesData, config) {
     const container = document.getElementById(containerId);
@@ -361,7 +606,6 @@
     const xFor = (i) => pad.left + (i / Math.max(1, seriesData.length - 1)) * plotW;
     const yFor = (v) => pad.top + plotH - ((v - minV) / rangeV) * plotH;
 
-    // Optional reference band (e.g., HRV balanced 50-60 ms or ACWR 0.8-1.3)
     let bandRect = "";
     if (config.bandLow !== undefined && config.bandHigh !== undefined) {
       const yTop = yFor(config.bandHigh);
@@ -369,7 +613,6 @@
       bandRect = `<rect x="${pad.left}" y="${yTop}" width="${plotW}" height="${Math.max(2, yBot - yTop)}" fill="${config.bandColor || "rgba(16,185,129,0.13)"}" rx="3" />`;
     }
 
-    // Build path
     const points = [];
     seriesData.forEach((d, idx) => {
       if (d.value !== null && d.value !== undefined) {
@@ -377,7 +620,6 @@
       }
     });
 
-    // Secondary line if present (e.g., 7d rolling average or ATL)
     let secPath = "";
     if (config.secondaryKey) {
       const secPts = [];
@@ -391,7 +633,6 @@
       }
     }
 
-    // Y axis grid lines
     const ySteps = 4;
     let gridHtml = "";
     for (let s = 0; s <= ySteps; s++) {
@@ -403,13 +644,17 @@
       `;
     }
 
-    // X axis labels (4 dates)
     let xLabelsHtml = "";
-    const labelIndices = [0, Math.floor(seriesData.length / 3), Math.floor((2 * seriesData.length) / 3), seriesData.length - 1];
+    const labelIndices = [
+      0,
+      Math.floor(seriesData.length / 3),
+      Math.floor((2 * seriesData.length) / 3),
+      seriesData.length - 1
+    ];
     labelIndices.forEach((idx) => {
       if (seriesData[idx]) {
         const x = xFor(idx).toFixed(1);
-        const label = seriesData[idx].date.slice(5); // MM-DD
+        const label = seriesData[idx].date.slice(5);
         xLabelsHtml += `<text x="${x}" y="${height - 6}" text-anchor="middle" fill="#64748b" font-size="10" font-family="JetBrains Mono">${label}</text>`;
       }
     });
@@ -432,7 +677,6 @@
     const daily = garminData.daily_series || [];
     const monthly = garminData.monthly_progression || [];
 
-    // 1. Render 6-Month Executive Summary KPIs
     const kpiContainer = document.getElementById("six-month-kpis");
     if (kpiContainer) {
       const items = [
@@ -480,7 +724,6 @@
         .join("");
     }
 
-    // 2. Render HRV 6-month chart (with 50-60ms balanced band)
     const hrvSeries = daily.map((d) => ({
       date: d.date,
       value: d.hrv_night,
@@ -497,7 +740,6 @@
       maxY: 66
     });
 
-    // 3. Render CTL (Fitness) vs ATL (Fatigue) 6-month chart
     const loadSeries = daily.map((d) => ({
       date: d.date,
       value: d.ctl,
@@ -511,7 +753,6 @@
       maxY: 60
     });
 
-    // 4. Render RHR (Resting Heart Rate) 6-month chart
     const rhrSeries = daily.map((d) => ({
       date: d.date,
       value: d.rhr
@@ -525,7 +766,6 @@
       maxY: 56
     });
 
-    // 5. Render Sleep Score & Body Battery Wake chart
     const sleepSeries = daily.map((d) => ({
       date: d.date,
       value: d.sleep_score,
@@ -539,7 +779,6 @@
       maxY: 100
     });
 
-    // 6. Render Monthly Progression Table
     const monthTbody = document.getElementById("monthly-progression-tbody");
     if (monthTbody) {
       monthTbody.innerHTML = monthly
@@ -634,21 +873,23 @@
     }
 
     const prsContainer = document.getElementById("profile-strength-prs-list");
-    if (prsContainer && prof.strength_prs_detected) {
-      prsContainer.innerHTML = prof.strength_prs_detected
-        .map(
-          (p) => `
+    if (prsContainer) {
+      prsContainer.innerHTML = default1RmList
+        .slice(0, 6)
+        .map((item) => {
+          const val = oneRmMap[item.key] !== undefined ? oneRmMap[item.key] : item.default_1rm;
+          return `
         <div class="zone-row">
           <div>
-            <div style="font-weight:600; font-size:0.86rem;">${p.exercise}</div>
-            <div style="font-size:0.75rem; color:var(--text-secondary);">Detectado en Garmin el ${p.date} · ${p.reps}</div>
+            <div style="font-weight:600; font-size:0.86rem;">${item.name}</div>
+            <div style="font-size:0.75rem; color:var(--text-secondary);">${item.category} · 80% = ${formatWeightForLift(item.key, 0.8)} · 85% = ${formatWeightForLift(item.key, 0.85)}</div>
           </div>
           <div style="font-family:var(--font-mono); font-size:0.92rem; font-weight:700; color:var(--accent-strength);">
-            ${p.weight_kg} kg
+            1RM: ${formatNumberClean(val)} ${item.unit}
           </div>
         </div>
-      `
-        )
+      `;
+        })
         .join("");
     }
 
@@ -689,6 +930,7 @@
 
   function renderAll() {
     renderHeaderAndMorningCheckin();
+    renderOneRmTab();
     renderTrainingPlan();
     renderSixMonthAnalytics();
     renderActivitiesHistory();
@@ -705,6 +947,57 @@
         switchTab(btn.getAttribute("data-tab-target"));
       });
     });
+
+    // Quick jump buttons between Plan and 1RM tab
+    const jumpTo1RmBtn = document.getElementById("btn-jump-to-1rm");
+    if (jumpTo1RmBtn) {
+      jumpTo1RmBtn.addEventListener("click", () => switchTab("tab-1rm"));
+    }
+    const backToPlanBtn = document.getElementById("btn-back-to-plan");
+    if (backToPlanBtn) {
+      backToPlanBtn.addEventListener("click", () => switchTab("tab-plan"));
+    }
+
+    // Reset 1RM button
+    const reset1RmBtn = document.getElementById("btn-reset-1rm");
+    if (reset1RmBtn) {
+      reset1RmBtn.addEventListener("click", () => {
+        oneRmMap = initDefault1RmMap();
+        saveLocalState();
+        renderOneRmTab();
+        renderTrainingPlan();
+        renderProfileAndZones();
+      });
+    }
+
+    // Submaximal 1RM estimator bindings
+    ["est-lift-select", "est-weight-input", "est-reps-input"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", updateSubmaxEstimatorPreview);
+        el.addEventListener("change", updateSubmaxEstimatorPreview);
+      }
+    });
+
+    const applyEstBtn = document.getElementById("btn-apply-est-1rm");
+    if (applyEstBtn) {
+      applyEstBtn.addEventListener("click", () => {
+        const res = computeEstimated1Rm();
+        if (!res) return;
+        oneRmMap[res.liftKey] = res.est;
+        saveLocalState();
+        renderOneRmTab();
+        renderTrainingPlan();
+        renderProfileAndZones();
+        const cardEl = document.getElementById(`rm-card-${res.liftKey}`);
+        if (cardEl) {
+          cardEl.style.borderColor = "var(--accent-run)";
+          setTimeout(() => {
+            cardEl.style.borderColor = "";
+          }, 900);
+        }
+      });
+    }
 
     // Activity filter bindings
     document.querySelectorAll("[data-act-filter]").forEach((btn) => {

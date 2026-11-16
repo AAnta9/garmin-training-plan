@@ -746,6 +746,167 @@ html, body {
   background: var(--bg-elevated);
 }
 
+/* 1RM Calculator & Inputs */
+.rm-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.rm-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.rm-lift-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.rm-lift-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(245, 158, 11, 0.14);
+  color: var(--accent-strength);
+  font-weight: 600;
+}
+
+.rm-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rm-number-input {
+  width: 110px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.rm-number-input:focus {
+  outline: none;
+  border-color: var(--accent-strength);
+}
+
+.rm-step-btn {
+  width: 36px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.rm-step-btn:hover {
+  background: var(--bg-surface-hover);
+}
+
+.rm-pct-pills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.rm-pct-pill {
+  background: var(--bg-surface);
+  border-radius: 6px;
+  padding: 5px 6px;
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.rm-pct-label {
+  font-size: 0.66rem;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.rm-pct-val {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calc-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.calc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 135px;
+}
+
+.calc-field label {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.calc-select,
+.calc-input {
+  height: 40px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0 10px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+}
+
+.btn-primary {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--accent-strength);
+  color: #0b0e11;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+}
+
 /* Bottom Mobile Navigation Bar */
 .mobile-bottom-nav {
   position: fixed;
@@ -756,7 +917,7 @@ html, body {
   background: var(--bg-elevated);
   border-top: 1px solid var(--border-strong);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   z-index: 50;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -769,9 +930,9 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -786,6 +947,9 @@ html, body {
     grid-template-columns: repeat(3, 1fr);
   }
   .days-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .rm-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -808,5 +972,8 @@ html, body {
   }
   .panel-grid-2 {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .rm-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
