@@ -1,36 +1,39 @@
 /**
  * Plan de Entrenamiento Híbrido (Carrera + Fuerza) en Bloques de 4 Semanas (Mesociclos 3:1).
- * Adaptado a la disponibilidad real de gimnasio del atleta: LUNES, MARTES y JUEVES.
+ * Adaptado al horario real del atleta:
+ * - Entrenamiento de Lunes a Sábado | DOMINGO SIEMPRE DESCANSO TOTAL.
+ * - Días exclusivos de Gimnasio: LUNES, MARTES y JUEVES.
+ * - Días de Carrera: MIÉRCOLES, VIERNES y SÁBADO.
  *
- * Estructura Semanal Optimizada (Mínima Interferencia Neuromuscular):
- * - LUNES (Gimnasio 1): Fuerza Tren Superior A (Empuje & Tirón Pesado) -> Piernas descansan tras la tirada larga del domingo.
- * - MARTES (Gimnasio 2): Fuerza Tren Inferior (Sentadilla, RDL, Unilateral, Sóleo, Core) -> A 72h de las series del viernes y 120h de la tirada del domingo.
- * - MIÉRCOLES (Carrera 1): Rodaje Base Aeróbico Z2 + Strides -> Oxigenación activa sin impacto de series tras el día de pierna.
- * - JUEVES (Gimnasio 3): Fuerza Tren Superior B + Potencia de Cadera / Bisagra neural -> Cero fatiga en piernas para el viernes.
- * - VIERNES (Carrera 2): Sesión de Calidad (Series / Umbral LTHR / Tempo / VO2máx) -> Con piernas 100% recuperadas (72h post-pierna).
- * - SÁBADO (Descanso Activo): Movilidad & Paseo Z1 (10.000 pasos) -> Asimilación entre las series del viernes y la tirada del domingo.
- * - DOMINGO (Carrera 3): Tirada Larga Aeróbica en Zona 2 (progresando de 5 km a 12 km).
+ * Arquitectura Semanal de Mínima Interferencia (Ciclo de 72h de recuperación para piernas):
+ * - LUNES (Gimnasio 1 · Upper A): Empuje & Tirón Pesado de Torso -> Suma 48h extra al descanso del domingo (72h totales para las piernas tras la tirada del sábado).
+ * - MARTES (Gimnasio 2 · Lower): Fuerza Estructural de Pierna, Isquios y Sóleo -> Piernas 100% frescas tras 3 días sin impacto.
+ * - MIÉRCOLES (Carrera 1 · Base Z2): Rodaje Aeróbico Suave Z2 -> Oxigenación activa sin impacto articular de series tras el día de pierna.
+ * - JUEVES (Gimnasio 3 · Upper B): Torso B, Hombro, Fondos & Bisagra Explosiva -> Las piernas descansan de cara al bloque específico de viernes-sábado.
+ * - VIERNES (Carrera 2 · Calidad): Series / Fartlek / Umbral LTHR / VO2máx -> Con 72 horas completas de recuperación desde la sesión de pierna del martes.
+ * - SÁBADO (Carrera 3 · Tirada Larga Z2): Fondo Aeróbico Progresivo en Zona 2 (5 km -> 12 km) -> Entrena la resistencia aeróbica sabiendo que el domingo descansas al 100%.
+ * - DOMINGO (Descanso Total): Descanso completo fijo por motivos personales (recuperación del SNC, tendones y sueño).
  */
 
 window.HYBRID_TRAINING_PLAN = {
   methodology: {
-    title: "Periodización Híbrida Concurrente — Gimnasio L-M-J + Carrera X-V-D",
+    title: "Periodización Híbrida Concurrente — Gimnasio (L-M-J) · Carrera (X-V-S) · Domingo Descanso Total",
     principles: [
       {
-        name: "Gimnasio Concentrado en Lunes, Martes y Jueves",
-        detail: "Lunes (Tren Superior A), Martes (Tren Inferior Estructural) y Jueves (Tren Superior B + Potencia). Así liberas Miércoles, Viernes y Fin de Semana para correr con máxima calidad."
+        name: "Doble Ventana de 72 Horas para tus Piernas",
+        detail: "1) Tras la Tirada Larga del Sábado, descansas el Domingo y haces Torso el Lunes: tus piernas llegan al Martes de gimnasio con 72h de recuperación. 2) Tras hacer Pierna el Martes, ruedas suave en Z2 el Miércoles y haces Torso el Jueves: llegas a las Series del Viernes con otras 72h de recuperación muscular."
       },
       {
-        name: "Ventana de 72h entre Pierna Pesada y Series de Carrera",
-        detail: "Al hacer Tren Inferior el Martes, el Miércoles haces un rodaje suave regenerativo en Zona 2 y dejas pasar 72 horas completas antes de la sesión de series/umbral del Viernes y 5 días antes de la Tirada Larga del Domingo."
+        name: "Bloque Viernes (Calidad) + Sábado (Tirada Z2) con Domingo Libre",
+        detail: "Al tener el Domingo siempre libre, aprovechamos Viernes para ritmos rápidos (Umbral/VO2máx) y Sábado por la mañana para la Tirada Larga en Zona 2 estricta (135-151 ppm), enseñando al cuerpo a oxidar grasas sin comprometer la recuperación dominical."
       },
       {
-        name: "Polarización 80/20 en Carrera & Protección Articular (>100 kg)",
-        detail: "Pasamos de 1.1 salidas/semana en 'zona gris' a 3 salidas/semana: Miércoles y Domingo en Zona 2 estricta (135-151 ppm) y Viernes de Calidad (Z3/Z4/Z5), con trabajo específico de sóleo e isquios los martes."
+        name: "Polarización 80/20 & Protección Tendinosa (>100 kg)",
+        detail: "Pasamos de 1.1 salidas/semana en 'zona gris' a 3 salidas fijas (Miércoles, Viernes y Sábado) con progresión <=10% semanal, cadencia objetivo >166 spm y fortalecimiento pesado de sóleo e isquios los martes."
       },
       {
         name: "Autorregulación Matutina 09:00 AM por VFC (HRV)",
-        detail: "Si a las 09:00 AM tu VFC cae debajo de 50 ms (tu límite inferior equilibrado) o el sueño <6.0h, se añade +1 RIR en gimnasio o se pasa la sesión del viernes a Z2."
+        detail: "Cada mañana a las 09:00 AM se evalúa tu VFC respecto a tu banda base (50-60 ms). Si el viernes o sábado estás en ámbar/rojo, se ajusta el margen de pulso para evitar sobreentrenamiento."
       }
     ]
   },
@@ -40,7 +43,7 @@ window.HYBRID_TRAINING_PLAN = {
       number: 1,
       name: "Bloque 1: Consolidación Aeróbica & Base Híbrida",
       dates: "16 Nov 2026 – 13 Dic 2026 (Semanas 1 a 4)",
-      focus: "Asimilar el 10K Ponle Freno, fijar la rutina de gimnasio Lunes-Martes-Jueves y estabilizar 3 carreras/semana (Miércoles-Viernes-Domingo).",
+      focus: "Asimilar el 10K Ponle Freno, consolidar el esquema L-M-J (Gimnasio) + X-V-S (Carrera) y construir base aeróbica en Zona 2 con Domingo de descanso total.",
       target_run_km_range: "12.5 → 18.0 km/sem",
       target_strength_sessions: "3 sesiones/sem (Lun: Upper A · Mar: Lower · Jue: Upper B)",
       weeks: [
@@ -48,10 +51,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 1,
           label: "Semana 1 (Adaptación Post-10K)",
           dates: "16 Nov – 22 Nov 2026",
-          phase_type: "Recuperación Activa & Fijación de Rutina L-M-J",
+          phase_type: "Recuperación Activa & Fijación de Rutina L-M-J / X-V-S",
           run_km_target: 12.5,
           strength_sessions_target: 3,
-          coach_note: "Vienes de correr ayer el 10K Ponle Freno (54:05, Carga 215, TE 5.0). Esta primera semana cuidamos tus piernas en el gimnasio el martes (RIR 3) y mantenemos las 3 carreras (miércoles, viernes y domingo) en Zona 2 suave.",
+          coach_note: "Vienes de correr el domingo 15 Nov el 10K Ponle Freno (54:05, Carga 215, TE 5.0). Esta semana cuidamos piernas el martes (RIR 2-3), rodamos suave en Z2 el miércoles, viernes y sábado, y el domingo descansas por completo.",
           days: [
             {
               id: "b1-w1-d1",
@@ -64,7 +67,7 @@ window.HYBRID_TRAINING_PLAN = {
               target_zone: "FC media < 110 ppm | RIR 2",
               completed_in_garmin: true,
               garmin_match: "Completado hoy en Garmin: Fuerza 56.4 min (Press Banca 3x8 @ 85kg, Dominadas 4x6, Press Militar 3x8 @ 45kg, Carga 18)",
-              summary: "Día 1 de gimnasio (Lunes): estímulo neural en torso dejando descansar las piernas tras el 10K del domingo.",
+              summary: "Día 1 de gimnasio (Lunes): estímulo neural en torso dejando descansar las piernas.",
               steps: [
                 { name: "Press Banca Barra", target: "4 series × 6-8 reps @ 85 kg (RIR 2)" },
                 { name: "Dominadas Estrictras (Pull-ups)", target: "4 series × 6 reps @ Peso Corporal" },
@@ -82,7 +85,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Inferior Híbrido — Fuerza Estructural & Tendón (Post-10K)",
               duration_min: 50,
               target_zone: "RIR 2-3 (Volumen moderado sin llegar al fallo)",
-              summary: "Día 2 de gimnasio (Martes): 48h después del 10K trabajamos fuerza estructural de pierna, isquios y sóleo sin generar agujetas para el rodaje de mañana miércoles.",
+              summary: "Día 2 de gimnasio (Martes): trabajamos fuerza estructural de pierna, isquios y sóleo sin generar agujetas para el rodaje de mañana miércoles.",
               steps: [
                 { name: "Sentadilla Trasera Barra (Back Squat)", target: "3 series × 4 reps @ 77.5 - 80 kg (RIR 2-3, subida explosiva)" },
                 { name: "Peso Muerto Rumano (RDL)", target: "3 series × 5 reps @ 75 - 80 kg (controlando 2s bajada)" },
@@ -101,7 +104,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 23,
               distance_km: 3.5,
               target_zone: "Z1-Z2 Baja (130 - 144 ppm) | 6:15 - 6:30 /km",
-              summary: "Rodaje suave de oxigenación al día siguiente de pierna. Flujo sanguíneo limpio sin impacto de series.",
+              summary: "Primera carrera de la semana (Miércoles): rodaje suave de oxigenación tras el día de pierna.",
               steps: [
                 { name: "Calentamiento dinámico", target: "5 min caminata rápida + movilidad cadera" },
                 { name: "Rodaje Suave Controlado", target: "3.5 km @ 6:15-6:30/km (FC 132-144 ppm, Cadencia >164 spm)" },
@@ -117,7 +120,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Superior B — Hombro, Espalda, Fondos & Potencia Cadera",
               duration_min: 50,
               target_zone: "RIR 2 | FC media < 115 ppm",
-              summary: "Día 3 de gimnasio (Jueves): cerramos el trabajo de gimnasio de la semana dejando las piernas frescas para correr viernes y domingo.",
+              summary: "Día 3 de gimnasio (Jueves): cerramos el trabajo de fuerza semanal dejando las piernas descansadas para viernes y sábado.",
               steps: [
                 { name: "Press Militar Barra", target: "4 series × 4 reps @ 52.5 - 55 kg (RIR 2)" },
                 { name: "Press Inclinado Mancuernas", target: "3 series × 10 reps @ 30 kg c/u" },
@@ -136,7 +139,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 26,
               distance_km: 4.0,
               target_zone: "Z2 (135 - 150 ppm) | 6:05 - 6:20 /km",
-              summary: "Con 72h de recuperación desde la sesión de pierna del martes, rodamos fluidos y metemos 4 rectas técnicas de alta cadencia.",
+              summary: "Segunda carrera (Viernes, 72h después de pierna): rodaje fluido con 4 aceleraciones técnicas de 15 segundos sin fatigar para mañana sábado.",
               steps: [
                 { name: "Bloque Principal Z2", target: "3.6 km @ 6:10/km (FC 138-150 ppm)" },
                 { name: "Strides Técnicos", target: "4 × 15 seg progresivos (@ ~4:45/km, cadencia 175+ spm) rec 45s andando" }
@@ -146,31 +149,30 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b1-w1-d6",
               day_short: "SÁB 21 NOV",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Movilidad Articular & Paseo NEAT (10.000 pasos)",
-              duration_min: 30,
-              target_zone: "Z1 (< 110 ppm)",
-              summary: "Recarga de glucógeno y Body Battery (>75) antes de la tirada dominical.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Z2",
+              title: "Tirada Sabatina Aeróbica Estricta 5.0 km",
+              duration_min: 31,
+              distance_km: 5.0,
+              target_zone: "Z2 Estricta (135 - 151 ppm) | 6:05 - 6:20 /km",
+              summary: "Tercera carrera (Sábado): tirada aeróbica controlada manteniendo el pulso debajo de 151 ppm antes de tu descanso dominical.",
               steps: [
-                { name: "Caminata al aire libre", target: "45-60 min suaves (acumular ~10k pasos)" },
-                { name: "Movilidad Cadera, Psoas y Tobillo", target: "12 min rutina guiada" }
+                { name: "Km 1 (Entrada en calor)", target: "1.0 km @ 6:20-6:30/km (FC < 140 ppm)" },
+                { name: "Km 2 a 5 (Crucero Z2)", target: "4.0 km @ 6:05-6:15/km (FC 142-151 ppm, respiración conversacional)" }
               ]
             },
             {
               id: "b1-w1-d7",
               day_short: "DOM 22 NOV",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Z2",
-              title: "Tirada Dominical Aeróbica Estricta 5.0 km",
-              duration_min: 31,
-              distance_km: 5.0,
-              target_zone: "Z2 Estricta (135 - 151 ppm) | 6:05 - 6:20 /km",
-              summary: "Reto clave: no convertir el domingo en un test a 5:35/km. Mantén el pulso debajo de 151 ppm todo el rato.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Recuperación Completa",
+              duration_min: 0,
+              target_zone: "Descanso (Recarga Body Battery >80)",
+              summary: "Día fijo de descanso personal y familiar. Tus piernas acumulan 72h sin impacto hasta el martes al mediodía.",
               steps: [
-                { name: "Km 1 (Entrada en calor)", target: "1.0 km @ 6:20-6:30/km (FC < 140 ppm)" },
-                { name: "Km 2 a 5 (Crucero Z2)", target: "4.0 km @ 6:05-6:15/km (FC 142-151 ppm, respiración conversacional)" }
+                { name: "Descanso Completo", target: "Sin entrenamiento programado · Hidratación y sueño >7.5h" }
               ]
             }
           ]
@@ -179,10 +181,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 2,
           label: "Semana 2 (Carga Base 1)",
           dates: "23 Nov – 29 Nov 2026",
-          phase_type: "Acumulación Base Aeróbica (Gimnasio L-M-J)",
+          phase_type: "Acumulación Base Aeróbica (L-M-J Gym · X-V-S Run)",
           run_km_target: 15.0,
           strength_sessions_target: 3,
-          coach_note: "Pierna pesada el martes, rodaje Z2 el miércoles, torso el jueves y el viernes (con piernas descansadas 72h) estrenamos el Fartlek controlado.",
+          coach_note: "Pierna pesada el martes, rodaje Z2 el miércoles, torso el jueves, Fartlek controlado el viernes (72h post-pierna), tirada larga Z2 el sábado y descanso total el domingo.",
           days: [
             {
               id: "b1-w2-d1",
@@ -193,7 +195,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Superior A — Fuerza Máxima",
               duration_min: 55,
               target_zone: "RIR 2",
-              summary: "Progresión lineal en Press Banca y tracción vertical.",
+              summary: "Progresión lineal en Press Banca y tracción vertical con piernas frescas tras el domingo de descanso.",
               steps: [
                 { name: "Press Banca Barra", target: "4 series × 5 reps @ 87.5 - 90 kg (RIR 2)" },
                 { name: "Dominadas Estrictras", target: "4 series × 6-7 reps @ Peso Corporal" },
@@ -211,7 +213,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Inferior — Peso Muerto, Sentadilla & Cadena Posterior",
               duration_min: 52,
               target_zone: "RIR 2",
-              summary: "Sesión principal de pierna el martes: tienes 72 horas hasta las series del viernes y 5 días hasta la tirada del domingo.",
+              summary: "Sesión principal de pierna el martes: tienes 72 horas hasta el Fartlek del viernes y 96 horas hasta la tirada del sábado.",
               steps: [
                 { name: "Peso Muerto Barra (Deadlift)", target: "3 series × 3 reps @ 125 - 130 kg (RIR 2, agarre firme)" },
                 { name: "Sentadilla Trasera Barra", target: "3 series × 5 reps @ 80 kg" },
@@ -230,7 +232,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 25,
               distance_km: 4.0,
               target_zone: "Z2 (135 - 150 ppm) | 6:05 - 6:15 /km",
-              summary: "Rodaje aeróbico cómodo para soltar las piernas tras el gimnasio de ayer.",
+              summary: "Rodaje aeróbico cómodo para oxigenar las piernas tras el gimnasio de ayer.",
               steps: [
                 { name: "Rodaje Z2", target: "3.6 km @ 6:10/km (FC < 150 ppm)" },
                 { name: "Rectas (Strides)", target: "4 × 15s fluidos @ 4:40/km con 45s rec" }
@@ -264,7 +266,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 28,
               distance_km: 4.5,
               target_zone: "Z2 Base + Cambios Z3/Z4 (154 - 163 ppm)",
-              summary: "Piernas frescas (72h después del martes): reactivamos ritmos de 5:10-5:20/km en bloques de 2 minutos.",
+              summary: "Piernas frescas (72h después del martes): reactivamos ritmos de 5:10-5:20/km en bloques cortos de 2 minutos sin vaciar glucógeno para mañana.",
               steps: [
                 { name: "Calentamiento Z1/Z2", target: "8 min suaves @ 6:20/km" },
                 { name: "Bloque Principal (5 cambios)", target: "5 × [2 min @ 5:10-5:20/km (FC 155-162) + 2 min trote suave @ 6:35/km]" },
@@ -275,31 +277,30 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b1-w2-d6",
               day_short: "SÁB 28 NOV",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Descanso Activo & Liberación Miofascial",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Día puente de recuperación entre el Fartlek del viernes y la tirada larga del domingo.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Larga Z2",
+              title: "Tirada Larga Sabatina 6.5 km en Z2",
+              duration_min: 40,
+              distance_km: 6.5,
+              target_zone: "Z2 (136 - 152 ppm) | 6:00 - 6:15 /km",
+              summary: "40 minutos continuos en Zona 2 cerrando la semana de entrenamiento antes de tu descanso del domingo.",
               steps: [
-                { name: "Paseo Z1", target: "8.000 - 10.000 pasos diarios" },
-                { name: "Foam Roller + Movilidad", target: "10 min en gemelos, sóleo y cuádriceps" }
+                { name: "Km 1 a 5 (Z2 Estable)", target: "5.0 km @ 6:10/km (FC 138-149 ppm)" },
+                { name: "Km 5 a 6.5 (Z2 Alta)", target: "1.5 km @ 5:55/km (FC 149-153 ppm)" }
               ]
             },
             {
               id: "b1-w2-d7",
               day_short: "DOM 29 NOV",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Larga Z2",
-              title: "Tirada Larga Aeróbica 6.5 km",
-              duration_min: 40,
-              distance_km: 6.5,
-              target_zone: "Z2 (136 - 152 ppm) | 6:00 - 6:15 /km",
-              summary: "40 minutos continuos en Zona 2 manteniendo baja deriva cardíaca.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Recuperación Completa",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Día completo de descanso personal. Asimilación de las 6 sesiones de lunes a sábado.",
               steps: [
-                { name: "Km 1 a 5 (Z2 Estable)", target: "5.0 km @ 6:10/km (FC 138-149 ppm)" },
-                { name: "Km 5 a 6.5 (Z2 Alta)", target: "1.5 km @ 5:55/km (FC 149-153 ppm)" }
+                { name: "Descanso Completo", target: "Sin entrenamiento · Sueño reparador y tiempo libre" }
               ]
             }
           ]
@@ -308,10 +309,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 3,
           label: "Semana 3 (Pico Bloque 1)",
           dates: "30 Nov – 06 Dic 2026",
-          phase_type: "Sobrecarga Progresiva Controlada (L-M-J Gym)",
+          phase_type: "Sobrecarga Progresiva Controlada (L-M-J Gym · X-V-S Run)",
           run_km_target: 18.0,
           strength_sessions_target: 3,
-          coach_note: "Semana pico del Bloque 1: Lunes Banca 92.5 kg, Martes Sentadilla 82.5 kg + RDL 82.5 kg, Jueves Militar 55-57.5 kg, Viernes 3×1000m Tempo y Domingo 8 km Z2.",
+          coach_note: "Semana pico del Bloque 1: Lunes Banca 92.5 kg, Martes Sentadilla 82.5 kg + RDL 82.5 kg, Miércoles 4.5 km Z2, Jueves Militar 55-57.5 kg, Viernes 3×1000m Tempo, Sábado 8 km Z2 y Domingo Descanso Total.",
           days: [
             {
               id: "b1-w3-d1",
@@ -339,7 +340,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Inferior — Fuerza & Estabilidad Unilateral",
               duration_min: 52,
               target_zone: "RIR 2",
-              summary: "Consolidamos 82.5 kg en Sentadilla 4×3 y 82.5 kg en Peso Muerto Rumano.",
+              summary: "Consolidamos 82.5 kg en Sentadilla 4×3 y 82.5 kg en Peso Muerto Rumano tras 72h sin impacto en piernas.",
               steps: [
                 { name: "Sentadilla Trasera Barra", target: "4 series × 3 reps @ 82.5 kg (RIR 2)" },
                 { name: "Peso Muerto Rumano (RDL)", target: "4 series × 4 reps @ 82.5 kg" },
@@ -390,7 +391,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 32,
               distance_km: 5.5,
               target_zone: "Z3-Z4 (155 - 163 ppm) | 5:10 - 5:20 /km",
-              summary: "Con 72h de recuperación tras la pierna del martes, ejecutamos 3×1km a ritmo Tempo/Umbral.",
+              summary: "Con 72h de recuperación tras la pierna del martes, ejecutamos 3×1km a ritmo Tempo/Umbral controlado.",
               steps: [
                 { name: "Calentamiento Z1/Z2", target: "1.5 km @ 6:20/km" },
                 { name: "Series Tempo", target: "3 × 1.000m @ 5:12-5:18/km (FC 156-163 ppm) con 90s rec trote" },
@@ -401,31 +402,30 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b1-w3-d6",
               day_short: "SÁB 05 DIC",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Descanso Activo & Movilidad",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Recuperación antes de los 8 km del domingo.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Larga Z2",
+              title: "Tirada Larga Sabatina 8.0 km en Z2",
+              duration_min: 48,
+              distance_km: 8.0,
+              target_zone: "Z2 (138 - 153 ppm) | 5:55 - 6:15 /km",
+              summary: "Tu tirada aeróbica más larga del Bloque 1 sabiendo que mañana domingo tienes descanso total.",
               steps: [
-                { name: "Caminata Suave", target: "45 min paseo al sol" },
-                { name: "Movilidad", target: "10 min cadera y tobillo" }
+                { name: "Km 1 a 6 (Z2 Pura)", target: "6.0 km @ 6:10/km (FC 138-149 ppm)" },
+                { name: "Km 6 a 8 (Z2 Techo)", target: "2.0 km @ 5:50-5:55/km (FC 150-153 ppm)" }
               ]
             },
             {
               id: "b1-w3-d7",
               day_short: "DOM 06 DIC",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Larga Z2",
-              title: "Tirada Larga Progresiva 8.0 km",
-              duration_min: 48,
-              distance_km: 8.0,
-              target_zone: "Z2 (138 - 153 ppm) | 5:55 - 6:15 /km",
-              summary: "Tu tirada aeróbica más larga del Bloque 1 sin entrar en Zona 3/4.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Supercompensación",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Descanso completo tras completar las 6 sesiones de la semana pico del Bloque 1.",
               steps: [
-                { name: "Km 1 a 6 (Z2 Pura)", target: "6.0 km @ 6:10/km (FC 138-149 ppm)" },
-                { name: "Km 6 a 8 (Z2 Techo)", target: "2.0 km @ 5:50-5:55/km (FC 150-153 ppm)" }
+                { name: "Descanso Completo", target: "Cero entrenamiento · Recuperación muscular y articular" }
               ]
             }
           ]
@@ -437,7 +437,7 @@ window.HYBRID_TRAINING_PLAN = {
           phase_type: "Supercompensación & Descarga (-25% Volumen)",
           run_km_target: 13.5,
           strength_sessions_target: 3,
-          coach_note: "Semana de descarga del Bloque 1: mantienes tus días de gimnasio Lunes, Martes y Jueves pero con 2-3 series por ejercicio (RIR 3) para supercompensar.",
+          coach_note: "Semana de descarga del Bloque 1: mantienes Lunes, Martes y Jueves de gimnasio a mitad de series (RIR 3), carreras suaves Miércoles-Viernes-Sábado y Domingo de descanso total.",
           days: [
             {
               id: "b1-w4-d1",
@@ -513,7 +513,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 25,
               distance_km: 4.0,
               target_zone: "Z2 + Toques Z4 (5:00/km)",
-              summary: "Sesión corta y fresca para sentir ligereza de piernas.",
+              summary: "Sesión corta y fresca para sentir ligereza de piernas sin fatigar para mañana.",
               steps: [
                 { name: "Calentamiento Z2", target: "1.5 km @ 6:15/km" },
                 { name: "4 × 400m", target: "4 × 400m @ 5:00/km (1:12 por 400m) rec 200m trote" },
@@ -524,29 +524,29 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b1-w4-d6",
               day_short: "SÁB 12 DIC",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Total",
-              title: "Descanso Completo & Sueño >7.5h",
-              duration_min: 0,
-              target_zone: "Recuperación",
-              summary: "Objetivo: llevar la VFC semanal por encima de 54 ms.",
-              steps: [
-                { name: "Descanso", target: "Paseo libre sin exigencia" }
-              ]
-            },
-            {
-              id: "b1-w4-d7",
-              day_short: "DOM 13 DIC",
-              day_name: "Domingo",
               modality: "run",
               modality_label: "Carrera 3 · Tirada Z2",
-              title: "Tirada Dominical Cómoda 6.0 km",
+              title: "Tirada Sabatina Cómoda 6.0 km en Z2",
               duration_min: 36,
               distance_km: 6.0,
               target_zone: "Z2 (138 - 150 ppm) | 6:00 /km",
               summary: "Cierre del Bloque 1 con sensación de reserva total de energía.",
               steps: [
                 { name: "Rodaje Continuo Z2", target: "6.0 km @ 6:00/km (FC < 150 ppm)" }
+              ]
+            },
+            {
+              id: "b1-w4-d7",
+              day_short: "DOM 13 DIC",
+              day_name: "Domingo",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Fin del Bloque 1",
+              duration_min: 0,
+              target_zone: "Recuperación",
+              summary: "Objetivo: llevar la VFC semanal por encima de 54 ms antes de iniciar el Bloque 2.",
+              steps: [
+                { name: "Descanso Completo", target: "Sin entrenamiento · Sueño >7.5h" }
               ]
             }
           ]
@@ -558,7 +558,7 @@ window.HYBRID_TRAINING_PLAN = {
       number: 2,
       name: "Bloque 2: Desarrollo de Umbral (LTHR) & Fuerza-Potencia",
       dates: "14 Dic 2026 – 10 Ene 2027 (Semanas 5 a 8)",
-      focus: "Desplazar tu ritmo de Umbral de Lactato (163 ppm) de 5:30/km hacia 5:05-5:10/km los viernes, con gimnasio fijo Lunes-Martes-Jueves.",
+      focus: "Desplazar tu ritmo de Umbral de Lactato (163 ppm) hacia 5:05-5:10/km los viernes + tiradas sabatinas Z2, con gimnasio L-M-J y domingo de descanso total.",
       target_run_km_range: "18.0 → 22.0 km/sem",
       target_strength_sessions: "3 sesiones/sem (Lun: Upper A · Mar: Lower · Jue: Upper B)",
       weeks: [
@@ -566,10 +566,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 5,
           label: "Semana 5 (Inicio Umbral)",
           dates: "14 Dic – 20 Dic 2026",
-          phase_type: "Construcción de Umbral (Gimnasio L-M-J)",
+          phase_type: "Construcción de Umbral (L-M-J Gym · X-V-S Run)",
           run_km_target: 18.0,
           strength_sessions_target: 3,
-          coach_note: "Lunes igualamos 95 kg en Banca, Martes Sentadilla 85 kg + RDL 85 kg, Miércoles rodaje Z2, Jueves Upper B y Viernes estrenamos Cruise Intervals (3×1.500m Z4).",
+          coach_note: "Lunes igualamos 95 kg en Banca, Martes Sentadilla 85 kg + RDL 85 kg, Miércoles 4 km Z2, Jueves Upper B, Viernes 3×1.500m Umbral, Sábado 8.5 km Z2 y Domingo Descanso Total.",
           days: [
             {
               id: "b2-w5-d1",
@@ -597,7 +597,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Inferior — Fuerza + Rigidez Reactiva (Stiffness)",
               duration_min: 50,
               target_zone: "RIR 2",
-              summary: "Mejoramos la reactividad elástica del tobillo y cadera para gastar menos oxígeno al correr.",
+              summary: "Mejoramos la reactividad elástica del tobillo y cadera con 72h de margen hasta las series del viernes.",
               steps: [
                 { name: "Sentadilla Trasera Barra", target: "4 series × 3 reps @ 85 kg" },
                 { name: "Peso Muerto Rumano (RDL)", target: "3 series × 5 reps @ 85 kg" },
@@ -658,29 +658,29 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b2-w5-d6",
               day_short: "SÁB 19 DIC",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Movilidad & Paseo 10k Pasos",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Recuperación previa a los 8.5 km del domingo.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Larga Z2",
+              title: "Tirada Larga Sabatina 8.5 km en Z2",
+              duration_min: 51,
+              distance_km: 8.5,
+              target_zone: "Z2 (138 - 151 ppm) | 5:55 - 6:05 /km",
+              summary: "Más de 50 minutos continuos en Zona 2 aeróbica estricta antes del domingo libre.",
               steps: [
-                { name: "Caminata + Movilidad", target: "45 min paseo + 10 min estiramientos dinámicos" }
+                { name: "Tirada Continua Z2", target: "8.5 km @ 6:00/km (FC media ~145 ppm, sin pasar de 151 ppm)" }
               ]
             },
             {
               id: "b2-w5-d7",
               day_short: "DOM 20 DIC",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Larga Z2",
-              title: "Tirada Larga 8.5 km en Z2",
-              duration_min: 51,
-              distance_km: 8.5,
-              target_zone: "Z2 (138 - 152 ppm) | 5:55 - 6:05 /km",
-              summary: "Más de 50 minutos continuos construyendo capilarización aeróbica.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Recuperación Completa",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Día de descanso personal fijo.",
               steps: [
-                { name: "Tirada Continua Z2", target: "8.5 km @ 6:00/km (FC media ~145 ppm)" }
+                { name: "Descanso Completo", target: "Sin entrenamiento · Recuperación muscular y sueño" }
               ]
             }
           ]
@@ -689,10 +689,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 6,
           label: "Semana 6 (Consolidación Umbral)",
           dates: "21 Dic – 27 Dic 2026",
-          phase_type: "Carga Específica Híbrida (Gimnasio L-M-J)",
+          phase_type: "Carga Específica Híbrida (L-M-J Gym · X-V-S Run)",
           run_km_target: 20.0,
           strength_sessions_target: 3,
-          coach_note: "Rompemos la barrera de los 20 km semanales: Lunes 97.5 kg Banca, Martes 135 kg Peso Muerto, Jueves Upper B, Viernes 2×2.000m + 1.000m en Z4 y Domingo 9.5 km Z2.",
+          coach_note: "Rompemos la barrera de los 20 km semanales: Lunes 97.5 kg Banca, Martes 135 kg Peso Muerto, Miércoles 4.5 km Z2, Jueves Upper B, Viernes 2×2km+1km Umbral, Sábado 9.5 km Z2 y Domingo Descanso Total.",
           days: [
             {
               id: "b2-w6-d1",
@@ -751,7 +751,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Superior B — Sesión Matutina Nochebuena",
               duration_min: 45,
               target_zone: "RIR 2",
-              summary: "Completamos los 3 días de gimnasio (L-M-J) antes de la cena de Nochebuena.",
+              summary: "Completamos los 3 días de gimnasio (L-M-J) al mediodía.",
               steps: [
                 { name: "Press Militar + Dominadas", target: "4 superseries × 5-7 reps @ 55 kg" },
                 { name: "Press Inclinado + Remo", target: "3 superseries × 10 reps @ 32.5 kg" },
@@ -779,30 +779,30 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b2-w6-d6",
               day_short: "SÁB 26 DIC",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Paseo Regenerativo & Movilidad",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Recuperación activa.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Larga Z2",
+              title: "Tirada Larga Sabatina 9.5 km en Z2",
+              duration_min: 56,
+              distance_km: 9.5,
+              target_zone: "Z2 (138 - 152 ppm) | 5:50 - 6:05 /km",
+              summary: "Rozando la distancia de 10K íntegramente en Zona 2 aeróbica antes de tu domingo de descanso.",
               steps: [
-                { name: "Caminata Z1", target: "8.000 - 10.000 pasos" }
+                { name: "Km 1 a 7 (Z2 Estable)", target: "7.0 km @ 6:00/km (FC < 149 ppm)" },
+                { name: "Km 7 a 9.5 (Z2 Techo)", target: "2.5 km @ 5:45/km (FC 149-152 ppm)" }
               ]
             },
             {
               id: "b2-w6-d7",
               day_short: "DOM 27 DIC",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Larga Z2",
-              title: "Tirada Larga Progresiva 9.5 km",
-              duration_min: 56,
-              distance_km: 9.5,
-              target_zone: "Z2 (138 - 153 ppm) | 5:50 - 6:05 /km",
-              summary: "Rozando la distancia de 10K pero íntegramente en Zona 2 aeróbica.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Recuperación Completa",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Descanso completo fijo del domingo.",
               steps: [
-                { name: "Km 1 a 7 (Z2 Estable)", target: "7.0 km @ 6:00/km (FC < 149 ppm)" },
-                { name: "Km 7 a 9.5 (Z2 Techo)", target: "2.5 km @ 5:40-5:45/km (FC 150-154 ppm)" }
+                { name: "Descanso Completo", target: "Sin entrenamiento" }
               ]
             }
           ]
@@ -811,10 +811,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 7,
           label: "Semana 7 (Pico Bloque 2)",
           dates: "28 Dic 2026 – 03 Ene 2027",
-          phase_type: "Pico de Umbral & Fuerza (Gimnasio L-M-J)",
+          phase_type: "Pico de Umbral & Fuerza (L-M-J Gym · X-V-S Run)",
           run_km_target: 22.0,
           strength_sessions_target: 3,
-          coach_note: "Semana cumbre del Bloque 2: Lunes intento de 100 kg en Press Banca, Martes Sentadilla 90 kg, Jueves Upper B, Viernes Tempo continuo de 4 km a ~5:05/km y Domingo 10.5 km en Z2.",
+          coach_note: "Semana cumbre del Bloque 2: Lunes intento de 100 kg en Press Banca, Martes Sentadilla 90 kg, Miércoles 5 km Z2, Jueves Upper B, Viernes Tempo continuo 4 km @ 5:05/km, Sábado 10.5 km Z2 y Domingo Descanso Total.",
           days: [
             {
               id: "b2-w7-d1",
@@ -903,29 +903,29 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b2-w7-d6",
               day_short: "SÁB 02 ENE",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Descanso & Paseo Regenerativo",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Asimilación antes de los 10.5 km del domingo.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Larga Z2",
+              title: "Tirada Larga Sabatina 10.5 km en Z2",
+              duration_min: 62,
+              distance_km: 10.5,
+              target_zone: "Z2 (138 - 152 ppm) | 5:50 - 6:00 /km",
+              summary: "Superamos la distancia de 10 km en entrenamiento aeróbico cómodo antes del descanso dominical.",
               steps: [
-                { name: "Paseo regenerativo", target: "40 min al aire libre" }
+                { name: "Rodaje 10.5 km Z2", target: "10.5 km @ 5:55/km (FC < 152 ppm)" }
               ]
             },
             {
               id: "b2-w7-d7",
               day_short: "DOM 03 ENE",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Larga Z2",
-              title: "Tirada Larga 10.5 km en Z2",
-              duration_min: 62,
-              distance_km: 10.5,
-              target_zone: "Z2 (138 - 153 ppm) | 5:50 - 6:00 /km",
-              summary: "Superamos la distancia de 10 km en entrenamiento aeróbico cómodo.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Recuperación Completa",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Día completo de descanso tras superar los 22 km semanales.",
               steps: [
-                { name: "Rodaje 10.5 km Z2", target: "10.5 km @ 5:55/km (FC < 153 ppm)" }
+                { name: "Descanso Completo", target: "Sin entrenamiento · Sueño >7.5h" }
               ]
             }
           ]
@@ -934,10 +934,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 8,
           label: "Semana 8 (Descarga 3:1)",
           dates: "04 Ene – 10 Ene 2027",
-          phase_type: "Descarga & Asimilación Bloque 2 (Gimnasio L-M-J)",
+          phase_type: "Descarga & Asimilación Bloque 2 (L-M-J Gym · X-V-S Run)",
           run_km_target: 15.5,
           strength_sessions_target: 3,
-          coach_note: "Semana de descarga del Bloque 2: reducimos volumen un 30% manteniendo los días fijos Lunes, Martes y Jueves en gimnasio.",
+          coach_note: "Semana de descarga del Bloque 2: reducimos volumen un 30% manteniendo Lunes-Martes-Jueves en gimnasio, Miércoles-Viernes-Sábado de carrera y Domingo de descanso total.",
           days: [
             {
               id: "b2-w8-d1",
@@ -1022,29 +1022,29 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b2-w8-d6",
               day_short: "SÁB 09 ENE",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Total",
-              title: "Descanso & Recarga Body Battery",
-              duration_min: 0,
-              target_zone: "Descanso",
-              summary: "Preparación para el Bloque 3.",
-              steps: [
-                { name: "Descanso", target: "Dormir >7.5h" }
-              ]
-            },
-            {
-              id: "b2-w8-d7",
-              day_short: "DOM 10 ENE",
-              day_name: "Domingo",
               modality: "run",
               modality_label: "Carrera 3 · Tirada Z2",
-              title: "Tirada Dominical 7.0 km en Z2",
+              title: "Tirada Sabatina 7.0 km en Z2",
               duration_min: 41,
               distance_km: 7.0,
               target_zone: "Z2 (138 - 150 ppm) | 5:50 /km",
               summary: "Notarás que a 5:50/km el pulso va 5-7 ppm más bajo que en noviembre.",
               steps: [
                 { name: "Rodaje Z2", target: "7.0 km @ 5:50/km" }
+              ]
+            },
+            {
+              id: "b2-w8-d7",
+              day_short: "DOM 10 ENE",
+              day_name: "Domingo",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Fin del Bloque 2",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Recarga completa antes de entrar en el Bloque 3 específico Sub-50'.",
+              steps: [
+                { name: "Descanso Completo", target: "Dormir >7.5h y recargar Body Battery" }
               ]
             }
           ]
@@ -1056,7 +1056,7 @@ window.HYBRID_TRAINING_PLAN = {
       number: 3,
       name: "Bloque 3: Pico Específico VO2máx & Objetivo 10K Sub-50'",
       dates: "11 Ene 2027 – 07 Feb 2027 (Semanas 9 a 12)",
-      focus: "Series específicas de VO2máx y ritmo 10K (<5:00/km) los viernes, tiradas largas de hasta 12 km los domingos y mantenimiento neural de fuerza Lunes-Martes-Jueves.",
+      focus: "Series específicas de VO2máx y ritmo 10K (<5:00/km) los viernes, tiradas largas de hasta 12 km los sábados, mantenimiento neural L-M-J y domingo siempre descanso total.",
       target_run_km_range: "21.5 → 24.0 km/sem (Tapering Sem 12)",
       target_strength_sessions: "3 sesiones/sem (Lun: Upper A · Mar: Lower Neural · Jue: Upper B)",
       weeks: [
@@ -1064,10 +1064,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 9,
           label: "Semana 9 (VO2máx 800m)",
           dates: "11 Ene – 17 Ene 2027",
-          phase_type: "Potencia Aeróbica VO2máx (Gimnasio L-M-J)",
+          phase_type: "Potencia Aeróbica VO2máx (L-M-J Gym · X-V-S Run)",
           run_km_target: 21.5,
           strength_sessions_target: 3,
-          coach_note: "Martes pierna neural (3×3 con alta carga y bajo volumen) para que el viernes llegues pletórico al 6×800m a 4:48-4:52/km.",
+          coach_note: "Martes pierna neural (3×3 con alta carga y bajo volumen) para que el viernes llegues pletórico al 6×800m y el sábado completes 10.5 km en Z2.",
           days: [
             {
               id: "b3-w9-d1",
@@ -1155,30 +1155,29 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b3-w9-d6",
               day_short: "SÁB 16 ENE",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Movilidad & Paseo Z1",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Piernas frescas para los 10.5 km del domingo.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada 10.5K Z2",
+              title: "Tirada Larga Sabatina 10.5 km en Z2",
+              duration_min: 61,
+              distance_km: 10.5,
+              target_zone: "Z2 Estricta (136 - 150 ppm) | 5:50 - 6:00 /km",
+              summary: "Resistencia aeróbica en Zona 2 antes de tu domingo completo de descanso.",
               steps: [
-                { name: "Paseo + Movilidad", target: "8.000 - 10.000 pasos" }
+                { name: "Km 1 a 10.5 (Z2 Pura)", target: "10.5 km @ 5:55/km (FC < 150 ppm)" }
               ]
             },
             {
               id: "b3-w9-d7",
               day_short: "DOM 17 ENE",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Progresiva",
-              title: "Tirada Larga 10.5 km (Últimos 2 km a 5:10/km)",
-              duration_min: 60,
-              distance_km: 10.5,
-              target_zone: "Z2 (8.5 km) + Z3/Z4 (2.0 km)",
-              summary: "Enseñamos al cuerpo a cambiar de ritmo a 5:10/km con pre-fatiga aeróbica.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Recuperación Completa",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Día de descanso personal fijo.",
               steps: [
-                { name: "Km 1 a 8.5 (Z2)", target: "8.5 km @ 5:55/km (FC < 150 ppm)" },
-                { name: "Km 8.5 a 10.5 (Final Fuerte)", target: "2.0 km @ 5:08-5:12/km (FC 158-163 ppm)" }
+                { name: "Descanso Completo", target: "Sin entrenamiento" }
               ]
             }
           ]
@@ -1187,10 +1186,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 10,
           label: "Semana 10 (Específico 5×1000m)",
           dates: "18 Ene – 24 Ene 2027",
-          phase_type: "Especificidad 10K (Gimnasio L-M-J)",
+          phase_type: "Especificidad 10K (L-M-J Gym · X-V-S Run)",
           run_km_target: 23.5,
           strength_sessions_target: 3,
-          coach_note: "Martes Peso Muerto 140 kg (bajo volumen), Jueves Upper B, Viernes sesión reina 5 × 1.000m @ 4:50-4:55/km y Domingo tirada larga de 11.5 km.",
+          coach_note: "Martes Peso Muerto 140 kg (bajo volumen), Miércoles 5 km Z2, Jueves Upper B, Viernes sesión reina 5 × 1.000m @ 4:50-4:55/km, Sábado tirada de 11.5 km Z2 y Domingo Descanso Total.",
           days: [
             {
               id: "b3-w10-d1",
@@ -1217,7 +1216,7 @@ window.HYBRID_TRAINING_PLAN = {
               title: "Tren Inferior — Peso Muerto 140 kg & Sentadilla",
               duration_min: 45,
               target_zone: "RIR 2",
-              summary: "Nuevo hito en Peso Muerto (140 kg) con bajo volumen total y 72h antes del 5×1000m.",
+              summary: "Nuevo hito en Peso Muerto (140 kg) con bajo volumen total y 72h antes del 5×1000m del viernes.",
               steps: [
                 { name: "Peso Muerto Barra", target: "3 series × 2-3 reps @ 137.5 - 140 kg" },
                 { name: "Sentadilla Trasera", target: "3 series × 3 reps @ 85 kg" },
@@ -1276,29 +1275,29 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b3-w10-d6",
               day_short: "SÁB 23 ENE",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Descanso & Movilidad",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Recarga previa a la tirada de 11.5 km.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Larga 11.5K",
+              title: "Tirada Larga Sabatina 11.5 km en Z2",
+              duration_min: 67,
+              distance_km: 11.5,
+              target_zone: "Z2 (138 - 151 ppm) | 5:50 - 5:55 /km",
+              summary: "Resistencia aeróbica sobrada para que los kilómetros 8 a 10 del 10K no pesen.",
               steps: [
-                { name: "Caminata + Movilidad", target: "8.000 - 10.000 pasos" }
+                { name: "Tirada 11.5 km Z2", target: "11.5 km @ 5:52/km (FC < 151 ppm)" }
               ]
             },
             {
               id: "b3-w10-d7",
               day_short: "DOM 24 ENE",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Larga 11.5K",
-              title: "Tirada Larga 11.5 km en Z2",
-              duration_min: 67,
-              distance_km: 11.5,
-              target_zone: "Z2 (138 - 153 ppm) | 5:50 /km",
-              summary: "Resistencia aeróbica sobrada para que los kilómetros 8 a 10 del 10K no pesen.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Recuperación Completa",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Descanso completo fijo del domingo.",
               steps: [
-                { name: "Tirada 11.5 km Z2", target: "11.5 km @ 5:50/km" }
+                { name: "Descanso Completo", target: "Sin entrenamiento" }
               ]
             }
           ]
@@ -1307,10 +1306,10 @@ window.HYBRID_TRAINING_PLAN = {
           week_number: 11,
           label: "Semana 11 (Simulacro Específico)",
           dates: "25 Ene – 31 Ene 2027",
-          phase_type: "Pico Específico (Última semana fuerte L-M-J)",
+          phase_type: "Pico Específico (Última semana fuerte L-M-J / X-V-S)",
           run_km_target: 24.0,
           strength_sessions_target: 3,
-          coach_note: "Última semana de carga alta antes del Tapering: Gimnasio Lunes-Martes-Jueves, Viernes simulacro 3×2.000m @ 4:56/km y Domingo tirada pico de 12 km.",
+          coach_note: "Última semana de carga alta antes del Tapering: Gimnasio L-M-J, Miércoles 4.5 km Z2, Viernes simulacro 3×2.000m @ 4:56/km, Sábado tirada pico de 12 km Z2 y Domingo Descanso Total.",
           days: [
             {
               id: "b3-w11-d1",
@@ -1395,41 +1394,41 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b3-w11-d6",
               day_short: "SÁB 30 ENE",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Descanso Activo",
-              title: "Descanso & Hidratación",
-              duration_min: 30,
-              target_zone: "Z1",
-              summary: "Preparación para los 12 km.",
+              modality: "run",
+              modality_label: "Carrera 3 · Tirada Larga 12K",
+              title: "Tirada Larga Sabatina Pico 12.0 km en Z2",
+              duration_min: 70,
+              distance_km: 12.0,
+              target_zone: "Z2 (138 - 151 ppm) | 5:50 /km",
+              summary: "Tu mayor volumen aeróbico en 6 meses: 12 km cómodos en Z2 antes de descansar el domingo.",
               steps: [
-                { name: "Paseo suave", target: "8.000 pasos" }
+                { name: "Tirada 12.0 km Z2", target: "12.0 km @ 5:50/km" }
               ]
             },
             {
               id: "b3-w11-d7",
               day_short: "DOM 31 ENE",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "Carrera 3 · Tirada Larga 12K",
-              title: "Tirada Larga Pico 12.0 km en Z2",
-              duration_min: 70,
-              distance_km: 12.0,
-              target_zone: "Z2 (138 - 152 ppm) | 5:50 /km",
-              summary: "Tu mayor volumen aeróbico en 6 meses: 12 km cómodos en Z2.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Inicio del Tapering",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Descanso completo antes de la semana del Test 10K.",
               steps: [
-                { name: "Tirada 12.0 km Z2", target: "12.0 km @ 5:50/km" }
+                { name: "Descanso Completo", target: "Sin entrenamiento" }
               ]
             }
           ]
         },
         {
           week_number: 12,
-          label: "Semana 12 (Tapering + Test 10K)",
+          label: "Semana 12 (Tapering + Test 10K Sábado)",
           dates: "01 Feb – 07 Feb 2027",
-          phase_type: "Puesta a Punto (Tapering L-M-J) & Objetivo 10K Sub-50'",
+          phase_type: "Tapering (L-M-J Gym) & Objetivo 10K Sub-50' el Sábado",
           run_km_target: 16.5,
           strength_sessions_target: 3,
-          coach_note: "Semana de Tapering respetando tus días L-M-J de gimnasio con volumen mínimo (activación neural RIR 3-4) para llegar al domingo con piernas frescas y atacar el 10K Sub-50'.",
+          coach_note: "Semana de Tapering respetando tus días L-M-J de gimnasio (activación neural RIR 3-4) y X-V-S de carrera: el Sábado 06 Feb atacas el 10K Sub-50' y el Domingo 07 Feb disfrutas de tu descanso total.",
           days: [
             {
               id: "b3-w12-d1",
@@ -1453,10 +1452,10 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Martes",
               modality: "strength",
               modality_label: "Gimnasio 2 · PAP Lower",
-              title: "Potenciación Tren Inferior (Cero Agujetas, 5 días antes del 10K)",
+              title: "Potenciación Tren Inferior (Cero Agujetas, 96h antes del 10K)",
               duration_min: 30,
               target_zone: "RIR 4",
-              summary: "Último toque de pierna el martes (a 120 horas del 10K del domingo): cargas moderadas a máxima velocidad.",
+              summary: "Último toque de pierna el martes (a 4 días completos del 10K del sábado): cargas moderadas a máxima velocidad.",
               steps: [
                 { name: "Sentadilla Trasera (Velocidad)", target: "3 series × 2 reps @ 75 kg (explosivas)" },
                 { name: "Sóleo Sentado Ligero", target: "2 series × 10 reps @ 30 kg" },
@@ -1473,7 +1472,7 @@ window.HYBRID_TRAINING_PLAN = {
               duration_min: 25,
               distance_km: 4.0,
               target_zone: "Z3-Z4 (156 - 163 ppm)",
-              summary: "Recordatorio neuromuscular del ritmo objetivo sin fatigar.",
+              summary: "Recordatorio neuromuscular del ritmo objetivo a 72h de la prueba.",
               steps: [
                 { name: "Calentamiento", target: "1.0 km @ 6:05/km" },
                 { name: "3 × 800m", target: "3 × 800m @ 4:55/km rec 90s" },
@@ -1501,12 +1500,12 @@ window.HYBRID_TRAINING_PLAN = {
               day_short: "VIE 05 FEB",
               day_name: "Viernes",
               modality: "run",
-              modality_label: "Carrera 2 · Suelta 2.5K",
+              modality_label: "Carrera 2 · Activación Pre-10K",
               title: "Suelta de Piernas 2.5 km + 3 Strides",
               duration_min: 16,
               distance_km: 2.5,
               target_zone: "Z1-Z2 (130 - 145 ppm)",
-              summary: "Apenas 15 minutos para activar circulación a 48h de la carrera.",
+              summary: "Apenas 15 minutos suaves el viernes + carga de hidratos para despertar el sábado con Body Battery >85.",
               steps: [
                 { name: "Rodaje 2.5 km + 3 Strides", target: "2.5 km @ 6:00/km + 3 rectas de 12s" }
               ]
@@ -1515,31 +1514,31 @@ window.HYBRID_TRAINING_PLAN = {
               id: "b3-w12-d6",
               day_short: "SÁB 06 FEB",
               day_name: "Sábado",
-              modality: "rest",
-              modality_label: "Pre-Carrera",
-              title: "Descanso Total, Paseo 20 min & Carga de Hidratos",
-              duration_min: 20,
-              target_zone: "Z1",
-              summary: "Body Battery objetivo al despertar el domingo: >85.",
+              modality: "run",
+              modality_label: "Carrera 3 · OBJETIVO 10K",
+              title: "Test / Carrera 10K Oficial — Objetivo Sub 50:00 (4:58/km)",
+              duration_min: 50,
+              distance_km: 10.0,
+              target_zone: "Z4 -> Z5 (160 -> 175 ppm) | 4:58 /km",
+              summary: "Estrategia Negative Split el sábado por la mañana: primeros 3 km a 5:02/km, km 4-8 a 4:57/km y últimos 2 km a <4:50/km.",
               steps: [
-                { name: "Activación suave", target: "Paseo 20 min + hidratación y carbohidratos complejos" }
+                { name: "Km 1 a 3 (Control)", target: "3.0 km @ 5:00-5:02/km (FC < 161 ppm)" },
+                { name: "Km 4 a 8 (Crucero Umbral)", target: "5.0 km @ 4:56-4:58/km (FC 162-166 ppm)" },
+                { name: "Km 9 a 10 (Kick Final)", target: "2.0 km @ 4:45-4:50/km (Z5 hasta meta)" }
               ]
             },
             {
               id: "b3-w12-d7",
               day_short: "DOM 07 FEB",
               day_name: "Domingo",
-              modality: "run",
-              modality_label: "OBJETIVO 10K",
-              title: "Carrera / Test 10K Oficial — Objetivo Sub 50:00 (4:58/km)",
-              duration_min: 50,
-              distance_km: 10.0,
-              target_zone: "Z4 -> Z5 (160 -> 175 ppm) | 4:58 /km",
-              summary: "Estrategia Negative Split: salir los primeros 3 km a 5:02/km (158-161 ppm), estabilizar km 4-8 a 4:57/km (163-166 ppm) y vaciarse en los últimos 2 km a <4:50/km.",
+              modality: "rest",
+              modality_label: "Descanso Total",
+              title: "Descanso Total Dominical — Celebración & Recuperación Post-10K",
+              duration_min: 0,
+              target_zone: "Descanso",
+              summary: "Domingo libre completo tras lograr el objetivo Sub-50'.",
               steps: [
-                { name: "Km 1 a 3 (Control)", target: "3.0 km @ 5:00-5:02/km (FC < 161 ppm)" },
-                { name: "Km 4 a 8 (Crucero Umbral)", target: "5.0 km @ 4:56-4:58/km (FC 162-166 ppm)" },
-                { name: "Km 9 a 10 (Kick Final)", target: "2.0 km @ 4:45-4:50/km (Z5 hasta meta)" }
+                { name: "Descanso Completo", target: "Descanso total personal y familiar" }
               ]
             }
           ]
