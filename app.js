@@ -4,11 +4,10 @@
  * 1. Check-in Matutino 09:00 AM y semáforo de Readiness / Autorregulación.
  * 2. Gestión interactiva de 1RM ("1RM & Pesos Gimnasio") con calculadora submáxima Epley/Brzycki
  *    y recálculo automático en tiempo real de cada serie de las 12 semanas (redondeo a discos reales).
- * 3. Navegación interactiva de los 3 Bloques de 4 Semanas (12 semanas) y seguimiento móvil
- *    (check de sesión completada, registro de cargas/sensaciones y persistencia en localStorage).
- * 4. Gráficas SVG interactivas de los últimos 6 meses de Garmin (VFC/HRV, Sueño, Carga Aguda/Crónica ACWR,
- *    CTL/ATL/TSB, Evolución Mensual Carrera vs Fuerza vs HIIT).
- * 5. Explorador del historial de actividades reales de Garmin con filtro por deporte.
+ * 3. Generador en vivo de entrenamientos para el reloj Garmin (.FIT binario oficial, .JSON Garmin Connect
+ *    y Script de Auto-Subida en 1 clic a Garmin Connect Web para Lunes Upper A, Martes Lower y Jueves Upper B).
+ * 4. Navegación interactiva de los 3 Bloques de 4 Semanas (12 semanas) y seguimiento móvil.
+ * 5. Gráficas SVG interactivas de los últimos 6 meses de Garmin y explorador del historial de sesiones.
  */
 
 (function () {
@@ -37,7 +36,13 @@
         name: liftKey,
         unit: "kg",
         step: 2.5,
-        default_1rm: 60
+        default_1rm: 60,
+        cat_id: 2,
+        name_id: 65535,
+        category_key: "CARDIO",
+        exercise_key: null,
+        title_es: liftKey,
+        rest_sec: 90
       }
     );
   }
@@ -70,7 +75,6 @@
     } catch (e) {
       console.warn("No se pudo leer localStorage:", e);
     }
-    // Pre-marcar el entrenamiento de hoy lunes 16 Nov que ya consta en Garmin
     if (completedMap["b1-w1-d1"] === undefined) {
       completedMap["b1-w1-d1"] = true;
     }
@@ -121,10 +125,6 @@
     return `${formatNumberClean(w)} ${cfg.unit}`;
   }
 
-  /**
-   * Reemplaza marcadores dinámicos como {bench:0.85} o {squat:0.80} en títulos y notas
-   * por el peso real calculado según los 1RM actuales del usuario.
-   */
   function resolveDynamicText(text) {
     if (!text || typeof text !== "string") return "";
     return text.replace(/\{([a-z0-9_]+):([0-9.]+)\}/gi, (_, liftKey, pctStr) => {
@@ -134,10 +134,6 @@
     });
   }
 
-  /**
-   * Genera la prescripción visual de un paso de entrenamiento.
-   * Si tiene `lift`, calcula el peso exacto a partir del 1RM del usuario.
-   */
   function formatStepPrescription(st) {
     if (!st.lift) {
       return resolveDynamicText(st.target || "");
@@ -151,6 +147,458 @@
     const rirPart = st.rir ? ` · ${st.rir}` : "";
     return `${st.sets} series × ${st.reps} reps @ <strong style="color:var(--accent-strength);">${weightStr}</strong> <span style="opacity:0.82;">(${pctBadge}${rirPart})</span>`;
   }
+
+  // ============================================================================
+  // CODIFICADOR BINARIO .FIT Y EXPORTADOR GARMIN CONNECT WORKOUT (EN TIEMPO REAL)
+  // ============================================================================
+
+  function parseRepsCount(repsRaw) {
+    if (typeof repsRaw === "number") return repsRaw;
+    const str = String(repsRaw || "8");
+    const match = str.match(/(\d+)/g);
+    if (!match || !match.length) return 8;
+    // Si es un rango como "6-8", tomamos el límite superior (8) como objetivo en el reloj
+    return parseInt(match[match.length - 1], 10) || 8;
+  }
+
+  function getStrengthWatchName(dayObj, weekNum) {
+    const dayTag = (dayObj.day_name || "Gym").slice(0, 3).toUpperCase();
+    const modPart = (dayObj.modality_label || "").split("·")[1] || dayObj.day_name || "Fuerza";
+    return `HYB S${weekNum} ${dayTag} ${modPart.trim()}`.slice(0, 28);
+  }
+
+  function fitCrc16(uint8Arr) {
+    const crcTable = [
+      0x0000, 0xcc01, 0xd801, 0x1400, 0xf001, 0x3c00, 0x2800, 0xe401,
+      0xa001, 0x6c00, 0x7800, 0xb401, 0x5000, 0x9c01, 0x8801, 0x4400
+    ];
+    let crc = 0;
+    for (let i = 0; i < uint8Arr.length; i++) {
+      const b = uint8Arr[i];
+      let tmp = crcTable[crc & 0x0f];
+      crc = (crc >> 4) & 0x0fff;
+      crc = crc ^ tmp ^ crcTable[b & 0x0f];
+      tmp = crcTable[crc & 0x0f];
+      crc = (crc >> 4) & 0x0fff;
+      crc = crc ^ tmp ^ crcTable[(b >> 4) & 0x0f];
+    }
+    return crc & 0xffff;
+  }
+
+  function encodeFixedUtf8(str, byteLength) {
+    const enc = new TextEncoder().encode(str || "");
+    const out = new Uint8Array(byteLength);
+    const limit = Math.min(enc.length, byteLength - 1);
+    for (let i = 0; i < limit; i++) out[i] = enc[i];
+    return out;
+  }
+
+  /**
+   * Construye un archivo binario .FIT de entrenamiento Garmin (FileType=5 WORKOUT, Sport=10, SubSport=20)
+   * usando los 1RM actuales del usuario para cualquier día de gimnasio del plan.
+   */
+  function buildFitWorkoutBinaryForDay(dayObj, weekNum) {
+    const chunks = [];
+    const pushBytes = (arr) => chunks.push(new Uint8Array(arr));
+    const pushU16 = (val) => {
+      const b = new Uint8Array(2);
+      new DataView(b.buffer).setUint16(0, val & 0xffff, true);
+      chunks.push(b);
+    };
+    const pushU32 = (val) => {
+      const b = new Uint8Array(4);
+      new DataView(b.buffer).setUint32(0, val >>> 0, true);
+      chunks.push(b);
+    };
+
+    // 1. Definition Local 0 -> file_id (GMSG 0)
+    pushBytes([
+      0x40, 0x00, 0x00, 0x00, 0x00, 6,
+      3, 4, 0x8c,
+      4, 4, 0x86,
+      1, 2, 0x84,
+      2, 2, 0x84,
+      5, 2, 0x84,
+      0, 1, 0x00
+    ]);
+    pushBytes([0x00]);
+    pushU32(3620636920);
+    pushU32(1161433847);
+    pushU16(1); // Garmin
+    pushU16(4536); // Reloj del usuario
+    pushU16(weekNum * 10 + 1);
+    pushBytes([5]); // FileType = 5 (WORKOUT)
+
+    // Construir pasos del entrenamiento
+    const steps = [];
+    const usedTitles = new Map();
+    usedTitles.set("2:65535", { cat_id: 2, name_id: 65535, title_es: "Calentamiento / Movilidad" });
+
+    steps.push({
+      msg_idx: 0,
+      dur_type: 5, // open (botón Lap)
+      dur_val: 0xffffffff,
+      tgt_type: 2,
+      tgt_val: 0,
+      intensity: 2, // warmup
+      ex_cat: 2,
+      ex_name: 65535,
+      ex_weight: 65535,
+      wt_unit: 1,
+      notes: "Calentamiento 5 min"
+    });
+
+    (dayObj.steps || []).forEach((st) => {
+      if (!st.lift) return;
+      const cfg = getLiftConfig(st.lift);
+      const setsCount = parseInt(st.sets, 10) || 3;
+      const repsCount = parseRepsCount(st.reps);
+      const weightKg = calcLiftWeight(st.lift, st.pct || 0);
+      const exWeightVal = weightKg > 0 ? Math.round(weightKg * 100) : 65535;
+      const restMs = (cfg.rest_sec || 90) * 1000;
+
+      const workIdx = steps.length;
+      const noteStr =
+        weightKg > 0
+          ? `${formatNumberClean(weightKg)} kg (${Math.round((st.pct || 0) * 100)}% 1RM)`
+          : "Peso corporal";
+
+      steps.push({
+        msg_idx: workIdx,
+        dur_type: 29, // reps
+        dur_val: repsCount,
+        tgt_type: 2,
+        tgt_val: 0,
+        intensity: 0, // active
+        ex_cat: cfg.cat_id,
+        ex_name: cfg.name_id,
+        ex_weight: exWeightVal,
+        wt_unit: 1,
+        notes: noteStr
+      });
+      usedTitles.set(`${cfg.cat_id}:${cfg.name_id}`, {
+        cat_id: cfg.cat_id,
+        name_id: cfg.name_id,
+        title_es: cfg.title_es || cfg.name
+      });
+
+      const restIdx = steps.length;
+      steps.push({
+        msg_idx: restIdx,
+        dur_type: 0, // time (ms)
+        dur_val: restMs,
+        tgt_type: 2,
+        tgt_val: 0,
+        intensity: 1, // rest
+        ex_cat: 65535,
+        ex_name: 65535,
+        ex_weight: 65535,
+        wt_unit: 1,
+        notes: "Descanso"
+      });
+
+      const repIdx = steps.length;
+      steps.push({
+        msg_idx: repIdx,
+        dur_type: 6, // repeat_until_steps_cmplt
+        dur_val: workIdx,
+        tgt_type: 255,
+        tgt_val: setsCount,
+        intensity: 255,
+        ex_cat: 65535,
+        ex_name: 65535,
+        ex_weight: 65535,
+        wt_unit: 65535,
+        notes: ""
+      });
+    });
+
+    steps.push({
+      msg_idx: steps.length,
+      dur_type: 5,
+      dur_val: 0xffffffff,
+      tgt_type: 2,
+      tgt_val: 0,
+      intensity: 3, // cooldown
+      ex_cat: 2,
+      ex_name: 65535,
+      ex_weight: 65535,
+      wt_unit: 1,
+      notes: "Vuelta a la calma"
+    });
+
+    // 2. Definition Local 1 -> workout (GMSG 26)
+    pushBytes([
+      0x41, 0x00, 0x00, 26, 0x00, 5,
+      5, 4, 0x8c,
+      8, 32, 0x07,
+      6, 2, 0x84,
+      4, 1, 0x00,
+      11, 1, 0x00
+    ]);
+    pushBytes([0x01]);
+    pushU32(32);
+    chunks.push(encodeFixedUtf8(getStrengthWatchName(dayObj, weekNum), 32));
+    pushU16(steps.length);
+    pushBytes([10, 20]); // sport=10 (training), sub_sport=20 (strength_training)
+
+    // 3. Definition Local 2 -> workout_step (GMSG 27)
+    pushBytes([
+      0x42, 0x00, 0x00, 27, 0x00, 12,
+      2, 4, 0x86,
+      4, 4, 0x86,
+      8, 32, 0x07,
+      254, 2, 0x84,
+      10, 2, 0x84,
+      11, 2, 0x84,
+      12, 2, 0x84,
+      13, 2, 0x84,
+      0, 32, 0x07,
+      1, 1, 0x00,
+      3, 1, 0x00,
+      7, 1, 0x00
+    ]);
+    steps.forEach((st) => {
+      const tInfo = usedTitles.get(`${st.ex_cat}:${st.ex_name}`);
+      const stepTitle = tInfo ? tInfo.title_es : "";
+      pushBytes([0x02]);
+      pushU32(st.dur_val);
+      pushU32(st.tgt_val);
+      chunks.push(encodeFixedUtf8(st.notes, 32));
+      pushU16(st.msg_idx);
+      pushU16(st.ex_cat);
+      pushU16(st.ex_name);
+      pushU16(st.ex_weight);
+      pushU16(st.wt_unit);
+      chunks.push(encodeFixedUtf8(stepTitle, 32));
+      pushBytes([st.dur_type, st.tgt_type, st.intensity]);
+    });
+
+    // 4. Definition Local 3 -> exercise_title (GMSG 264)
+    pushBytes([
+      0x43, 0x00, 0x00, 0x08, 0x01, 4,
+      2, 48, 0x07,
+      254, 2, 0x84,
+      0, 2, 0x84,
+      1, 2, 0x84
+    ]);
+    let titleIdx = 0;
+    usedTitles.forEach((info) => {
+      pushBytes([0x03]);
+      chunks.push(encodeFixedUtf8(info.title_es, 48));
+      pushU16(titleIdx++);
+      pushU16(info.cat_id);
+      pushU16(info.name_id);
+    });
+
+    let dataSize = 0;
+    chunks.forEach((c) => (dataSize += c.length));
+
+    const header12 = new Uint8Array(12);
+    header12[0] = 14;
+    header12[1] = 0x10;
+    new DataView(header12.buffer).setUint16(2, 2113, true);
+    new DataView(header12.buffer).setUint32(4, dataSize, true);
+    header12[8] = 0x2e; // '.'
+    header12[9] = 0x46; // 'F'
+    header12[10] = 0x49; // 'I'
+    header12[11] = 0x54; // 'T'
+
+    const hdrCrc = fitCrc16(header12);
+    const fullNoCrc = new Uint8Array(14 + dataSize);
+    fullNoCrc.set(header12, 0);
+    new DataView(fullNoCrc.buffer).setUint16(12, hdrCrc, true);
+
+    let offset = 14;
+    chunks.forEach((c) => {
+      fullNoCrc.set(c, offset);
+      offset += c.length;
+    });
+
+    const fileCrc = fitCrc16(fullNoCrc);
+    const finalFit = new Uint8Array(fullNoCrc.length + 2);
+    finalFit.set(fullNoCrc, 0);
+    new DataView(finalFit.buffer).setUint16(fullNoCrc.length, fileCrc, true);
+    return finalFit;
+  }
+
+  /**
+   * Construye el objeto JSON oficial de Garmin Connect Workout para un día de fuerza.
+   */
+  function buildGarminConnectJsonForDay(dayObj, weekNum) {
+    const workoutSteps = [];
+    let stepOrder = 1;
+
+    workoutSteps.push({
+      type: "ExecutableStepDTO",
+      stepId: null,
+      stepOrder: stepOrder++,
+      childStepId: null,
+      description: "Movilidad articular y series de aproximación",
+      stepType: { stepTypeId: 1, stepTypeKey: "warmup", displayOrder: 1 },
+      endCondition: { conditionTypeId: 1, conditionTypeKey: "lap.button", displayOrder: 1, displayable: true },
+      endConditionValue: null,
+      targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 },
+      category: "CARDIO",
+      exerciseName: null
+    });
+
+    let childId = 1;
+    (dayObj.steps || []).forEach((st) => {
+      if (!st.lift) return;
+      const cfg = getLiftConfig(st.lift);
+      const setsCount = parseInt(st.sets, 10) || 3;
+      const repsCount = parseRepsCount(st.reps);
+      const weightKg = calcLiftWeight(st.lift, st.pct || 0);
+      const restSec = cfg.rest_sec || 90;
+
+      const workStep = {
+        type: "ExecutableStepDTO",
+        stepId: null,
+        stepOrder: stepOrder + 1,
+        childStepId: childId,
+        description: `${Math.round((st.pct || 0) * 100)}% 1RM · ${st.rir || "RIR 2"}`,
+        stepType: { stepTypeId: 3, stepTypeKey: "interval", displayOrder: 3 },
+        endCondition: { conditionTypeId: 10, conditionTypeKey: "reps", displayOrder: 10, displayable: true },
+        endConditionValue: repsCount,
+        targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 },
+        category: cfg.category_key,
+        exerciseName: cfg.exercise_key
+      };
+
+      if (weightKg > 0) {
+        workStep.weightValue = weightKg;
+        workStep.weightUnit = { unitId: 8, unitKey: "kilogram", factor: 1000.0 };
+      }
+
+      const restStep = {
+        type: "ExecutableStepDTO",
+        stepId: null,
+        stepOrder: stepOrder + 2,
+        childStepId: childId,
+        description: "Descanso entre series",
+        stepType: { stepTypeId: 4, stepTypeKey: "rest", displayOrder: 4 },
+        endCondition: { conditionTypeId: 2, conditionTypeKey: "time", displayOrder: 2, displayable: true },
+        endConditionValue: restSec,
+        targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 }
+      };
+
+      workoutSteps.push({
+        type: "RepeatGroupDTO",
+        stepId: null,
+        stepOrder: stepOrder,
+        stepType: { stepTypeId: 6, stepTypeKey: "repeat", displayOrder: 6 },
+        childStepId: childId,
+        numberOfIterations: setsCount,
+        smartRepeat: false,
+        endCondition: { conditionTypeId: 7, conditionTypeKey: "iterations", displayOrder: 7, displayable: false },
+        endConditionValue: setsCount,
+        workoutSteps: [workStep, restStep]
+      });
+
+      stepOrder += 3;
+      childId++;
+    });
+
+    workoutSteps.push({
+      type: "ExecutableStepDTO",
+      stepId: null,
+      stepOrder: stepOrder,
+      childStepId: null,
+      description: "Vuelta a la calma",
+      stepType: { stepTypeId: 2, stepTypeKey: "cooldown", displayOrder: 2 },
+      endCondition: { conditionTypeId: 1, conditionTypeKey: "lap.button", displayOrder: 1, displayable: true },
+      endConditionValue: null,
+      targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 },
+      category: "CARDIO",
+      exerciseName: null
+    });
+
+    const wktTitle = `HYBRID · Sem ${weekNum} · ${dayObj.day_name} (${(dayObj.modality_label || "").split("·")[1]?.trim() || "Fuerza"})`;
+    return {
+      workoutName: wktTitle,
+      description: resolveDynamicText(dayObj.summary || ""),
+      sportType: { sportTypeId: 5, sportTypeKey: "strength_training", displayOrder: 5 },
+      subSportType: null,
+      workoutSegments: [
+        {
+          segmentOrder: 1,
+          sportType: { sportTypeId: 5, sportTypeKey: "strength_training", displayOrder: 5 },
+          workoutSteps: workoutSteps
+        }
+      ]
+    };
+  }
+
+  function triggerBlobDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 300);
+  }
+
+  function downloadFitForDay(dayObj, weekNum) {
+    const bytes = buildFitWorkoutBinaryForDay(dayObj, weekNum);
+    const safeDay = (dayObj.day_name || "Gym").replace(/[^a-zA-Z0-9]/g, "");
+    const fname = `Garmin_Sem${weekNum}_${safeDay}.fit`;
+    triggerBlobDownload(new Blob([bytes], { type: "application/octet-stream" }), fname);
+  }
+
+  function downloadJsonForDay(dayObj, weekNum) {
+    const obj = buildGarminConnectJsonForDay(dayObj, weekNum);
+    const safeDay = (dayObj.day_name || "Gym").replace(/[^a-zA-Z0-9]/g, "");
+    const fname = `GarminConnect_Sem${weekNum}_${safeDay}.json`;
+    triggerBlobDownload(
+      new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" }),
+      fname
+    );
+  }
+
+  function buildGarminConnectConsoleScript(strengthDays, weekNum) {
+    const payloads = strengthDays.map((d) => buildGarminConnectJsonForDay(d, weekNum));
+    return `(async () => {
+  const workouts = ${JSON.stringify(payloads)};
+  let token = null;
+  try {
+    const rawTok = localStorage.getItem("token");
+    if (rawTok) token = JSON.parse(rawTok).access_token;
+  } catch (e) {}
+  const headers = {
+    "Accept": "application/json, text/plain, */*",
+    "Content-Type": "application/json;charset=UTF-8",
+    "NK": "NT",
+    "DI-Backend": "connectapi.garmin.com"
+  };
+  if (token) headers["Authorization"] = "Bearer " + token;
+  console.log("⏳ Subiendo 3 entrenamientos de fuerza a Garmin Connect...");
+  for (const w of workouts) {
+    const res = await fetch("/gc-api/workout-service/workout", {
+      method: "POST",
+      credentials: "include",
+      headers,
+      body: JSON.stringify(w)
+    });
+    if (res.ok) {
+      const created = await res.json();
+      console.log("✅ Creado en Garmin Connect:", created.workoutName, "ID:", created.workoutId);
+    } else {
+      console.error("❌ Error creando", w.workoutName, res.status, await res.text());
+    }
+  }
+  alert("✅ ¡Los 3 entrenamientos de fuerza (Lunes, Martes y Jueves) se han añadido a tu Garmin Connect! Recarga la página para verlos y enviarlos al reloj.");
+  location.reload();
+})();`;
+  }
+
+  // ============================================================================
+  // TEMA Y NAVEGACIÓN
+  // ============================================================================
 
   function initTheme() {
     const saved = localStorage.getItem(STORAGE_KEY_THEME) || "dark";
@@ -279,6 +727,12 @@
     const weeks = currentBlock.weeks || [];
     const currentWeek = weeks[selectedWeekIdx] || weeks[0];
 
+    // Actualizar título del banner de sincronización con el reloj
+    const bannerTitleEl = document.getElementById("watch-sync-week-title");
+    if (bannerTitleEl) {
+      bannerTitleEl.textContent = `3 Sesiones de Fuerza de la Semana ${currentWeek.week_number} (Lunes, Martes y Jueves) Listas para tu Reloj Garmin`;
+    }
+
     // 1. Render Block Selector Pills
     const blockBar = document.getElementById("block-selector-pills");
     if (blockBar) {
@@ -358,13 +812,14 @@
       `;
     }
 
-    // 4. Render 7 Day Cards with dynamically calculated 1RM weights
+    // 4. Render 7 Day Cards with dynamically calculated 1RM weights & Garmin Watch export buttons
     const daysGrid = document.getElementById("week-days-grid");
     if (daysGrid) {
       daysGrid.innerHTML = days
         .map((d) => {
           const isDone = !!completedMap[d.id];
           const isToday = d.id === "b1-w1-d1";
+          const isStrength = d.modality === "strength";
           const noteVal = (notesMap[d.id] || "").replace(/"/g, "&quot;");
           const resolvedTitle = resolveDynamicText(d.title);
           const resolvedSummary = resolveDynamicText(d.summary);
@@ -379,6 +834,19 @@
           `
             )
             .join("");
+
+          const watchExportBar = isStrength
+            ? `
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:2px;">
+              <button type="button" class="icon-btn" data-dl-fit="${d.id}" style="font-size:0.73rem; padding:5px 10px; border-color:rgba(14,165,233,0.4); color:var(--accent-garmin);">
+                ⌚ Descargar .FIT Reloj (${d.day_name})
+              </button>
+              <button type="button" class="icon-btn" data-dl-json="${d.id}" style="font-size:0.73rem; padding:5px 10px;">
+                📤 JSON Garmin Connect
+              </button>
+            </div>
+          `
+            : "";
 
           return `
           <article class="day-card ${isToday ? "today-highlight" : ""} ${isDone ? "completed" : ""}" id="card-${d.id}">
@@ -407,6 +875,8 @@
             <div class="workout-blocks-list">
               ${stepsHtml}
             </div>
+
+            ${watchExportBar}
 
             <div class="day-logger">
               <input
@@ -439,13 +909,33 @@
           saveLocalState();
         });
       });
+
+      daysGrid.querySelectorAll("[data-dl-fit]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-dl-fit");
+          const dayObj = days.find((x) => x.id === id);
+          if (dayObj) downloadFitForDay(dayObj, currentWeek.week_number);
+        });
+      });
+
+      daysGrid.querySelectorAll("[data-dl-json]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-dl-json");
+          const dayObj = days.find((x) => x.id === id);
+          if (dayObj) downloadJsonForDay(dayObj, currentWeek.week_number);
+        });
+      });
     }
   }
 
-  /**
-   * Renderiza la pestaña interactiva "1RM & Pesos Gimnasio"
-   * y el estimador submáximo Epley/Brzycki.
-   */
+  function getActiveWeekStrengthDays() {
+    if (!planData || !planData.blocks) return { weekNum: 1, strengthDays: [] };
+    const block = planData.blocks[selectedBlockIdx] || planData.blocks[0];
+    const week = (block.weeks || [])[selectedWeekIdx] || block.weeks[0];
+    const strengthDays = (week.days || []).filter((d) => d.modality === "strength");
+    return { weekNum: week.week_number || 1, strengthDays };
+  }
+
   function renderOneRmTab() {
     const selectEl = document.getElementById("est-lift-select");
     if (selectEl && selectEl.options.length === 0) {
@@ -514,7 +1004,6 @@
       })
       .join("");
 
-    // Bind - / + step buttons
     gridEl.querySelectorAll("[data-rm-step]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const key = btn.getAttribute("data-rm-step");
@@ -530,7 +1019,6 @@
       });
     });
 
-    // Bind direct numeric input change
     gridEl.querySelectorAll("[data-rm-input]").forEach((inp) => {
       inp.addEventListener("change", () => {
         const key = inp.getAttribute("data-rm-input");
@@ -566,7 +1054,6 @@
     if (reps === 1) {
       return { liftKey, cfg, est: roundToStep(weight, cfg.step || 2.5) };
     }
-    // Media entre fórmula Epley y Brzycki para mayor precisión entre 2 y 12 repeticiones
     const epley = weight * (1 + reps / 30);
     const brzycki = reps < 36 ? weight * (36 / (37 - reps)) : epley;
     const rawEst = (epley + brzycki) / 2;
@@ -941,14 +1428,12 @@
     loadLocalState();
     initTheme();
 
-    // Navigation bindings
     document.querySelectorAll("[data-tab-target]").forEach((btn) => {
       btn.addEventListener("click", () => {
         switchTab(btn.getAttribute("data-tab-target"));
       });
     });
 
-    // Quick jump buttons between Plan and 1RM tab
     const jumpTo1RmBtn = document.getElementById("btn-jump-to-1rm");
     if (jumpTo1RmBtn) {
       jumpTo1RmBtn.addEventListener("click", () => switchTab("tab-1rm"));
@@ -958,7 +1443,56 @@
       backToPlanBtn.addEventListener("click", () => switchTab("tab-plan"));
     }
 
-    // Reset 1RM button
+    // Botón para saltar al banner de sincronización con el reloj
+    const openWatchSyncBtn = document.getElementById("btn-open-watch-sync");
+    if (openWatchSyncBtn) {
+      openWatchSyncBtn.addEventListener("click", () => {
+        const banner = document.getElementById("garmin-watch-sync-banner");
+        const instr = document.getElementById("garmin-script-instructions");
+        if (instr) instr.style.display = "block";
+        if (banner) banner.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    }
+
+    // Copiar Script de Auto-Subida de los 3 días de fuerza a Garmin Connect Web
+    const copyScriptBtn = document.getElementById("btn-copy-garmin-connect-script");
+    if (copyScriptBtn) {
+      copyScriptBtn.addEventListener("click", async () => {
+        const { weekNum, strengthDays } = getActiveWeekStrengthDays();
+        const code = buildGarminConnectConsoleScript(strengthDays, weekNum);
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch (_) {
+          const ta = document.createElement("textarea");
+          ta.value = code;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+        const instr = document.getElementById("garmin-script-instructions");
+        if (instr) instr.style.display = "block";
+        const origText = copyScriptBtn.textContent;
+        copyScriptBtn.textContent = "✓ Script Copiado (Abre Garmin Connect)";
+        setTimeout(() => {
+          copyScriptBtn.textContent = origText;
+        }, 2500);
+      });
+    }
+
+    // Descargar los 3 archivos .FIT de la semana activa (Lunes, Martes y Jueves)
+    const dlAllFitBtn = document.getElementById("btn-download-all-fit");
+    if (dlAllFitBtn) {
+      dlAllFitBtn.addEventListener("click", () => {
+        const { weekNum, strengthDays } = getActiveWeekStrengthDays();
+        strengthDays.forEach((d, idx) => {
+          setTimeout(() => {
+            downloadFitForDay(d, weekNum);
+          }, idx * 350);
+        });
+      });
+    }
+
     const reset1RmBtn = document.getElementById("btn-reset-1rm");
     if (reset1RmBtn) {
       reset1RmBtn.addEventListener("click", () => {
@@ -970,7 +1504,6 @@
       });
     }
 
-    // Submaximal 1RM estimator bindings
     ["est-lift-select", "est-weight-input", "est-reps-input"].forEach((id) => {
       const el = document.getElementById(id);
       if (el) {
@@ -999,7 +1532,6 @@
       });
     }
 
-    // Activity filter bindings
     document.querySelectorAll("[data-act-filter]").forEach((btn) => {
       btn.addEventListener("click", () => {
         activityFilter = btn.getAttribute("data-act-filter");

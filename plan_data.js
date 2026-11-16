@@ -12,6 +12,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 107.5,
+    cat_id: 0,
+    name_id: 1,
+    category_key: "BENCH_PRESS",
+    exercise_key: "BARBELL_BENCH_PRESS",
+    title_es: "Press de banca con barra",
+    rest_sec: 120,
     note: "Barra olímpica + discos (redondeo a 2.5 kg)"
   },
   {
@@ -21,6 +27,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 105.0,
+    cat_id: 28,
+    name_id: 6,
+    category_key: "SQUAT",
+    exercise_key: "BARBELL_BACK_SQUAT",
+    title_es: "Sentadilla trasera con barra",
+    rest_sec: 150,
     note: "Barra olímpica + discos (redondeo a 2.5 kg)"
   },
   {
@@ -30,6 +42,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 150.0,
+    cat_id: 8,
+    name_id: 0,
+    category_key: "DEADLIFT",
+    exercise_key: "BARBELL_DEADLIFT",
+    title_es: "Peso muerto con barra",
+    rest_sec: 150,
     note: "Barra olímpica + discos (redondeo a 2.5 kg)"
   },
   {
@@ -39,6 +57,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 100.0,
+    cat_id: 8,
+    name_id: 23,
+    category_key: "DEADLIFT",
+    exercise_key: "ROMANIAN_DEADLIFT",
+    title_es: "Peso muerto rumano",
+    rest_sec: 105,
     note: "Cadena posterior / isquios (redondeo a 2.5 kg)"
   },
   {
@@ -48,6 +72,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 62.5,
+    cat_id: 24,
+    name_id: 25,
+    category_key: "SHOULDER_PRESS",
+    exercise_key: "MILITARY_PRESS",
+    title_es: "Press militar con barra",
+    rest_sec: 105,
     note: "Empuje vertical estricto (redondeo a 2.5 kg)"
   },
   {
@@ -57,6 +87,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg/manc",
     step: 1.0,
     default_1rm: 38.0,
+    cat_id: 0,
+    name_id: 9,
+    category_key: "BENCH_PRESS",
+    exercise_key: "INCLINE_DUMBBELL_BENCH_PRESS",
+    title_es: "Press inclinado con mancuernas",
+    rest_sec: 90,
     note: "Peso de cada mancuerna individual"
   },
   {
@@ -66,6 +102,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg/manc",
     step: 1.0,
     default_1rm: 36.0,
+    cat_id: 23,
+    name_id: 2,
+    category_key: "ROW",
+    exercise_key: "DUMBBELL_ROW",
+    title_es: "Remo con mancuerna",
+    rest_sec: 75,
     note: "Peso de la mancuerna en remo a una mano"
   },
   {
@@ -75,6 +117,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 85.0,
+    cat_id: 23,
+    name_id: 45,
+    category_key: "ROW",
+    exercise_key: "BARBELL_ROW",
+    title_es: "Remo con barra",
+    rest_sec: 90,
     note: "Tracción horizontal con barra o polea"
   },
   {
@@ -84,6 +132,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg lastre",
     step: 1.25,
     default_1rm: 15.0,
+    cat_id: 21,
+    name_id: 38,
+    category_key: "PULL_UP",
+    exercise_key: "PULL_UP",
+    title_es: "Dominadas",
+    rest_sec: 105,
     note: "Kg extra en cinturón para 1 repetición máxima (0 = solo peso corporal)"
   },
   {
@@ -93,6 +147,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg/manc",
     step: 1.0,
     default_1rm: 24.0,
+    cat_id: 17,
+    name_id: 27,
+    category_key: "LUNGE",
+    exercise_key: "FRONT_FOOT_ELEVATED_DUMBBELL_SPLIT_SQUAT",
+    title_es: "Sentadilla búlgara con mancuerna",
+    rest_sec: 75,
     note: "Peso de cada mancuerna en zancada búlgara"
   },
   {
@@ -102,6 +162,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 90.0,
+    cat_id: 12,
+    name_id: 1,
+    category_key: "HIP_RAISE",
+    exercise_key: "BARBELL_HIP_THRUST_ON_FLOOR",
+    title_es: "Hip Thrust con barra",
+    rest_sec: 90,
     note: "Extensión de cadera pesada"
   },
   {
@@ -111,6 +177,12 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 50.0,
+    cat_id: 1,
+    name_id: 6,
+    category_key: "CALF_RAISE",
+    exercise_key: "WEIGHTED_SEATED_CALF_RAISE",
+    title_es: "Elevación de gemelos sentado",
+    rest_sec: 60,
     note: "Carga en máquina de gemelo/sóleo sentado"
   }
 ];

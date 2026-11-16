@@ -1,0 +1,386 @@
+{
+  "workoutName": "HYBRID · Lunes Upper A",
+  "description": "Gimnasio Día 1 (Lunes) — Tren Superior A (Empuje & Tracción Pesada). Generado por Garmin Hybrid Coach.",
+  "sportType": {
+    "sportTypeId": 5,
+    "sportTypeKey": "strength_training",
+    "displayOrder": 5
+  },
+  "subSportType": null,
+  "workoutSegments": [
+    {
+      "segmentOrder": 1,
+      "sportType": {
+        "sportTypeId": 5,
+        "sportTypeKey": "strength_training",
+        "displayOrder": 5
+      },
+      "workoutSteps": [
+        {
+          "type": "ExecutableStepDTO",
+          "stepId": null,
+          "stepOrder": 1,
+          "childStepId": null,
+          "description": "Movilidad escapular/cadera y series de aproximación",
+          "stepType": {
+            "stepTypeId": 1,
+            "stepTypeKey": "warmup",
+            "displayOrder": 1
+          },
+          "endCondition": {
+            "conditionTypeId": 1,
+            "conditionTypeKey": "lap.button",
+            "displayOrder": 1,
+            "displayable": true
+          },
+          "endConditionValue": null,
+          "targetType": {
+            "workoutTargetTypeId": 1,
+            "workoutTargetTypeKey": "no.target",
+            "displayOrder": 1
+          },
+          "category": "CARDIO",
+          "exerciseName": null
+        },
+        {
+          "type": "RepeatGroupDTO",
+          "stepId": null,
+          "stepOrder": 2,
+          "stepType": {
+            "stepTypeId": 6,
+            "stepTypeKey": "repeat",
+            "displayOrder": 6
+          },
+          "childStepId": 1,
+          "numberOfIterations": 4,
+          "smartRepeat": false,
+          "endCondition": {
+            "conditionTypeId": 7,
+            "conditionTypeKey": "iterations",
+            "displayOrder": 7,
+            "displayable": false
+          },
+          "endConditionValue": 4.0,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 3,
+              "childStepId": 1,
+              "description": "RIR 2",
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "endCondition": {
+                "conditionTypeId": 10,
+                "conditionTypeKey": "reps",
+                "displayOrder": 10,
+                "displayable": true
+              },
+              "endConditionValue": 6.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              },
+              "category": "BENCH_PRESS",
+              "exerciseName": "BARBELL_BENCH_PRESS",
+              "weightValue": 85.0,
+              "weightUnit": {
+                "unitId": 8,
+                "unitKey": "kilogram",
+                "factor": 1000.0
+              }
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 4,
+              "childStepId": 1,
+              "description": "Descanso entre series",
+              "stepType": {
+                "stepTypeId": 4,
+                "stepTypeKey": "rest",
+                "displayOrder": 4
+              },
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 120.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "RepeatGroupDTO",
+          "stepId": null,
+          "stepOrder": 5,
+          "stepType": {
+            "stepTypeId": 6,
+            "stepTypeKey": "repeat",
+            "displayOrder": 6
+          },
+          "childStepId": 2,
+          "numberOfIterations": 4,
+          "smartRepeat": false,
+          "endCondition": {
+            "conditionTypeId": 7,
+            "conditionTypeKey": "iterations",
+            "displayOrder": 7,
+            "displayable": false
+          },
+          "endConditionValue": 4.0,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 6,
+              "childStepId": 2,
+              "description": "RIR 1-2",
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "endCondition": {
+                "conditionTypeId": 10,
+                "conditionTypeKey": "reps",
+                "displayOrder": 10,
+                "displayable": true
+              },
+              "endConditionValue": 6.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              },
+              "category": "PULL_UP",
+              "exerciseName": "PULL_UP",
+              "weightValue": 7.5,
+              "weightUnit": {
+                "unitId": 8,
+                "unitKey": "kilogram",
+                "factor": 1000.0
+              }
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 7,
+              "childStepId": 2,
+              "description": "Descanso entre series",
+              "stepType": {
+                "stepTypeId": 4,
+                "stepTypeKey": "rest",
+                "displayOrder": 4
+              },
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 105.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "RepeatGroupDTO",
+          "stepId": null,
+          "stepOrder": 8,
+          "stepType": {
+            "stepTypeId": 6,
+            "stepTypeKey": "repeat",
+            "displayOrder": 6
+          },
+          "childStepId": 3,
+          "numberOfIterations": 3,
+          "smartRepeat": false,
+          "endCondition": {
+            "conditionTypeId": 7,
+            "conditionTypeKey": "iterations",
+            "displayOrder": 7,
+            "displayable": false
+          },
+          "endConditionValue": 3.0,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 9,
+              "childStepId": 3,
+              "description": "RIR 2",
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "endCondition": {
+                "conditionTypeId": 10,
+                "conditionTypeKey": "reps",
+                "displayOrder": 10,
+                "displayable": true
+              },
+              "endConditionValue": 8.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              },
+              "category": "SHOULDER_PRESS",
+              "exerciseName": "MILITARY_PRESS",
+              "weightValue": 47.5,
+              "weightUnit": {
+                "unitId": 8,
+                "unitKey": "kilogram",
+                "factor": 1000.0
+              }
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 10,
+              "childStepId": 3,
+              "description": "Descanso entre series",
+              "stepType": {
+                "stepTypeId": 4,
+                "stepTypeKey": "rest",
+                "displayOrder": 4
+              },
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 90.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "RepeatGroupDTO",
+          "stepId": null,
+          "stepOrder": 11,
+          "stepType": {
+            "stepTypeId": 6,
+            "stepTypeKey": "repeat",
+            "displayOrder": 6
+          },
+          "childStepId": 4,
+          "numberOfIterations": 3,
+          "smartRepeat": false,
+          "endCondition": {
+            "conditionTypeId": 7,
+            "conditionTypeKey": "iterations",
+            "displayOrder": 7,
+            "displayable": false
+          },
+          "endConditionValue": 3.0,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 12,
+              "childStepId": 4,
+              "description": "RIR 1-2",
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "endCondition": {
+                "conditionTypeId": 10,
+                "conditionTypeKey": "reps",
+                "displayOrder": 10,
+                "displayable": true
+              },
+              "endConditionValue": 10.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              },
+              "category": "ROW",
+              "exerciseName": "DUMBBELL_ROW",
+              "weightValue": 28.0,
+              "weightUnit": {
+                "unitId": 8,
+                "unitKey": "kilogram",
+                "factor": 1000.0
+              }
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 13,
+              "childStepId": 4,
+              "description": "Descanso entre series",
+              "stepType": {
+                "stepTypeId": 4,
+                "stepTypeKey": "rest",
+                "displayOrder": 4
+              },
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 75.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "ExecutableStepDTO",
+          "stepId": null,
+          "stepOrder": 14,
+          "childStepId": null,
+          "description": "Vuelta a la calma y movilidad",
+          "stepType": {
+            "stepTypeId": 2,
+            "stepTypeKey": "cooldown",
+            "displayOrder": 2
+          },
+          "endCondition": {
+            "conditionTypeId": 1,
+            "conditionTypeKey": "lap.button",
+            "displayOrder": 1,
+            "displayable": true
+          },
+          "endConditionValue": null,
+          "targetType": {
+            "workoutTargetTypeId": 1,
+            "workoutTargetTypeKey": "no.target",
+            "displayOrder": 1
+          },
+          "category": "CARDIO",
+          "exerciseName": null
+        }
+      ]
+    }
+  ]
+}
