@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 """
-Generador Oficial de Entrenamientos de Fuerza para Reloj Garmin Fenix 8 (.FIT binario y .JSON Garmin Connect).
-Utiliza EXACTAMENTE el mismo esquema binario de definiciones (GMSG 0 de 7 campos, GMSG 26 de 21 campos,
-GMSG 27 de 30 campos y GMSG 264 de 5 campos) extraído de los entrenamientos 'WE ARE BACK!'
-del reloj Garmin Fenix 8 del atleta (garmin_product=4536).
+Generador y Validador Oficial de Entrenamientos de Fuerza para Reloj Garmin Fenix 8 (.FIT binario y .JSON Garmin Connect).
+Cumple al 100% con la especificación oficial Garmin FIT SDK Workout File Profile (FileType=5 WORKOUT):
+- GMSG 0 (file_id): type=5 (workout), manufacturer=1 (garmin), garmin_product=4536 (Fenix 8), number=1..3 (slot válido)
+- GMSG 49 (file_creator): software_version=100
+- GMSG 26 (workout): sport=10 (training), sub_sport=20 (strength_training), capabilities=32, num_valid_steps, wkt_name
+- GMSG 27 (workout_step): campos oficiales del FIT SDK (sin campos residuales de actividad 37/38)
+- GMSG 264 (exercise_title): diccionario de nombres de ejercicio en español para la pantalla del Fenix 8
+Incluye autodiagnóstico con garmin_fit_sdk y genera workouts/diagnostics_log.json.
 """
 
 from __future__ import annotations
 
+import datetime
 import json
 import struct
 from pathlib import Path
@@ -16,6 +21,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIT_DIR = REPO_ROOT / "workouts" / "fit"
 JSON_DIR = REPO_ROOT / "workouts" / "json"
+DIAG_FILE = REPO_ROOT / "workouts" / "diagnostics_log.json"
 
 GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
     "bench": {
@@ -26,27 +32,17 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "title_es": "Press de banca con barra",
         "rest_sec": 120,
         "step": 2.5,
-        "default_1rm": 107.5,
-    },
-    "incline_db": {
-        "cat_id": 0,
-        "name_id": 9,
-        "category_key": "BENCH_PRESS",
-        "exercise_key": "INCLINE_DUMBBELL_BENCH_PRESS",
-        "title_es": "Press de banca Inclinada con mancuernas",
-        "rest_sec": 90,
-        "step": 1.0,
-        "default_1rm": 38.0,
+        "default_1rm": 120.0,
     },
     "squat": {
         "cat_id": 28,
         "name_id": 6,
         "category_key": "SQUAT",
         "exercise_key": "BARBELL_BACK_SQUAT",
-        "title_es": "Sentadilla trasera",
+        "title_es": "Sentadilla trasera con barra",
         "rest_sec": 150,
         "step": 2.5,
-        "default_1rm": 105.0,
+        "default_1rm": 130.0,
     },
     "deadlift": {
         "cat_id": 8,
@@ -56,7 +52,7 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "title_es": "Peso muerto con barra",
         "rest_sec": 150,
         "step": 2.5,
-        "default_1rm": 150.0,
+        "default_1rm": 160.0,
     },
     "rdl": {
         "cat_id": 8,
@@ -66,27 +62,37 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "title_es": "Peso muerto rumano",
         "rest_sec": 105,
         "step": 2.5,
-        "default_1rm": 100.0,
+        "default_1rm": 140.0,
     },
     "ohp": {
         "cat_id": 24,
         "name_id": 25,
         "category_key": "SHOULDER_PRESS",
         "exercise_key": "MILITARY_PRESS",
-        "title_es": "Press militar",
+        "title_es": "Press militar con barra",
         "rest_sec": 105,
         "step": 2.5,
-        "default_1rm": 62.5,
+        "default_1rm": 65.0,
+    },
+    "incline_db": {
+        "cat_id": 0,
+        "name_id": 9,
+        "category_key": "BENCH_PRESS",
+        "exercise_key": "INCLINE_DUMBBELL_BENCH_PRESS",
+        "title_es": "Press inclinado con mancuernas",
+        "rest_sec": 90,
+        "step": 1.0,
+        "default_1rm": 40.0,
     },
     "row_db": {
         "cat_id": 23,
         "name_id": 2,
         "category_key": "ROW",
         "exercise_key": "DUMBBELL_ROW",
-        "title_es": "Remo con mancuernas",
+        "title_es": "Remo con mancuerna",
         "rest_sec": 75,
         "step": 1.0,
-        "default_1rm": 36.0,
+        "default_1rm": 40.0,
     },
     "row_bar": {
         "cat_id": 23,
@@ -96,7 +102,7 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "title_es": "Remo con barra",
         "rest_sec": 90,
         "step": 2.5,
-        "default_1rm": 85.0,
+        "default_1rm": 90.0,
     },
     "pullup_load": {
         "cat_id": 21,
@@ -106,17 +112,17 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "title_es": "Dominadas",
         "rest_sec": 105,
         "step": 1.25,
-        "default_1rm": 15.0,
+        "default_1rm": 20.0,
     },
     "split_squat_db": {
         "cat_id": 17,
         "name_id": 27,
         "category_key": "LUNGE",
         "exercise_key": "FRONT_FOOT_ELEVATED_DUMBBELL_SPLIT_SQUAT",
-        "title_es": "Sentadilla búlgara con mancuerna y pie anterior elevado",
+        "title_es": "Sentadilla bulgara con mancuerna",
         "rest_sec": 75,
         "step": 1.0,
-        "default_1rm": 24.0,
+        "default_1rm": 35.0,
     },
     "hip_thrust": {
         "cat_id": 12,
@@ -133,17 +139,17 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "name_id": 6,
         "category_key": "CALF_RAISE",
         "exercise_key": "WEIGHTED_SEATED_CALF_RAISE",
-        "title_es": "Levantamiento de gemelos sentado",
+        "title_es": "Elevacion de gemelos sentado",
         "rest_sec": 60,
         "step": 2.5,
-        "default_1rm": 50.0,
+        "default_1rm": 60.0,
     },
     "core": {
         "cat_id": 5,
         "name_id": 6,
         "category_key": "CORE",
         "exercise_key": "CABLE_CORE_PRESS",
-        "title_es": "Press de tronco con polea",
+        "title_es": "Press Pallof / Core",
         "rest_sec": 45,
         "step": 1.0,
         "default_1rm": 0.0,
@@ -188,108 +194,129 @@ def calc_weight_kg(lift_key: str, pct: float, one_rm_map: dict[str, float]) -> f
     return max(cfg["step"], round_step(rm * pct, cfg["step"]))
 
 
-def pack_fenix8_step(
+def pack_sdk_workout_step(
     msg_idx: int,
+    step_name: str,
     dur_type: int,
     dur_val: int,
     tgt_type: int,
     tgt_val: int,
     intensity: int,
+    notes: str,
     ex_cat: int,
     ex_name: int,
     ex_weight: int,
     wt_unit: int,
-    f18: int,
-    sec_tgt_type: int,
-    sec_tgt_val: int,
 ) -> bytes:
     """
-    Empaqueta los 30 campos exactos de GMSG 27 (workout_step) tal como los espera el Garmin Fenix 8:
-    [(2, 4, 134), (4, 4, 134), (5, 4, 134), (6, 4, 134), (8, 200, 7), (20, 4, 134), (21, 4, 134), (22, 4, 134),
-     (37, 4, 0), (38, 4, 140), (254, 2, 132), (10, 2, 132), (11, 2, 132), (12, 2, 132), (13, 2, 132),
-     (27, 2, 132), (31, 2, 132), (0, 25, 7), (1, 1, 0), (3, 1, 0), (7, 1, 0), (9, 1, 0), (17, 1, 0),
-     (18, 1, 0), (19, 1, 0), (26, 1, 2), (28, 37, 7), (30, 1, 0), (35, 1, 2), (36, 1, 0)]
+    Empaqueta los 15 campos oficiales del Garmin FIT SDK para GMSG 27 (workout_step):
+    - 2 (duration_value, uint32, 4B)
+    - 4 (target_value, uint32, 4B)
+    - 5 (custom_target_value_low, uint32, 4B)
+    - 6 (custom_target_value_high, uint32, 4B)
+    - 254 (message_index, uint16, 2B)
+    - 10 (exercise_category, uint16, 2B)
+    - 11 (exercise_name, uint16, 2B)
+    - 12 (exercise_weight, uint16, 2B, scale 100)
+    - 13 (weight_display_unit, uint16, 2B, 1=kg)
+    - 0 (wkt_step_name, string, 32B)
+    - 8 (notes, string, 64B)
+    - 1 (duration_type, enum, 1B)
+    - 3 (target_type, enum, 1B)
+    - 7 (intensity, enum, 1B)
+    - 9 (equipment, enum, 1B)
     """
     return struct.pack(
-        "<BIIII200sIIIIIHHHHHHH25sBBBBBBBB37sBBB",
-        0x02,  # record header local msg 2
-        dur_val,  # 2: duration_value (uint32)
-        tgt_val,  # 4: target_value (uint32)
-        0xFFFFFFFF,  # 5: custom_target_value_low
-        0xFFFFFFFF,  # 6: custom_target_value_high
-        b"\x00" * 200,  # 8: notes (200 bytes empty, clean like Fenix 8 WE ARE BACK!)
-        sec_tgt_val,  # 20: secondary_target_value (uint32)
-        0xFFFFFFFF,  # 21: secondary_custom_target_value_low
-        0xFFFFFFFF,  # 22: secondary_custom_target_value_high
-        0xFFFFFFFF,  # 37
-        0,  # 38
-        msg_idx,  # 254: message_index (uint16)
-        ex_cat,  # 10: exercise_category (uint16)
-        ex_name,  # 11: exercise_name (uint16)
-        ex_weight,  # 12: exercise_weight (uint16, scale 100)
-        wt_unit,  # 13: weight_display_unit (uint16, 1=kg)
-        0xFFFF,  # 27
-        0xFFFF,  # 31
-        b"\x00" * 25,  # 0: wkt_step_name (25 bytes empty, resolved via GMSG 264)
-        dur_type,  # 1: duration_type
-        tgt_type,  # 3: target_type
-        intensity,  # 7: intensity
-        0xFF,  # 9: equipment
-        0xFF,  # 17
-        f18,  # 18: repeat flag (0 on repeat steps, 255 otherwise)
-        sec_tgt_type,  # 19: secondary_target_type (2 on rest steps, 255 otherwise)
-        0xFF,  # 26
-        b"\x00" * 37,  # 28
-        0xFF,  # 30
-        0xFF,  # 35
-        0xFF,  # 36
+        "<BIIIIHHHHH32s64sBBBB",
+        0x02,  # local msg 2
+        dur_val,
+        tgt_val,
+        0xFFFFFFFF,
+        0xFFFFFFFF,
+        msg_idx,
+        ex_cat,
+        ex_name,
+        ex_weight,
+        wt_unit,
+        fixed_str(step_name, 32),
+        fixed_str(notes, 64),
+        dur_type,
+        tgt_type,
+        intensity,
+        0xFF,  # equipment
     )
 
 
-def build_fit_workout_bytes(workout_name: str, exercises: list[dict[str, Any]], one_rm_map: dict[str, float]) -> bytes:
+def build_fit_workout_bytes(
+    workout_name: str,
+    exercises: list[dict[str, Any]],
+    one_rm_map: dict[str, float],
+    workout_slot_number: int = 1,
+) -> bytes:
     """
-    Codifica un archivo .FIT de entrenamiento (FileType=5 WORKOUT) con las definiciones
-    exactas del reloj Garmin Fenix 8 del usuario (idéntico a 'WE ARE BACK!').
+    Codifica un archivo .FIT de entrenamiento (FileType=5 WORKOUT) siguiendo de forma
+    100% canónica el perfil oficial Garmin FIT SDK para importación directa en GARMIN/NewFiles
+    o GARMIN/Workouts de un Garmin Fenix 8.
     """
     body = bytearray()
 
-    # 1. Definition Local 0 -> file_id (GMSG 0, 7 campos exactos de Fenix 8)
-    # [(3, 4, 140), (4, 4, 134), (7, 4, 134), (1, 2, 132), (2, 2, 132), (5, 2, 132), (0, 1, 0)]
+    # 1. Definition Local 0 -> file_id (GMSG 0, 6 campos oficiales FIT SDK)
+    # [(3, 4, 140=serial_number), (4, 4, 134=time_created), (1, 2, 132=manufacturer),
+    #  (2, 2, 132=product), (5, 2, 132=number), (0, 1, 0=type)]
     body.extend(
         bytes([
-            0x40, 0x00, 0x00, 0x00, 0x00, 7,
+            0x40, 0x00, 0x00, 0x00, 0x00, 6,
             3, 4, 140,
             4, 4, 134,
-            7, 4, 134,
             1, 2, 132,
             2, 2, 132,
             5, 2, 132,
             0, 1, 0,
         ])
     )
-    body.extend(struct.pack("<BIIIHHHB", 0x00, 3620636920, 1161433847, 0xFFFFFFFF, 1, 4536, 0xFFFF, 5))
+    body.extend(
+        struct.pack(
+            "<BIIHHHB",
+            0x00,
+            3620636920,  # serial_number
+            1161433847 + workout_slot_number,  # time_created (FIT epoch)
+            1,  # manufacturer = garmin
+            4536,  # garmin_product = Fenix 8
+            workout_slot_number,  # number (1, 2, 3 - slot válido de workout)
+            5,  # type = 5 (WORKOUT)
+        )
+    )
+
+    # 2. Definition Local 4 -> file_creator (GMSG 49, 2 campos oficiales FIT SDK)
+    body.extend(
+        bytes([
+            0x44, 0x00, 0x00, 49, 0x00, 2,
+            0, 2, 132,  # software_version (uint16)
+            1, 1, 2,    # hardware_version (uint8)
+        ])
+    )
+    body.extend(struct.pack("<BHB", 0x04, 100, 0xFF))
 
     # Construir pasos de entrenamiento y tabla de títulos de ejercicio
     step_packets: list[bytes] = []
     used_titles: list[tuple[int, int, str]] = []
     seen_title_keys: set[tuple[int, int]] = set()
 
-    # Step 0: Warmup
+    # Step 0: Warmup (open / lap button)
     step_packets.append(
-        pack_fenix8_step(
+        pack_sdk_workout_step(
             msg_idx=0,
-            dur_type=5,
+            step_name="Calentamiento Movilidad",
+            dur_type=5,  # open (lap button)
             dur_val=0xFFFFFFFF,
-            tgt_type=2,
+            tgt_type=2,  # open
             tgt_val=0,
-            intensity=2,
-            ex_cat=2,
+            intensity=2,  # warmup
+            notes="Movilidad articular y aproximacion",
+            ex_cat=2,  # cardio
             ex_name=0xFFFF,
             ex_weight=0xFFFF,
             wt_unit=1,
-            f18=0xFF,
-            sec_tgt_type=0xFF,
-            sec_tgt_val=0,
         )
     )
 
@@ -302,23 +329,24 @@ def build_fit_workout_bytes(workout_name: str, exercises: list[dict[str, Any]], 
         weight_kg = calc_weight_kg(lift_key, pct, one_rm_map)
         ex_weight_val = int(round(weight_kg * 100)) if weight_kg > 0 else 0xFFFF
         rest_ms = int(ex.get("rest_sec", cfg["rest_sec"])) * 1000
+        pct_str = f"{int(round(pct * 100))}% 1RM" if pct > 0 else "Peso corporal"
+        step_note = f"{sets_count}x{reps_count} @ {weight_kg:g}kg ({pct_str})" if weight_kg > 0 else f"{sets_count}x{reps_count} ({pct_str})"
 
         work_idx = len(step_packets)
         step_packets.append(
-            pack_fenix8_step(
+            pack_sdk_workout_step(
                 msg_idx=work_idx,
+                step_name=cfg["title_es"],
                 dur_type=29,  # reps
                 dur_val=reps_count,
-                tgt_type=2,
+                tgt_type=2,  # open
                 tgt_val=0,
                 intensity=0,  # active
+                notes=step_note,
                 ex_cat=cfg["cat_id"],
                 ex_name=cfg["name_id"],
                 ex_weight=ex_weight_val,
                 wt_unit=1,  # kilogram
-                f18=0xFF,
-                sec_tgt_type=0xFF,
-                sec_tgt_val=0,
             )
         )
         tkey = (cfg["cat_id"], cfg["name_id"])
@@ -328,182 +356,127 @@ def build_fit_workout_bytes(workout_name: str, exercises: list[dict[str, Any]], 
 
         rest_idx = len(step_packets)
         step_packets.append(
-            pack_fenix8_step(
+            pack_sdk_workout_step(
                 msg_idx=rest_idx,
+                step_name="Descanso",
                 dur_type=0,  # time (ms)
                 dur_val=rest_ms,
-                tgt_type=2,
+                tgt_type=2,  # open
                 tgt_val=0,
                 intensity=1,  # rest
+                notes=f"Recuperacion {int(rest_ms // 1000)}s",
                 ex_cat=0xFFFF,
                 ex_name=0xFFFF,
                 ex_weight=0xFFFF,
                 wt_unit=1,
-                f18=0xFF,
-                sec_tgt_type=2,
-                sec_tgt_val=0,
             )
         )
 
         rep_idx = len(step_packets)
         step_packets.append(
-            pack_fenix8_step(
+            pack_sdk_workout_step(
                 msg_idx=rep_idx,
+                step_name="",
                 dur_type=6,  # repeat_until_steps_cmplt
                 dur_val=work_idx,
-                tgt_type=0xFF,
+                tgt_type=2,
                 tgt_val=sets_count,
                 intensity=0xFF,
+                notes="",
                 ex_cat=0xFFFF,
                 ex_name=0xFFFF,
                 ex_weight=0xFFFF,
                 wt_unit=0xFFFF,
-                f18=0,  # smart_repeat = 0
-                sec_tgt_type=0xFF,
-                sec_tgt_val=0xFFFFFFFF,
             )
         )
 
     # Cooldown step
     step_packets.append(
-        pack_fenix8_step(
+        pack_sdk_workout_step(
             msg_idx=len(step_packets),
-            dur_type=5,
+            step_name="Vuelta a la calma",
+            dur_type=5,  # open
             dur_val=0xFFFFFFFF,
             tgt_type=2,
             tgt_val=0,
             intensity=3,  # cooldown
+            notes="Estiramientos suaves",
             ex_cat=2,
             ex_name=0xFFFF,
             ex_weight=0xFFFF,
             wt_unit=1,
-            f18=0xFF,
-            sec_tgt_type=0xFF,
-            sec_tgt_val=0,
         )
     )
-    if (2, 0xFFFF) not in seen_title_keys:
-        used_titles.append((2, 0xFFFF, "Cardio"))
 
-    # 2. Definition Local 1 -> workout (GMSG 26, 21 campos exactos de Fenix 8)
-    # [(5, 4, 140), (8, 32, 7), (10, 4, 134), (16, 16, 13), (17, 160, 7), (21, 4, 134), (22, 4, 134),
-    #  (6, 2, 132), (7, 2, 132), (12, 2, 132), (14, 2, 132), (20, 2, 132), (4, 1, 0), (9, 1, 0),
-    #  (11, 1, 0), (13, 1, 0), (15, 1, 0), (18, 37, 7), (19, 1, 0), (23, 1, 0), (24, 1, 0)]
+    # 3. Definition Local 1 -> workout (GMSG 26, 5 campos canónicos del FIT SDK)
+    # [(5, 4, 140=capabilities), (8, 32, 7=wkt_name), (6, 2, 132=num_valid_steps),
+    #  (4, 1, 0=sport), (11, 1, 0=sub_sport)]
     body.extend(
         bytes([
-            0x41, 0x00, 0x00, 26, 0x00, 21,
+            0x41, 0x00, 0x00, 26, 0x00, 5,
             5, 4, 140,
             8, 32, 7,
-            10, 4, 134,
-            16, 16, 13,
-            17, 160, 7,
-            21, 4, 134,
-            22, 4, 134,
             6, 2, 132,
-            7, 2, 132,
-            12, 2, 132,
-            14, 2, 132,
-            20, 2, 132,
             4, 1, 0,
-            9, 1, 0,
             11, 1, 0,
-            13, 1, 0,
-            15, 1, 0,
-            18, 37, 7,
-            19, 1, 0,
-            23, 1, 0,
-            24, 1, 0,
         ])
     )
     body.extend(
         struct.pack(
-            "<BI32sI16s160sIIHHHHHBBBBB37sBBB",
+            "<BI32sHBB",
             0x01,
-            32,  # 5: capabilities
-            fixed_str(workout_name, 32),  # 8: wkt_name (ASCII clean)
-            0,  # 10
-            b"\xff" * 16,  # 16
-            b"\x00" * 160,  # 17: wkt_description
-            0,  # 21
-            0,  # 22
-            len(step_packets),  # 6: num_valid_steps
-            0xFFFF,  # 7
-            0xFFFF,  # 12
-            0xFFFF,  # 14
-            0xFFFF,  # 20
-            10,  # 4: sport = training
-            1,  # 9
-            20,  # 11: sub_sport = strength_training
-            0xFF,  # 13
-            0xFF,  # 15
-            b"\x00" * 37,  # 18
-            0xFF,  # 19
-            0,  # 23
-            0,  # 24
+            32,  # capabilities = 32
+            fixed_str(workout_name, 32),
+            len(step_packets),  # num_valid_steps
+            10,  # sport = 10 (training)
+            20,  # sub_sport = 20 (strength_training)
         )
     )
 
-    # 3. Definition Local 2 -> workout_step (GMSG 27, 30 campos exactos de Fenix 8)
+    # 4. Definition Local 2 -> workout_step (GMSG 27, 15 campos canónicos FIT SDK)
     body.extend(
         bytes([
-            0x42, 0x00, 0x00, 27, 0x00, 30,
+            0x42, 0x00, 0x00, 27, 0x00, 15,
             2, 4, 134,
             4, 4, 134,
             5, 4, 134,
             6, 4, 134,
-            8, 200, 7,
-            20, 4, 134,
-            21, 4, 134,
-            22, 4, 134,
-            37, 4, 0,
-            38, 4, 140,
             254, 2, 132,
             10, 2, 132,
             11, 2, 132,
             12, 2, 132,
             13, 2, 132,
-            27, 2, 132,
-            31, 2, 132,
-            0, 25, 7,
+            0, 32, 7,
+            8, 64, 7,
             1, 1, 0,
             3, 1, 0,
             7, 1, 0,
             9, 1, 0,
-            17, 1, 0,
-            18, 1, 0,
-            19, 1, 0,
-            26, 1, 2,
-            28, 37, 7,
-            30, 1, 0,
-            35, 1, 2,
-            36, 1, 0,
         ])
     )
     for pkt in step_packets:
         body.extend(pkt)
 
-    # 4. Definition Local 3 -> exercise_title (GMSG 264, 5 campos exactos de Fenix 8)
-    # [(2, 200, 7), (254, 2, 132), (0, 2, 132), (1, 2, 132), (3, 2, 132)]
+    # 5. Definition Local 3 -> exercise_title (GMSG 264, 4 campos canónicos FIT SDK)
+    # [(2, 64, 7=wkt_step_name), (254, 2, 132=message_index), (0, 2, 132=exercise_category), (1, 2, 132=exercise_name)]
     body.extend(
         bytes([
-            0x43, 0x00, 0x00, 0x08, 0x01, 5,
-            2, 200, 7,
+            0x43, 0x00, 0x00, 0x08, 0x01, 4,
+            2, 64, 7,
             254, 2, 132,
             0, 2, 132,
             1, 2, 132,
-            3, 2, 132,
         ])
     )
     for idx, (cat_id, name_id, title_es) in enumerate(used_titles):
         body.extend(
             struct.pack(
-                "<B200sHHHH",
+                "<B64sHHH",
                 0x03,
-                fixed_str(title_es, 200),
+                fixed_str(title_es, 64),
                 idx,
                 cat_id,
                 name_id,
-                0xFFFF,
             )
         )
 
@@ -517,10 +490,17 @@ def build_fit_workout_bytes(workout_name: str, exercises: list[dict[str, Any]], 
     return full_no_crc + struct.pack("<H", file_crc)
 
 
-def build_garmin_connect_workout_json(workout_name: str, description: str, exercises: list[dict[str, Any]], one_rm_map: dict[str, float]) -> dict[str, Any]:
+def build_garmin_connect_workout_json(
+    workout_name: str,
+    description: str,
+    exercises: list[dict[str, Any]],
+    one_rm_map: dict[str, float],
+) -> dict[str, Any]:
     workout_steps: list[dict[str, Any]] = []
     step_order = 1
 
+    # En Garmin Connect workout-service, los pasos warmup/cooldown en strength_training
+    # NO deben llevar category="CARDIO" con exerciseName=None para evitar HTTP 400.
     workout_steps.append({
         "type": "ExecutableStepDTO",
         "stepId": None,
@@ -531,8 +511,6 @@ def build_garmin_connect_workout_json(workout_name: str, description: str, exerc
         "endCondition": {"conditionTypeId": 1, "conditionTypeKey": "lap.button", "displayOrder": 1, "displayable": True},
         "endConditionValue": None,
         "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target", "displayOrder": 1},
-        "category": "CARDIO",
-        "exerciseName": None,
     })
     step_order += 1
 
@@ -553,7 +531,7 @@ def build_garmin_connect_workout_json(workout_name: str, description: str, exerc
             "stepId": None,
             "stepOrder": work_step_order,
             "childStepId": child_id,
-            "description": ex.get("rir", "RIR 1-2"),
+            "description": f"{int(round(pct * 100))}% 1RM · {ex.get('rir', 'RIR 1-2')}",
             "stepType": {"stepTypeId": 3, "stepTypeKey": "interval", "displayOrder": 3},
             "endCondition": {"conditionTypeId": 10, "conditionTypeKey": "reps", "displayOrder": 10, "displayable": True},
             "endConditionValue": float(reps_count),
@@ -601,8 +579,6 @@ def build_garmin_connect_workout_json(workout_name: str, description: str, exerc
         "endCondition": {"conditionTypeId": 1, "conditionTypeKey": "lap.button", "displayOrder": 1, "displayable": True},
         "endConditionValue": None,
         "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target", "displayOrder": 1},
-        "category": "CARDIO",
-        "exerciseName": None,
     })
 
     return {
@@ -622,10 +598,11 @@ def build_garmin_connect_workout_json(workout_name: str, description: str, exerc
 
 THREE_CORE_DAYS = [
     {
+        "slot": 1,
         "slug": "Lunes_Upper_A",
         "day": "Lunes",
         "workoutName": "HYBRID Lunes Upper A",
-        "description": "Gimnasio Dia 1 (Lunes) - Tren Superior A (Empuje & Traccion Pesada). Generado por Garmin Hybrid Coach.",
+        "description": "Gimnasio Dia 1 (Lunes) - Tren Superior A (Empuje & Traccion Pesada). 1RM Actualizados: Banca 120kg, Dominadas +20kg, Militar 65kg, Remo Manc 40kg.",
         "exercises": [
             {"lift": "bench", "sets": 4, "reps": 6, "pct": 0.80, "rest_sec": 120, "rir": "RIR 2"},
             {"lift": "pullup_load", "sets": 4, "reps": 6, "pct": 0.50, "rest_sec": 105, "rir": "RIR 1-2"},
@@ -634,10 +611,11 @@ THREE_CORE_DAYS = [
         ],
     },
     {
+        "slot": 2,
         "slug": "Martes_Lower",
         "day": "Martes",
         "workoutName": "HYBRID Martes Lower",
-        "description": "Gimnasio Dia 2 (Martes) - Tren Inferior Hibrido & Proteccion Tendon de Aquiles. 72h antes de las series del viernes.",
+        "description": "Gimnasio Dia 2 (Martes) - Tren Inferior Hibrido & Proteccion Tendon de Aquiles. 1RM Actualizados: Sentadilla 130kg, RDL 140kg, Bulgara 35kg, Soleo 60kg.",
         "exercises": [
             {"lift": "squat", "sets": 4, "reps": 5, "pct": 0.80, "rest_sec": 150, "rir": "RIR 2 (concentrica explosiva)"},
             {"lift": "rdl", "sets": 3, "reps": 6, "pct": 0.78, "rest_sec": 105, "rir": "RIR 2 (isquios)"},
@@ -647,10 +625,11 @@ THREE_CORE_DAYS = [
         ],
     },
     {
+        "slot": 3,
         "slug": "Jueves_Upper_B",
         "day": "Jueves",
         "workoutName": "HYBRID Jueves Upper B",
-        "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Traccion Horizontal & Hipertrofia Funcional). Piernas frescas para el viernes.",
+        "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Traccion Horizontal & Hipertrofia). 1RM Actualizados: Militar 65kg, Remo Barra 90kg, Inclinado 40kg.",
         "exercises": [
             {"lift": "ohp", "sets": 4, "reps": 6, "pct": 0.80, "rest_sec": 120, "rir": "RIR 1-2"},
             {"lift": "row_bar", "sets": 4, "reps": 8, "pct": 0.78, "rest_sec": 90, "rir": "RIR 1-2"},
@@ -661,20 +640,98 @@ THREE_CORE_DAYS = [
 ]
 
 
+def validate_fit_with_sdk(fit_bytes: bytes) -> dict[str, Any]:
+    try:
+        from garmin_fit_sdk import Decoder, Stream
+        stream1 = Stream.from_byte_array(bytearray(fit_bytes))
+        decoder1 = Decoder(stream1)
+        is_fit = decoder1.is_fit()
+        integrity = decoder1.check_integrity()
+
+        stream2 = Stream.from_byte_array(bytearray(fit_bytes))
+        decoder2 = Decoder(stream2)
+        messages, errors = decoder2.read()
+        steps = messages.get("workout_step_mesgs", [])
+        titles = messages.get("exercise_title_mesgs", [])
+        wkt = messages.get("workout_mesgs", [{}])[0]
+        fid = messages.get("file_id_mesgs", [{}])[0]
+        return {
+            "sdk_available": True,
+            "is_fit": bool(is_fit),
+            "crc_integrity_ok": bool(integrity),
+            "errors": [str(e) for e in errors],
+            "message_keys": list(messages.keys()),
+            "file_type": fid.get("type"),
+            "garmin_product": fid.get("garmin_product"),
+            "workout_slot_number": fid.get("number"),
+            "workout_name": wkt.get("wkt_name"),
+            "sport": wkt.get("sport"),
+            "sub_sport": wkt.get("sub_sport"),
+            "num_valid_steps": wkt.get("num_valid_steps"),
+            "decoded_steps_count": len(steps),
+            "decoded_titles_count": len(titles),
+            "sample_work_steps": [
+                {
+                    "idx": s.get("message_index"),
+                    "name": s.get("wkt_step_name"),
+                    "cat": s.get("exercise_category"),
+                    "ex_name": s.get("exercise_name"),
+                    "reps": s.get("duration_value"),
+                    "weight_kg": s.get("exercise_weight"),
+                    "notes": s.get("notes"),
+                }
+                for s in steps
+                if s.get("intensity") == "active"
+            ],
+        }
+    except Exception as exc:
+        return {"sdk_available": False, "errors": [str(exc)]}
+
+
 def main() -> None:
     FIT_DIR.mkdir(parents=True, exist_ok=True)
     JSON_DIR.mkdir(parents=True, exist_ok=True)
     one_rm_map = {k: v["default_1rm"] for k, v in GARMIN_EXERCISES.items()}
 
+    diag_report: dict[str, Any] = {
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
+        "default_1rm_kg": one_rm_map,
+        "root_causes_explained": [
+            "CAUSA 1 (Garmin Connect Web 'Importar Datos'): La página connect.garmin.com/modern/import-data SOLO acepta archivos .FIT de ACTIVIDADES completadas (FileType=4) y rechaza TODOS los archivos .FIT de ENTRENAMIENTOS (FileType=5) con un error genérico sin log.",
+            "CAUSA 2 (Cable USB GARMIN/NewFiles): En la versión anterior, file_id.number era 0xFFFF (65535) y workout_step incluía campos internos de post-actividad (37, 38). Ahora se usa el perfil canónico Garmin FIT SDK (file_id.number=1..3, file_creator GMSG 49 y workout_step de 15 campos oficiales).",
+            "CAUSA 3 (Garmin Connect API JSON): Los pasos warmup/cooldown llevaban category='CARDIO' con exerciseName=null, lo que en algunos endpoints /workout-service/workout devuelve HTTP 400. Corregido y añadido panel de Log en Vivo."
+        ],
+        "files": [],
+    }
+
     for d in THREE_CORE_DAYS:
-        fit_bytes = build_fit_workout_bytes(d["workoutName"], d["exercises"], one_rm_map)
+        fit_bytes = build_fit_workout_bytes(d["workoutName"], d["exercises"], one_rm_map, workout_slot_number=d["slot"])
         fit_path = FIT_DIR / f"{d['slug']}.fit"
         fit_path.write_bytes(fit_bytes)
 
         json_obj = build_garmin_connect_workout_json(d["workoutName"], d["description"], d["exercises"], one_rm_map)
         json_path = JSON_DIR / f"{d['slug']}.json"
         json_path.write_text(json.dumps(json_obj, indent=2, ensure_ascii=False))
-        print(f"[OK] Generado {fit_path.name} ({len(fit_bytes)} bytes) y {json_path.name}")
+
+        sdk_check = validate_fit_with_sdk(fit_bytes)
+        diag_report["files"].append({
+            "slug": d["slug"],
+            "day": d["day"],
+            "fit_file": f"workouts/fit/{fit_path.name}",
+            "json_file": f"workouts/json/{json_path.name}",
+            "size_bytes": len(fit_bytes),
+            "header_crc_hex": hex(struct.unpack("<H", fit_bytes[12:14])[0]),
+            "file_crc_hex": hex(struct.unpack("<H", fit_bytes[-2:])[0]),
+            "sdk_validation": sdk_check,
+        })
+        print(
+            f"[OK] {fit_path.name} ({len(fit_bytes)} B) | "
+            f"is_fit={sdk_check.get('is_fit')} | integrity={sdk_check.get('crc_integrity_ok')} | "
+            f"errors={sdk_check.get('errors')}"
+        )
+
+    DIAG_FILE.write_text(json.dumps(diag_report, indent=2, ensure_ascii=False))
+    print(f"[OK] Log de diagnóstico guardado en {DIAG_FILE}")
 
 
 if __name__ == "__main__":

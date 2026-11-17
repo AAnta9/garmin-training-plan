@@ -1,0 +1,241 @@
+{
+  "generated_at": "2026-11-17 16:50:20 UTC",
+  "default_1rm_kg": {
+    "bench": 120.0,
+    "squat": 130.0,
+    "deadlift": 160.0,
+    "rdl": 140.0,
+    "ohp": 65.0,
+    "incline_db": 40.0,
+    "row_db": 40.0,
+    "row_bar": 90.0,
+    "pullup_load": 20.0,
+    "split_squat_db": 35.0,
+    "hip_thrust": 90.0,
+    "soleus": 60.0,
+    "core": 0.0
+  },
+  "root_causes_explained": [
+    "CAUSA 1 (Garmin Connect Web 'Importar Datos'): La página connect.garmin.com/modern/import-data SOLO acepta archivos .FIT de ACTIVIDADES completadas (FileType=4) y rechaza TODOS los archivos .FIT de ENTRENAMIENTOS (FileType=5) con un error genérico sin log.",
+    "CAUSA 2 (Cable USB GARMIN/NewFiles): En la versión anterior, file_id.number era 0xFFFF (65535) y workout_step incluía campos internos de post-actividad (37, 38). Ahora se usa el perfil canónico Garmin FIT SDK (file_id.number=1..3, file_creator GMSG 49 y workout_step de 15 campos oficiales).",
+    "CAUSA 3 (Garmin Connect API JSON): Los pasos warmup/cooldown llevaban category='CARDIO' con exerciseName=null, lo que en algunos endpoints /workout-service/workout devuelve HTTP 400. Corregido y añadido panel de Log en Vivo."
+  ],
+  "files": [
+    {
+      "slug": "Lunes_Upper_A",
+      "day": "Lunes",
+      "fit_file": "workouts/fit/Lunes_Upper_A.fit",
+      "json_file": "workouts/json/Lunes_Upper_A.json",
+      "size_bytes": 2265,
+      "header_crc_hex": "0x63de",
+      "file_crc_hex": "0x9e7",
+      "sdk_validation": {
+        "sdk_available": true,
+        "is_fit": true,
+        "crc_integrity_ok": true,
+        "errors": [],
+        "message_keys": [
+          "file_id_mesgs",
+          "file_creator_mesgs",
+          "workout_mesgs",
+          "workout_step_mesgs",
+          "exercise_title_mesgs"
+        ],
+        "file_type": "workout",
+        "garmin_product": "fenix8",
+        "workout_slot_number": 1,
+        "workout_name": "HYBRID Lunes Upper A",
+        "sport": "training",
+        "sub_sport": "strength_training",
+        "num_valid_steps": 14,
+        "decoded_steps_count": 14,
+        "decoded_titles_count": 4,
+        "sample_work_steps": [
+          {
+            "idx": 1,
+            "name": "Press de banca con barra",
+            "cat": "bench_press",
+            "ex_name": 1,
+            "reps": 6,
+            "weight_kg": 95.0,
+            "notes": "4x6 @ 95kg (80% 1RM)"
+          },
+          {
+            "idx": 4,
+            "name": "Dominadas",
+            "cat": "pull_up",
+            "ex_name": 38,
+            "reps": 6,
+            "weight_kg": 10.0,
+            "notes": "4x6 @ 10kg (50% 1RM)"
+          },
+          {
+            "idx": 7,
+            "name": "Press militar con barra",
+            "cat": "shoulder_press",
+            "ex_name": 25,
+            "reps": 8,
+            "weight_kg": 50.0,
+            "notes": "3x8 @ 50kg (76% 1RM)"
+          },
+          {
+            "idx": 10,
+            "name": "Remo con mancuerna",
+            "cat": "row",
+            "ex_name": 2,
+            "reps": 10,
+            "weight_kg": 31.0,
+            "notes": "3x10 @ 31kg (78% 1RM)"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "Martes_Lower",
+      "day": "Martes",
+      "fit_file": "workouts/fit/Martes_Lower.fit",
+      "json_file": "workouts/json/Martes_Lower.json",
+      "size_bytes": 2717,
+      "header_crc_hex": "0x60f8",
+      "file_crc_hex": "0x5bd",
+      "sdk_validation": {
+        "sdk_available": true,
+        "is_fit": true,
+        "crc_integrity_ok": true,
+        "errors": [],
+        "message_keys": [
+          "file_id_mesgs",
+          "file_creator_mesgs",
+          "workout_mesgs",
+          "workout_step_mesgs",
+          "exercise_title_mesgs"
+        ],
+        "file_type": "workout",
+        "garmin_product": "fenix8",
+        "workout_slot_number": 2,
+        "workout_name": "HYBRID Martes Lower",
+        "sport": "training",
+        "sub_sport": "strength_training",
+        "num_valid_steps": 17,
+        "decoded_steps_count": 17,
+        "decoded_titles_count": 5,
+        "sample_work_steps": [
+          {
+            "idx": 1,
+            "name": "Sentadilla trasera con barra",
+            "cat": "squat",
+            "ex_name": 6,
+            "reps": 5,
+            "weight_kg": 105.0,
+            "notes": "4x5 @ 105kg (80% 1RM)"
+          },
+          {
+            "idx": 4,
+            "name": "Peso muerto rumano",
+            "cat": "deadlift",
+            "ex_name": 23,
+            "reps": 6,
+            "weight_kg": 110.0,
+            "notes": "3x6 @ 110kg (78% 1RM)"
+          },
+          {
+            "idx": 7,
+            "name": "Sentadilla bulgara con mancuern",
+            "cat": "lunge",
+            "ex_name": 27,
+            "reps": 8,
+            "weight_kg": 26.0,
+            "notes": "3x8 @ 26kg (75% 1RM)"
+          },
+          {
+            "idx": 10,
+            "name": "Elevacion de gemelos sentado",
+            "cat": "calf_raise",
+            "ex_name": 6,
+            "reps": 12,
+            "weight_kg": 47.5,
+            "notes": "4x12 @ 47.5kg (78% 1RM)"
+          },
+          {
+            "idx": 13,
+            "name": "Press Pallof / Core",
+            "cat": "core",
+            "ex_name": 6,
+            "reps": 12,
+            "weight_kg": null,
+            "notes": "3x12 (Peso corporal)"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "Jueves_Upper_B",
+      "day": "Jueves",
+      "fit_file": "workouts/fit/Jueves_Upper_B.fit",
+      "json_file": "workouts/json/Jueves_Upper_B.json",
+      "size_bytes": 2265,
+      "header_crc_hex": "0x63de",
+      "file_crc_hex": "0xe5a1",
+      "sdk_validation": {
+        "sdk_available": true,
+        "is_fit": true,
+        "crc_integrity_ok": true,
+        "errors": [],
+        "message_keys": [
+          "file_id_mesgs",
+          "file_creator_mesgs",
+          "workout_mesgs",
+          "workout_step_mesgs",
+          "exercise_title_mesgs"
+        ],
+        "file_type": "workout",
+        "garmin_product": "fenix8",
+        "workout_slot_number": 3,
+        "workout_name": "HYBRID Jueves Upper B",
+        "sport": "training",
+        "sub_sport": "strength_training",
+        "num_valid_steps": 14,
+        "decoded_steps_count": 14,
+        "decoded_titles_count": 4,
+        "sample_work_steps": [
+          {
+            "idx": 1,
+            "name": "Press militar con barra",
+            "cat": "shoulder_press",
+            "ex_name": 25,
+            "reps": 6,
+            "weight_kg": 52.5,
+            "notes": "4x6 @ 52.5kg (80% 1RM)"
+          },
+          {
+            "idx": 4,
+            "name": "Remo con barra",
+            "cat": "row",
+            "ex_name": 45,
+            "reps": 8,
+            "weight_kg": 70.0,
+            "notes": "4x8 @ 70kg (78% 1RM)"
+          },
+          {
+            "idx": 7,
+            "name": "Press inclinado con mancuernas",
+            "cat": "bench_press",
+            "ex_name": 9,
+            "reps": 8,
+            "weight_kg": 32.0,
+            "notes": "3x8 @ 32kg (79% 1RM)"
+          },
+          {
+            "idx": 10,
+            "name": "Dominadas",
+            "cat": "pull_up",
+            "ex_name": 38,
+            "reps": 8,
+            "weight_kg": null,
+            "notes": "3x8 (Peso corporal)"
+          }
+        ]
+      }
+    }
+  ]
+}

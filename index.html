@@ -31,19 +31,22 @@
 
         <nav class="desktop-nav" aria-label="Navegación Principal">
           <button type="button" class="nav-tab-btn active" data-tab-target="tab-plan" id="nav-desktop-plan">
-            Plan Híbrido (Bloques 4 Sem)
+            Plan Híbrido (4×3)
           </button>
           <button type="button" class="nav-tab-btn" data-tab-target="tab-1rm" id="nav-desktop-1rm">
-            1RM &amp; Pesos Gimnasio
+            1RM &amp; Pesos
+          </button>
+          <button type="button" class="nav-tab-btn" data-tab-target="tab-nutrition" id="nav-desktop-nutrition">
+            🥗 Nutrición (100→90kg)
           </button>
           <button type="button" class="nav-tab-btn" data-tab-target="tab-analytics" id="nav-desktop-analytics">
-            Análisis 6 Meses Garmin
+            Análisis 6M Garmin
           </button>
           <button type="button" class="nav-tab-btn" data-tab-target="tab-activities" id="nav-desktop-activities">
-            Historial Sesiones
+            Historial
           </button>
           <button type="button" class="nav-tab-btn" data-tab-target="tab-profile" id="nav-desktop-profile">
-            Zonas FC &amp; Marcas
+            Zonas &amp; PRs
           </button>
         </nav>
 
@@ -97,6 +100,9 @@
             <button type="button" class="icon-btn" id="btn-jump-to-1rm" style="border-color:var(--accent-strength); color:var(--accent-strength); font-weight:700;">
               ⚙️ Ajustar mis 1RM
             </button>
+            <button type="button" class="icon-btn" id="btn-jump-to-nutrition" style="border-color:var(--accent-run); color:var(--accent-run); font-weight:700;">
+              🥗 Plan Nutricional 100→90kg
+            </button>
           </div>
         </div>
 
@@ -107,37 +113,69 @@
 
         <div class="week-overview-panel" id="week-overview-container"></div>
 
-        <!-- Panel Rápido de Sincronización con el Reloj Garmin (Lunes, Martes y Jueves de la semana activa) -->
+        <!-- Panel Rápido de Sincronización con el Reloj Garmin + Consola de Diagnóstico con Log -->
         <div class="surface-card" id="garmin-watch-sync-banner" style="border-color:rgba(14,165,233,0.35); background:linear-gradient(135deg, rgba(14,165,233,0.09), rgba(139,92,246,0.08));">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;">
-            <div style="max-width:740px;">
+            <div style="max-width:700px;">
               <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                <span class="modality-tag" style="background:rgba(14,165,233,0.2); color:var(--accent-garmin);">⌚ GARMIN WATCH WORKOUTS</span>
+                <span class="modality-tag" style="background:rgba(14,165,233,0.2); color:var(--accent-garmin);">⌚ GARMIN WATCH WORKOUTS + LOG DIAGNÓSTICO</span>
                 <strong style="font-size:0.95rem;" id="watch-sync-week-title">3 Sesiones de Fuerza de esta Semana Listas para tu Reloj</strong>
               </div>
               <p style="font-size:0.81rem; color:var(--text-secondary); margin-top:4px; line-height:1.5;">
-                Incluyen series, repeticiones, tiempos de descanso (60–150s), categorías oficiales de tu Garmin (<em>Press Banca, Sentadilla, Peso Muerto, RDL, Militar, Dominadas, Remo, Sóleo</em>) y <strong>los kilos exactos calculados con tus 1RM actuales</strong>.
-                Puedes <strong>descargar los archivos <code>.FIT</code></strong> directos para el reloj o <strong>subirlos en 1 clic a Garmin Connect Web</strong>.
+                <strong>⚠️ ¿Por qué daba error sin log al importar?</strong>
+                La página <em>«Importar Datos»</em> de Garmin Connect Web (<code>connect.garmin.com/modern/import-data</code>) <strong>solo acepta actividades ya realizadas (<code>FileType=4</code>)</strong> y rechaza todos los entrenamientos planificados (<code>FileType=5</code>) sin mostrar ningún log.
+                Para cargar entrenamientos tienes <strong>2 vías oficiales con Log en Vivo</strong>:
+                <strong>(1) Script 1-Clic con Ventana de Log en Vivo</strong> en Garmin Connect Web, o
+                <strong>(2) Cable USB</strong> copiando los <code>.FIT</code> (validados con el SDK oficial de Garmin) a la carpeta <code>GARMIN/NewFiles</code> del reloj.
               </p>
             </div>
             <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
               <button type="button" class="icon-btn" id="btn-copy-garmin-connect-script" style="background:var(--accent-garmin); color:#082f49; border-color:transparent; font-weight:700;">
-                🚀 Copiar Script 1-Clic Garmin Connect (3 Días)
+                🚀 Copiar Script 1-Clic (Con Log en Pantalla)
               </button>
               <button type="button" class="icon-btn" id="btn-download-all-fit" style="border-color:var(--accent-strength); color:var(--accent-strength); font-weight:700;">
-                ⬇️ Descargar los 3 .FIT (Lun · Mar · Jue)
+                ⬇️ Descargar 3 .FIT (USB NewFiles)
+              </button>
+              <button type="button" class="icon-btn" id="btn-toggle-fit-diag" style="border-color:var(--border-strong); font-weight:700;">
+                🔍 Ver Log &amp; Validador .FIT/.JSON
               </button>
             </div>
           </div>
+
           <div id="garmin-script-instructions" style="display:none; margin-top:10px; padding:12px; border-radius:10px; background:var(--bg-elevated); border:1px solid var(--border-subtle); font-size:0.8rem;">
             <div style="font-weight:700; color:var(--accent-run); margin-bottom:4px;">
-              ✓ ¡Script copiado al portapapeles con tus 1RM actuales! Sigue estos 3 pasos (tarda 10 segundos):
+              ✓ ¡Script con Consola Visual de Log copiado al portapapeles! Sigue estos 3 pasos:
             </div>
             <ol style="margin:4px 0 8px 18px; color:var(--text-secondary); line-height:1.55;">
-              <li>Abre <a href="https://connect.garmin.com/modern/workouts" target="_blank" rel="noopener" style="color:var(--accent-garmin); font-weight:600;">connect.garmin.com/modern/workouts</a> en tu ordenador (con tu sesión de Garmin iniciada).</li>
-              <li>Pulsa <code>F12</code> (o <code>Ctrl+Shift+J</code> / <code>Cmd+Option+J</code> en Mac) para abrir la pestaña <strong>Consola</strong>, pega el script (<code>Ctrl+V</code>) y pulsa <strong>Enter</strong>.</li>
-              <li>Verás aparecer al instante <strong>HYBRID · Lunes Upper A</strong>, <strong>HYBRID · Martes Lower</strong> y <strong>HYBRID · Jueves Upper B</strong> en tu lista de Entrenamientos de Garmin Connect listos para pulsar <em>«Enviar a dispositivo»</em> desde el móvil. (O si conectas el reloj por USB, copia los 3 archivos <code>.FIT</code> descargados a la carpeta <code>GARMIN/Workouts</code> o <code>GARMIN/NewFiles</code>).</li>
+              <li>Abre <a href="https://connect.garmin.com/modern/workouts" target="_blank" rel="noopener" style="color:var(--accent-garmin); font-weight:600;">connect.garmin.com/modern/workouts</a> en el navegador de tu ordenador (con tu sesión de Garmin iniciada).</li>
+              <li>Pulsa <code>F12</code> (pestaña <strong>Consola / Console</strong>), pega el script (<code>Ctrl+V</code>) y pulsa <strong>Enter</strong>. (Si Chrome pide escribir <code>allow pasting</code> la primera vez, escríbelo y pega de nuevo).</li>
+              <li>Se abrirá una <strong>ventana negra de Log en Vivo directamente encima de Garmin Connect</strong> mostrando el estado exacto de cada petición (Token OAuth, código HTTP 200/400 y respuesta del servidor) y podrás copiar el log con 1 clic si hubiera cualquier incidencia.</li>
             </ol>
+          </div>
+
+          <!-- Consola Interactiva de Diagnóstico y Validador Binario .FIT / .JSON -->
+          <div id="fit-diagnostic-panel" style="display:none; margin-top:10px; padding:14px; border-radius:10px; background:var(--bg-elevated); border:1px solid var(--border-strong);">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+              <div>
+                <strong style="font-size:0.88rem; color:var(--text-primary);">🔍 Consola de Diagnóstico y Inspector Binario .FIT / .JSON en Vivo</strong>
+                <div style="font-size:0.76rem; color:var(--text-secondary);">
+                  Verifica el CRC-16, las cabeceras Garmin FIT SDK (GMSG 0, 49, 26, 27, 264) y los pesos calculados, o sube cualquier archivo <code>.fit</code> / <code>.json</code> para ver su log byte a byte.
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <button type="button" class="icon-btn" id="btn-run-self-test-fit" style="border-color:var(--accent-run); color:var(--accent-run); font-size:0.75rem;">
+                  ▶ Ejecutar Autodiagnóstico de los 3 .FIT
+                </button>
+                <label class="icon-btn" style="cursor:pointer; font-size:0.75rem; border-color:var(--accent-garmin); color:var(--accent-garmin);">
+                  📂 Inspeccionar archivo .FIT / .JSON...
+                  <input type="file" id="input-inspect-fit-file" accept=".fit,.json" style="display:none;" />
+                </label>
+                <button type="button" class="icon-btn" id="btn-copy-diag-log" style="font-size:0.75rem;">
+                  📋 Copiar Log
+                </button>
+              </div>
+            </div>
+            <pre class="diag-terminal" id="fit-diagnostic-log-output">Pulsa «Ejecutar Autodiagnóstico» para auditar en vivo los 3 archivos .FIT y .JSON de esta semana...</pre>
           </div>
         </div>
 
@@ -207,6 +245,60 @@
         <div class="rm-grid" id="rm-cards-grid"></div>
       </section>
 
+      <!-- TAB NUTRICIÓN: PLAN NUTRICIONAL HÍBRIDO DE PÉRDIDA DE GRASA (100.4 KG -> 90.0 KG) -->
+      <section class="tab-panel" id="tab-nutrition" aria-label="Plan Nutricional Híbrido 100 a 90 kg">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🥗 Plan Nutricional Híbrido de Recomposición: De 100.4 kg a 90.0 kg (-10.4 kg)</h2>
+            <p class="section-subtitle">
+              Calibrado con el gasto energético real de tu reloj <strong>Garmin Fenix 8</strong> (Metabolismo Basal: <strong>2,361 kcal</strong> · Gasto Total: <strong>2,520–3,150 kcal/día</strong>) para perder ~0.65–0.75 kg de grasa/semana sin perder fuerza (120 kg Banca / 130 kg Sentadilla / 160 kg Peso Muerto) ni energía corriendo.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span class="modality-tag run" style="font-size:0.78rem; padding:6px 10px;">Meta Proteína: 200–205 g/día (2.2 g/kg obj.)</span>
+            <span class="modality-tag strength" style="font-size:0.78rem; padding:6px 10px;">Ciclado de Carbohidratos Híbrido</span>
+          </div>
+        </div>
+
+        <!-- KPIs Energéticos Reales de Garmin & Calculadora de Peso Actual -->
+        <div class="telemetry-grid" id="nutrition-kpis-grid"></div>
+
+        <!-- Selector Interactivo de Tipo de Día (Carb Cycling: Gimnasio vs Carrera vs Descanso) -->
+        <div class="surface-card">
+          <div class="section-header">
+            <div>
+              <h3 style="font-size:1.0rem; font-weight:700;">1. Ciclado Diario de Calorías y Macros según tu Entrenamiento del Día</h3>
+              <p class="section-subtitle">
+                Selecciona el tipo de día para ver tus calorías, macros exactos y el menú completo de 4 comidas diseñado para ese día:
+              </p>
+            </div>
+          </div>
+
+          <div class="nutri-day-pills" id="nutrition-day-type-selector"></div>
+
+          <div id="nutrition-active-day-detail" style="display:flex; flex-direction:column; gap:14px; margin-top:4px;"></div>
+        </div>
+
+        <!-- Hoja de Ruta por Fases (100.4 kg -> 90.0 kg) y Ganancia en 10K -->
+        <div class="panel-grid-2">
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">2. Hoja de Ruta de Pérdida de Grasa por Bloques (100.4 kg → 90.0 kg)</h3>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">
+              Cada kilo de grasa menos ahorra <strong>~2.2 segundos/km</strong> en carrera y reduce en ~4 kg el pico de fuerza de impacto sobre rodillas y tendón de Aquiles en cada zancada:
+            </p>
+            <div style="display:flex; flex-direction:column; gap:10px;" id="nutrition-phases-list"></div>
+          </div>
+
+          <div class="surface-card">
+            <h3 style="font-size:0.98rem; font-weight:700;">3. Suplementación Científica &amp; Reglas de Oro para VFC y Sueño</h3>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">
+              Ajustado específicamente a tus métricas de Garmin (sueño medio 6.51h, VFC base 52 ms y protección articular con 100 kg):
+            </p>
+            <div style="display:flex; flex-direction:column; gap:10px;" id="nutrition-rules-list"></div>
+          </div>
+        </div>
+      </section>
+
       <!-- TAB 2: ANÁLISIS PROFUNDO 6 MESES DE GARMIN -->
       <section class="tab-panel" id="tab-analytics" aria-label="Análisis de los últimos 6 meses de Garmin">
         <div class="section-header">
@@ -236,7 +328,7 @@
             <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.55;">
               En agosto hiciste una transición excelente: dejaste las 15 sesiones mensuales de HIIT y consolidaste el bloque de fuerza
               <strong>«WE ARE BACK!» (Upper/Lower)</strong> con 41 sesiones en 6 meses y marcas muy sólidas:
-              <strong>Peso Muerto 135 kg (3×3), Press Banca 95 kg (4×4), Sentadilla 80–90 kg y RDL 80 kg</strong>.
+              <strong>Peso Muerto 160 kg, Sentadilla 130 kg, Press Banca 120 kg y RDL 140 kg</strong>.
               Tu cuello de botella actual es el <strong>sueño medio (6.51 h/noche, score 73.3)</strong>: cuando duermes menos de 6h o compites fuerte (como la noche del 15 Nov con 4.82h), tu VFC cae de su banda equilibrada (50–60 ms) hasta 33–47 ms. Con el <strong>Domingo siempre de descanso total</strong> y tus días de gimnasio fijos en <strong>Lunes (Upper A), Martes (Lower) y Jueves (Upper B)</strong>, tus piernas disfrutan de <strong>doble ventana de 72h de recuperación</strong>: 72h desde la Tirada Larga del Sábado hasta el Martes de pierna (Domingo descanso + Lunes torso), y 72h desde el Martes de pierna hasta las Series del Viernes (Miércoles rodaje Z2 + Jueves torso).
             </p>
           </div>
@@ -361,9 +453,9 @@
           </div>
 
           <div class="surface-card">
-            <h3 style="font-size:0.98rem; font-weight:700;">Marcas de Fuerza Detectadas en Garmin (Línea Base Híbrida)</h3>
+            <h3 style="font-size:0.98rem; font-weight:700;">Marcas de Fuerza Actualizadas (Tus 1RM Reales)</h3>
             <p style="font-size:0.82rem; color:var(--text-secondary);">
-              Pesos reales extraídos de tus sesiones <em>WE ARE BACK!</em> y <em>Fuerza</em> en octubre y noviembre 2026:
+              1RM configurados por defecto y sincronizados con los archivos <code>.FIT</code> de tu reloj Garmin:
             </p>
             <div style="display:flex; flex-direction:column; gap:8px;" id="profile-strength-prs-list"></div>
           </div>
@@ -404,24 +496,28 @@
     <!-- Mobile Bottom Navigation Bar -->
     <nav class="mobile-bottom-nav" aria-label="Navegación Móvil">
       <button type="button" class="mobile-nav-item active" data-tab-target="tab-plan" id="nav-mobile-plan">
-        <span style="font-size:1.1rem;">📅</span>
+        <span style="font-size:1.05rem;">📅</span>
         <span>Plan 4×3</span>
       </button>
       <button type="button" class="mobile-nav-item" data-tab-target="tab-1rm" id="nav-mobile-1rm">
-        <span style="font-size:1.1rem;">⚖️</span>
+        <span style="font-size:1.05rem;">⚖️</span>
         <span>1RM &amp; Kg</span>
       </button>
+      <button type="button" class="mobile-nav-item" data-tab-target="tab-nutrition" id="nav-mobile-nutrition">
+        <span style="font-size:1.05rem;">🥗</span>
+        <span>Nutrición</span>
+      </button>
       <button type="button" class="mobile-nav-item" data-tab-target="tab-analytics" id="nav-mobile-analytics">
-        <span style="font-size:1.1rem;">📈</span>
+        <span style="font-size:1.05rem;">📈</span>
         <span>6M Garmin</span>
       </button>
       <button type="button" class="mobile-nav-item" data-tab-target="tab-activities" id="nav-mobile-activities">
-        <span style="font-size:1.1rem;">🏋️</span>
+        <span style="font-size:1.05rem;">🏋️</span>
         <span>Historial</span>
       </button>
       <button type="button" class="mobile-nav-item" data-tab-target="tab-profile" id="nav-mobile-profile">
-        <span style="font-size:1.1rem;">❤️</span>
-        <span>Zonas &amp; PRs</span>
+        <span style="font-size:1.05rem;">❤️</span>
+        <span>Zonas</span>
       </button>
     </nav>
   </div>

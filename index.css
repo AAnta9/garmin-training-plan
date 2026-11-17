@@ -917,7 +917,7 @@ html, body {
   background: var(--bg-elevated);
   border-top: 1px solid var(--border-strong);
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   z-index: 50;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -930,15 +930,64 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   font-family: var(--font-sans);
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   font-weight: 600;
   cursor: pointer;
+  padding: 0 2px;
 }
 
 .mobile-nav-item.active {
   color: var(--accent-run);
+}
+
+/* Diagnostic Console & Nutrition Components */
+.diag-terminal {
+  background: #070a0d;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+  max-height: 360px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.nutri-day-pills {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.nutri-meal-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.macro-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.macro-pill {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
 }
 
 /* Responsive Breakpoints */
@@ -951,6 +1000,9 @@ html, body {
   }
   .rm-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .nutri-day-pills {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -977,3 +1029,4 @@ html, body {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+

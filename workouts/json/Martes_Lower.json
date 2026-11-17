@@ -1,6 +1,6 @@
 {
   "workoutName": "HYBRID Martes Lower",
-  "description": "Gimnasio Dia 2 (Martes) - Tren Inferior Hibrido & Proteccion Tendon de Aquiles. 72h antes de las series del viernes.",
+  "description": "Gimnasio Dia 2 (Martes) - Tren Inferior Hibrido & Proteccion Tendon de Aquiles. 1RM Actualizados: Sentadilla 130kg, RDL 140kg, Bulgara 35kg, Soleo 60kg.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -38,9 +38,7 @@
             "workoutTargetTypeId": 1,
             "workoutTargetTypeKey": "no.target",
             "displayOrder": 1
-          },
-          "category": "CARDIO",
-          "exerciseName": null
+          }
         },
         {
           "type": "RepeatGroupDTO",
@@ -67,7 +65,7 @@
               "stepId": null,
               "stepOrder": 3,
               "childStepId": 1,
-              "description": "RIR 2 (concentrica explosiva)",
+              "description": "80% 1RM · RIR 2 (concentrica explosiva)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -87,7 +85,7 @@
               },
               "category": "SQUAT",
               "exerciseName": "BARBELL_BACK_SQUAT",
-              "weightValue": 85.0,
+              "weightValue": 105.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -145,7 +143,7 @@
               "stepId": null,
               "stepOrder": 6,
               "childStepId": 2,
-              "description": "RIR 2 (isquios)",
+              "description": "78% 1RM · RIR 2 (isquios)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -165,7 +163,7 @@
               },
               "category": "DEADLIFT",
               "exerciseName": "ROMANIAN_DEADLIFT",
-              "weightValue": 77.5,
+              "weightValue": 110.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -223,7 +221,7 @@
               "stepId": null,
               "stepOrder": 9,
               "childStepId": 3,
-              "description": "8 reps por pierna",
+              "description": "75% 1RM · 8 reps por pierna",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -243,7 +241,7 @@
               },
               "category": "LUNGE",
               "exerciseName": "FRONT_FOOT_ELEVATED_DUMBBELL_SPLIT_SQUAT",
-              "weightValue": 18.0,
+              "weightValue": 26.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -301,7 +299,7 @@
               "stepId": null,
               "stepOrder": 12,
               "childStepId": 4,
-              "description": "1s pausa arriba (Aquiles)",
+              "description": "78% 1RM · 1s pausa arriba (Aquiles)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -321,7 +319,7 @@
               },
               "category": "CALF_RAISE",
               "exerciseName": "WEIGHTED_SEATED_CALF_RAISE",
-              "weightValue": 40.0,
+              "weightValue": 47.5,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -379,7 +377,7 @@
               "stepId": null,
               "stepOrder": 15,
               "childStepId": 5,
-              "description": "Estabilidad pelvica",
+              "description": "0% 1RM · Estabilidad pelvica",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -448,9 +446,7 @@
             "workoutTargetTypeId": 1,
             "workoutTargetTypeKey": "no.target",
             "displayOrder": 1
-          },
-          "category": "CARDIO",
-          "exerciseName": null
+          }
         }
       ]
     }

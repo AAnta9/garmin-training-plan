@@ -1,6 +1,6 @@
 {
   "workoutName": "HYBRID Jueves Upper B",
-  "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Traccion Horizontal & Hipertrofia Funcional). Piernas frescas para el viernes.",
+  "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Traccion Horizontal & Hipertrofia). 1RM Actualizados: Militar 65kg, Remo Barra 90kg, Inclinado 40kg.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -38,9 +38,7 @@
             "workoutTargetTypeId": 1,
             "workoutTargetTypeKey": "no.target",
             "displayOrder": 1
-          },
-          "category": "CARDIO",
-          "exerciseName": null
+          }
         },
         {
           "type": "RepeatGroupDTO",
@@ -67,7 +65,7 @@
               "stepId": null,
               "stepOrder": 3,
               "childStepId": 1,
-              "description": "RIR 1-2",
+              "description": "80% 1RM · RIR 1-2",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -87,7 +85,7 @@
               },
               "category": "SHOULDER_PRESS",
               "exerciseName": "MILITARY_PRESS",
-              "weightValue": 50.0,
+              "weightValue": 52.5,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -145,7 +143,7 @@
               "stepId": null,
               "stepOrder": 6,
               "childStepId": 2,
-              "description": "RIR 1-2",
+              "description": "78% 1RM · RIR 1-2",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -165,7 +163,7 @@
               },
               "category": "ROW",
               "exerciseName": "BARBELL_ROW",
-              "weightValue": 67.5,
+              "weightValue": 70.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -223,7 +221,7 @@
               "stepId": null,
               "stepOrder": 9,
               "childStepId": 3,
-              "description": "RIR 2",
+              "description": "79% 1RM · RIR 2",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -243,7 +241,7 @@
               },
               "category": "BENCH_PRESS",
               "exerciseName": "INCLINE_DUMBBELL_BENCH_PRESS",
-              "weightValue": 30.0,
+              "weightValue": 32.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -301,7 +299,7 @@
               "stepId": null,
               "stepOrder": 12,
               "childStepId": 4,
-              "description": "Peso corporal estricto",
+              "description": "0% 1RM · Peso corporal estricto",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -370,9 +368,7 @@
             "workoutTargetTypeId": 1,
             "workoutTargetTypeKey": "no.target",
             "displayOrder": 1
-          },
-          "category": "CARDIO",
-          "exerciseName": null
+          }
         }
       ]
     }

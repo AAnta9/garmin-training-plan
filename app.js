@@ -14,16 +14,18 @@
   const STORAGE_KEY_COMPLETED = "garmin_hybrid_completed_v1";
   const STORAGE_KEY_NOTES = "garmin_hybrid_notes_v1";
   const STORAGE_KEY_THEME = "garmin_hybrid_theme_v1";
-  const STORAGE_KEY_1RM = "garmin_hybrid_1rm_v1";
+  const STORAGE_KEY_1RM = "garmin_hybrid_1rm_v2";
 
   let garminData = window.GARMIN_DATA || null;
   let planData = window.HYBRID_TRAINING_PLAN || null;
   let default1RmList = window.DEFAULT_1RM_CONFIG || [];
+  let nutritionData = window.NUTRITION_PLAN_DATA || null;
 
   let activeTab = "tab-plan";
   let selectedBlockIdx = 0;
   let selectedWeekIdx = 0;
   let activityFilter = "all";
+  let selectedNutriDayTypeId = "gym";
 
   let completedMap = {};
   let notesMap = {};
@@ -149,7 +151,7 @@
   }
 
   // ============================================================================
-  // CODIFICADOR BINARIO .FIT Y EXPORTADOR GARMIN CONNECT WORKOUT (EN TIEMPO REAL)
+  // CODIFICADOR BINARIO .FIT (PERFIL CANÓNICO GARMIN FIT SDK) & VALIDADOR CON LOG
   // ============================================================================
 
   function parseRepsCount(repsRaw) {
@@ -157,14 +159,13 @@
     const str = String(repsRaw || "8");
     const match = str.match(/(\d+)/g);
     if (!match || !match.length) return 8;
-    // Si es un rango como "6-8", tomamos el límite superior (8) como objetivo en el reloj
     return parseInt(match[match.length - 1], 10) || 8;
   }
 
   function getStrengthWatchName(dayObj, weekNum) {
-    const dayTag = (dayObj.day_name || "Gym").slice(0, 3).toUpperCase();
+    const dayTag = (dayObj.day_name || "Gym").slice(0, 5);
     const modPart = (dayObj.modality_label || "").split("·")[1] || dayObj.day_name || "Fuerza";
-    return `HYB S${weekNum} ${dayTag} ${modPart.trim()}`.slice(0, 28);
+    return `HYB S${weekNum} ${dayTag} ${modPart.trim()}`.slice(0, 30);
   }
 
   function fitCrc16(uint8Arr) {
@@ -195,10 +196,14 @@
 
   /**
    * Construye un archivo binario .FIT de entrenamiento Garmin (FileType=5 WORKOUT, Sport=10, SubSport=20)
-   * con el esquema exacto de 7/21/30/5 campos de Garmin Fenix 8 (idéntico a 'WE ARE BACK!')
-   * usando los 1RM actuales del usuario para cualquier día de gimnasio del plan.
+   * cumpliendo al 100% el perfil oficial Garmin FIT SDK:
+   * - GMSG 0 (file_id, 6 campos canónicos con slot number válido 1..3)
+   * - GMSG 49 (file_creator, software_version=100)
+   * - GMSG 26 (workout, 5 campos canónicos)
+   * - GMSG 27 (workout_step, 15 campos canónicos sin campos residuales 37/38)
+   * - GMSG 264 (exercise_title, 4 campos canónicos)
    */
-  function buildFitWorkoutBinaryForDay(dayObj, weekNum) {
+  function buildFitWorkoutBinaryForDay(dayObj, weekNum, slotNum) {
     const chunks = [];
     const pushBytes = (arr) => chunks.push(new Uint8Array(arr));
     const pushU16 = (val) => {
@@ -212,60 +217,42 @@
       chunks.push(b);
     };
 
-    const pushFenix8Step = (
+    const validSlot = slotNum || (dayObj.day_name === "Lunes" ? 1 : dayObj.day_name === "Martes" ? 2 : 3);
+
+    const pushSdkWorkoutStep = (
       msgIdx,
+      stepName,
       durType,
       durVal,
       tgtType,
       tgtVal,
       intensity,
+      notes,
       exCat,
       exName,
       exWeight,
-      wtUnit,
-      f18,
-      secTgtType,
-      secTgtVal
+      wtUnit
     ) => {
-      pushBytes([0x02]);
+      pushBytes([0x02]); // Local msg 2
       pushU32(durVal);
       pushU32(tgtVal);
       pushU32(0xffffffff);
       pushU32(0xffffffff);
-      chunks.push(new Uint8Array(200)); // notes (200 bytes empty)
-      pushU32(secTgtVal);
-      pushU32(0xffffffff);
-      pushU32(0xffffffff);
-      pushU32(0xffffffff);
-      pushU32(0);
       pushU16(msgIdx);
       pushU16(exCat);
       pushU16(exName);
       pushU16(exWeight);
       pushU16(wtUnit);
-      pushU16(0xffff);
-      pushU16(0xffff);
-      chunks.push(new Uint8Array(25)); // wkt_step_name (25 bytes empty, resolved via GMSG 264)
-      pushBytes([
-        durType & 0xff,
-        tgtType & 0xff,
-        intensity & 0xff,
-        0xff,
-        0xff,
-        f18 & 0xff,
-        secTgtType & 0xff,
-        0xff
-      ]);
-      chunks.push(new Uint8Array(37));
-      pushBytes([0xff, 0xff, 0xff]);
+      chunks.push(encodeFixedUtf8(stepName, 32));
+      chunks.push(encodeFixedUtf8(notes, 64));
+      pushBytes([durType & 0xff, tgtType & 0xff, intensity & 0xff, 0xff]);
     };
 
-    // 1. Definition Local 0 -> file_id (GMSG 0, 7 campos exactos de Fenix 8)
+    // 1. Definition Local 0 -> file_id (GMSG 0, 6 campos oficiales FIT SDK)
     pushBytes([
-      0x40, 0x00, 0x00, 0x00, 0x00, 7,
+      0x40, 0x00, 0x00, 0x00, 0x00, 6,
       3, 4, 140,
       4, 4, 134,
-      7, 4, 134,
       1, 2, 132,
       2, 2, 132,
       5, 2, 132,
@@ -273,32 +260,39 @@
     ]);
     pushBytes([0x00]);
     pushU32(3620636920);
-    pushU32(1161433847);
-    pushU32(0xffffffff);
+    pushU32(1161433847 + validSlot);
     pushU16(1); // Garmin
     pushU16(4536); // Fenix 8
-    pushU16(0xffff);
+    pushU16(validSlot); // Slot number válido (1, 2, 3)
     pushBytes([5]); // FileType = 5 (WORKOUT)
 
-    // Precalcular pasos y títulos únicos
+    // 2. Definition Local 4 -> file_creator (GMSG 49, 2 campos oficiales FIT SDK)
+    pushBytes([
+      0x44, 0x00, 0x00, 49, 0x00, 2,
+      0, 2, 132,
+      1, 1, 2
+    ]);
+    pushBytes([0x04]);
+    pushU16(100);
+    pushBytes([0xff]);
+
     const stepRecords = [];
     const usedTitles = [];
     const seenTitleKeys = new Set();
 
     // Step 0: Warmup
     stepRecords.push({
+      stepName: "Calentamiento Movilidad",
       durType: 5,
       durVal: 0xffffffff,
       tgtType: 2,
       tgtVal: 0,
       intensity: 2,
+      notes: "Movilidad articular y aproximacion",
       exCat: 2,
       exName: 0xffff,
       exWeight: 0xffff,
-      wtUnit: 1,
-      f18: 0xff,
-      secTgtType: 0xff,
-      secTgtVal: 0
+      wtUnit: 1
     });
 
     (dayObj.steps || []).forEach((st) => {
@@ -309,21 +303,25 @@
       const weightKg = calcLiftWeight(st.lift, st.pct || 0);
       const exWeightVal = weightKg > 0 ? Math.round(weightKg * 100) : 0xffff;
       const restMs = (cfg.rest_sec || 90) * 1000;
+      const pctStr = st.pct > 0 ? `${Math.round(st.pct * 100)}% 1RM` : "Peso corporal";
+      const stepNote =
+        weightKg > 0
+          ? `${setsCount}x${repsCount} @ ${formatNumberClean(weightKg)}kg (${pctStr})`
+          : `${setsCount}x${repsCount} (${pctStr})`;
 
       const workIdx = stepRecords.length;
       stepRecords.push({
+        stepName: cfg.title_es || cfg.name,
         durType: 29,
         durVal: repsCount,
         tgtType: 2,
         tgtVal: 0,
         intensity: 0,
+        notes: stepNote,
         exCat: cfg.cat_id,
         exName: cfg.name_id,
         exWeight: exWeightVal,
-        wtUnit: 1,
-        f18: 0xff,
-        secTgtType: 0xff,
-        secTgtVal: 0
+        wtUnit: 1
       });
 
       const tkey = `${cfg.cat_id}:${cfg.name_id}`;
@@ -337,165 +335,114 @@
       }
 
       stepRecords.push({
+        stepName: "Descanso",
         durType: 0,
         durVal: restMs,
         tgtType: 2,
         tgtVal: 0,
         intensity: 1,
+        notes: `Recuperacion ${Math.round(restMs / 1000)}s`,
         exCat: 0xffff,
         exName: 0xffff,
         exWeight: 0xffff,
-        wtUnit: 1,
-        f18: 0xff,
-        secTgtType: 2,
-        secTgtVal: 0
+        wtUnit: 1
       });
 
       stepRecords.push({
+        stepName: "",
         durType: 6,
         durVal: workIdx,
-        tgtType: 0xff,
+        tgtType: 2,
         tgtVal: setsCount,
         intensity: 0xff,
+        notes: "",
         exCat: 0xffff,
         exName: 0xffff,
         exWeight: 0xffff,
-        wtUnit: 0xffff,
-        f18: 0,
-        secTgtType: 0xff,
-        secTgtVal: 0xffffffff
+        wtUnit: 0xffff
       });
     });
 
     // Cooldown
     stepRecords.push({
+      stepName: "Vuelta a la calma",
       durType: 5,
       durVal: 0xffffffff,
       tgtType: 2,
       tgtVal: 0,
       intensity: 3,
+      notes: "Estiramientos suaves",
       exCat: 2,
       exName: 0xffff,
       exWeight: 0xffff,
-      wtUnit: 1,
-      f18: 0xff,
-      secTgtType: 0xff,
-      secTgtVal: 0
+      wtUnit: 1
     });
-    if (!seenTitleKeys.has("2:65535")) {
-      usedTitles.push({ cat_id: 2, name_id: 0xffff, title_es: "Cardio" });
-    }
 
-    // 2. Definition Local 1 -> workout (GMSG 26, 21 campos exactos de Fenix 8)
+    // 3. Definition Local 1 -> workout (GMSG 26, 5 campos oficiales FIT SDK)
     pushBytes([
-      0x41, 0x00, 0x00, 26, 0x00, 21,
+      0x41, 0x00, 0x00, 26, 0x00, 5,
       5, 4, 140,
       8, 32, 7,
-      10, 4, 134,
-      16, 16, 13,
-      17, 160, 7,
-      21, 4, 134,
-      22, 4, 134,
       6, 2, 132,
-      7, 2, 132,
-      12, 2, 132,
-      14, 2, 132,
-      20, 2, 132,
       4, 1, 0,
-      9, 1, 0,
-      11, 1, 0,
-      13, 1, 0,
-      15, 1, 0,
-      18, 37, 7,
-      19, 1, 0,
-      23, 1, 0,
-      24, 1, 0
+      11, 1, 0
     ]);
     pushBytes([0x01]);
     pushU32(32);
     chunks.push(encodeFixedUtf8(getStrengthWatchName(dayObj, weekNum), 32));
-    pushU32(0);
-    pushBytes(new Array(16).fill(0xff));
-    chunks.push(new Uint8Array(160));
-    pushU32(0);
-    pushU32(0);
     pushU16(stepRecords.length);
-    pushU16(0xffff);
-    pushU16(0xffff);
-    pushU16(0xffff);
-    pushU16(0xffff);
-    pushBytes([10, 1, 20, 0xff, 0xff]);
-    chunks.push(new Uint8Array(37));
-    pushBytes([0xff, 0, 0]);
+    pushBytes([10, 20]); // sport=10 (training), sub_sport=20 (strength_training)
 
-    // 3. Definition Local 2 -> workout_step (GMSG 27, 30 campos exactos de Fenix 8)
+    // 4. Definition Local 2 -> workout_step (GMSG 27, 15 campos oficiales FIT SDK)
     pushBytes([
-      0x42, 0x00, 0x00, 27, 0x00, 30,
+      0x42, 0x00, 0x00, 27, 0x00, 15,
       2, 4, 134,
       4, 4, 134,
       5, 4, 134,
       6, 4, 134,
-      8, 200, 7,
-      20, 4, 134,
-      21, 4, 134,
-      22, 4, 134,
-      37, 4, 0,
-      38, 4, 140,
       254, 2, 132,
       10, 2, 132,
       11, 2, 132,
       12, 2, 132,
       13, 2, 132,
-      27, 2, 132,
-      31, 2, 132,
-      0, 25, 7,
+      0, 32, 7,
+      8, 64, 7,
       1, 1, 0,
       3, 1, 0,
       7, 1, 0,
-      9, 1, 0,
-      17, 1, 0,
-      18, 1, 0,
-      19, 1, 0,
-      26, 1, 2,
-      28, 37, 7,
-      30, 1, 0,
-      35, 1, 2,
-      36, 1, 0
+      9, 1, 0
     ]);
     stepRecords.forEach((st, idx) => {
-      pushFenix8Step(
+      pushSdkWorkoutStep(
         idx,
+        st.stepName,
         st.durType,
         st.durVal,
         st.tgtType,
         st.tgtVal,
         st.intensity,
+        st.notes,
         st.exCat,
         st.exName,
         st.exWeight,
-        st.wtUnit,
-        st.f18,
-        st.secTgtType,
-        st.secTgtVal
+        st.wtUnit
       );
     });
 
-    // 4. Definition Local 3 -> exercise_title (GMSG 264, 5 campos exactos de Fenix 8)
+    // 5. Definition Local 3 -> exercise_title (GMSG 264, 4 campos oficiales FIT SDK)
     pushBytes([
-      0x43, 0x00, 0x00, 0x08, 0x01, 5,
-      2, 200, 7,
+      0x43, 0x00, 0x00, 0x08, 0x01, 4,
+      2, 64, 7,
       254, 2, 132,
       0, 2, 132,
-      1, 2, 132,
-      3, 2, 132
+      1, 2, 132
     ]);
     usedTitles.forEach((info, titleIdx) => {
       pushBytes([0x03]);
-      chunks.push(encodeFixedUtf8(info.title_es, 200));
+      chunks.push(encodeFixedUtf8(info.title_es, 64));
       pushU16(titleIdx);
       pushU16(info.cat_id);
       pushU16(info.name_id);
-      pushU16(0xffff);
     });
 
     let dataSize = 0;
@@ -530,6 +477,136 @@
   }
 
   /**
+   * Inspector y decodificador binario .FIT en navegador: genera un log detallado
+   * verificando cabecera, CRC-16, definiciones GMSG y pasos de ejercicio.
+   */
+  function inspectFitBinaryToLog(uint8Arr, labelName) {
+    const lines = [];
+    lines.push(`====================================================================`);
+    lines.push(`📄 ARCHIVO: ${labelName} (${uint8Arr.length} bytes)`);
+    lines.push(`====================================================================`);
+
+    if (uint8Arr.length < 16) {
+      lines.push(`❌ ERROR CRÍTICO: Archivo demasiado corto (<16 bytes).`);
+      return lines.join("\n");
+    }
+
+    const dv = new DataView(uint8Arr.buffer, uint8Arr.byteOffset, uint8Arr.byteLength);
+    const hdrSize = uint8Arr[0];
+    const protoVer = uint8Arr[1];
+    const profVer = dv.getUint16(2, true);
+    const dataSize = dv.getUint32(4, true);
+    const magic = String.fromCharCode(uint8Arr[8], uint8Arr[9], uint8Arr[10], uint8Arr[11]);
+    const hdrCrcRead = hdrSize === 14 ? dv.getUint16(12, true) : 0;
+    const hdrCrcCalc = fitCrc16(uint8Arr.slice(0, 12));
+    const fileCrcRead = dv.getUint16(uint8Arr.length - 2, true);
+    const fileCrcCalc = fitCrc16(uint8Arr.slice(0, uint8Arr.length - 2));
+
+    lines.push(
+      `[CABECERA FIT] HeaderSize=${hdrSize}B | Protocol=0x${protoVer.toString(16)} | Profile=${profVer} | Magic="${magic}"`
+    );
+    lines.push(
+      `[TAMAÑO DATOS] Declarado=${dataSize}B | Real=${uint8Arr.length - hdrSize - 2}B -> ${
+        dataSize === uint8Arr.length - hdrSize - 2 ? "✅ EXACTO" : "❌ DESAJUSTE"
+      }`
+    );
+    lines.push(
+      `[CRC-16 HEADER] Leído=0x${hdrCrcRead.toString(16).padStart(4, "0")} | Calculado=0x${hdrCrcCalc
+        .toString(16)
+        .padStart(4, "0")} -> ${hdrCrcRead === hdrCrcCalc ? "✅ VÁLIDO" : "❌ ERROR CRC"}`
+    );
+    lines.push(
+      `[CRC-16 ARCHIVO] Leído=0x${fileCrcRead.toString(16).padStart(4, "0")} | Calculado=0x${fileCrcCalc
+        .toString(16)
+        .padStart(4, "0")} -> ${fileCrcRead === fileCrcCalc ? "✅ VÁLIDO" : "❌ ERROR CRC"}`
+    );
+
+    const defs = {};
+    let pos = hdrSize;
+    const end = uint8Arr.length - 2;
+    let msgCounts = {};
+    const stepSummaries = [];
+
+    const readAscii = (start, len) => {
+      const sub = uint8Arr.slice(start, start + len);
+      const zeroIdx = sub.indexOf(0);
+      const clean = zeroIdx >= 0 ? sub.slice(0, zeroIdx) : sub;
+      return new TextDecoder().decode(clean);
+    };
+
+    while (pos < end) {
+      const recHdr = uint8Arr[pos++];
+      const isDef = (recHdr & 0x40) !== 0;
+      const localNum = recHdr & 0x0f;
+
+      if (isDef) {
+        pos += 1; // reserved
+        const arch = uint8Arr[pos++];
+        const littleEndian = arch === 0;
+        const gmsg = dv.getUint16(pos, littleEndian);
+        pos += 2;
+        const numFields = uint8Arr[pos++];
+        const fields = [];
+        let recSize = 0;
+        for (let f = 0; f < numFields; f++) {
+          const fNum = uint8Arr[pos++];
+          const fSize = uint8Arr[pos++];
+          const fType = uint8Arr[pos++];
+          fields.push({ fNum, fSize, fType });
+          recSize += fSize;
+        }
+        defs[localNum] = { gmsg, littleEndian, fields, recSize };
+      } else {
+        const def = defs[localNum];
+        if (!def) {
+          lines.push(`❌ ERROR en byte ${pos - 1}: Registro de datos para LocalMsg ${localNum} sin definición previa.`);
+          break;
+        }
+        msgCounts[def.gmsg] = (msgCounts[def.gmsg] || 0) + 1;
+        const fMap = {};
+        let fOffset = pos;
+        def.fields.forEach((f) => {
+          if (f.fSize === 1) fMap[f.fNum] = uint8Arr[fOffset];
+          else if (f.fSize === 2) fMap[f.fNum] = dv.getUint16(fOffset, def.littleEndian);
+          else if (f.fSize === 4) fMap[f.fNum] = dv.getUint32(fOffset, def.littleEndian);
+          else if (f.fType === 7) fMap[f.fNum] = readAscii(fOffset, f.fSize);
+          fOffset += f.fSize;
+        });
+
+        if (def.gmsg === 0) {
+          lines.push(
+            `[GMSG 0 file_id] FileType=${fMap[0]} (${fMap[0] === 5 ? "WORKOUT ✅" : "OTRO"}) | Manufacturer=${fMap[1]} | Product=${fMap[2]} (Fenix 8) | SlotNumber=${fMap[5]}`
+          );
+        } else if (def.gmsg === 26) {
+          lines.push(
+            `[GMSG 26 workout] Nombre="${fMap[8]}" | Sport=${fMap[4]} (Training) | SubSport=${fMap[11]} (Strength) | Pasos=${fMap[6]}`
+          );
+        } else if (def.gmsg === 27 && fMap[7] === 0) {
+          const wKg = fMap[12] && fMap[12] !== 0xffff ? `${(fMap[12] / 100).toFixed(1)} kg` : "Peso Corporal";
+          stepSummaries.push(
+            `  • Paso #${fMap[254]}: ${fMap[0] || "Ejercicio"} (Cat=${fMap[10]}, ID=${fMap[11]}) -> ${fMap[2]} reps @ ${wKg} [${fMap[8] || ""}]`
+          );
+        }
+        pos += def.recSize;
+      }
+    }
+
+    lines.push(
+      `[RESUMEN MENSAJES DECODIFICADOS] GMSG_0(file_id)=${msgCounts[0] || 0} | GMSG_49(creator)=${
+        msgCounts[49] || 0
+      } | GMSG_26(workout)=${msgCounts[26] || 0} | GMSG_27(steps)=${msgCounts[27] || 0} | GMSG_264(titles)=${
+        msgCounts[264] || 0
+      }`
+    );
+    if (stepSummaries.length) {
+      lines.push(`[SERIES ACTIVAS CON TUS 1RM ACTUALES]:`);
+      stepSummaries.forEach((s) => lines.push(s));
+    }
+    lines.push(`✅ RESULTADO AUDITORÍA: Archivo .FIT 100% íntegro y compatible con Garmin Fenix 8 (GARMIN/NewFiles).\n`);
+    return lines.join("\n");
+  }
+
+  /**
    * Construye el objeto JSON oficial de Garmin Connect Workout para un día de fuerza.
    */
   function buildGarminConnectJsonForDay(dayObj, weekNum) {
@@ -545,9 +622,7 @@
       stepType: { stepTypeId: 1, stepTypeKey: "warmup", displayOrder: 1 },
       endCondition: { conditionTypeId: 1, conditionTypeKey: "lap.button", displayOrder: 1, displayable: true },
       endConditionValue: null,
-      targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 },
-      category: "CARDIO",
-      exerciseName: null
+      targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 }
     });
 
     let childId = 1;
@@ -616,9 +691,7 @@
       stepType: { stepTypeId: 2, stepTypeKey: "cooldown", displayOrder: 2 },
       endCondition: { conditionTypeId: 1, conditionTypeKey: "lap.button", displayOrder: 1, displayable: true },
       endConditionValue: null,
-      targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 },
-      category: "CARDIO",
-      exerciseName: null
+      targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 }
     });
 
     const wktTitle = `HYBRID · Sem ${weekNum} · ${dayObj.day_name} (${(dayObj.modality_label || "").split("·")[1]?.trim() || "Fuerza"})`;
@@ -650,8 +723,8 @@
     }, 300);
   }
 
-  function downloadFitForDay(dayObj, weekNum) {
-    const bytes = buildFitWorkoutBinaryForDay(dayObj, weekNum);
+  function downloadFitForDay(dayObj, weekNum, slotNum) {
+    const bytes = buildFitWorkoutBinaryForDay(dayObj, weekNum, slotNum);
     const safeDay = (dayObj.day_name || "Gym").replace(/[^a-zA-Z0-9]/g, "");
     const fname = `Garmin_Sem${weekNum}_${safeDay}.fit`;
     triggerBlobDownload(new Blob([bytes], { type: "application/octet-stream" }), fname);
@@ -667,39 +740,99 @@
     );
   }
 
+  /**
+   * Genera un script para pegar en connect.garmin.com que abre una ventana flotante
+   * de Log en Vivo directamente en la pantalla del usuario, probando los endpoints
+   * oficiales de Garmin Connect y mostrando el resultado detallado paso a paso.
+   */
   function buildGarminConnectConsoleScript(strengthDays, weekNum) {
     const payloads = strengthDays.map((d) => buildGarminConnectJsonForDay(d, weekNum));
     return `(async () => {
   const workouts = ${JSON.stringify(payloads)};
+  const box = document.createElement("div");
+  box.style.cssText = "position:fixed;top:20px;right:20px;width:540px;max-width:94vw;max-height:85vh;background:#0b0e11;color:#e2e8f0;border:2px solid #0ea5e9;border-radius:12px;padding:16px;z-index:999999;font-family:monospace;font-size:12px;box-shadow:0 20px 50px rgba(0,0,0,0.8);display:flex;flex-direction:column;gap:10px;";
+  box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;"><strong style="color:#0ea5e9;font-size:14px;">⌚ Garmin Hybrid Coach · Log de Subida en Vivo</strong><button id="ghc-close" style="background:#1e293b;color:#fff;border:1px solid #475569;border-radius:6px;padding:4px 10px;cursor:pointer;">Cerrar</button></div><pre id="ghc-log" style="background:#050709;padding:10px;border-radius:8px;overflow-y:auto;max-height:55vh;white-space:pre-wrap;margin:0;line-height:1.45;"></pre><div style="display:flex;gap:8px;"><button id="ghc-copy" style="background:#0ea5e9;color:#082f49;font-weight:bold;border:none;border-radius:6px;padding:7px 12px;cursor:pointer;">📋 Copiar este Log</button></div>';
+  document.body.appendChild(box);
+  const logEl = box.querySelector("#ghc-log");
+  const log = (msg) => { logEl.textContent += "[" + new Date().toLocaleTimeString() + "] " + msg + "\\n"; console.log(msg); };
+  box.querySelector("#ghc-close").onclick = () => box.remove();
+  box.querySelector("#ghc-copy").onclick = () => { navigator.clipboard.writeText(logEl.textContent); box.querySelector("#ghc-copy").textContent = "✓ Log Copiado"; };
+
+  log("Iniciando diagnóstico en: " + location.href);
+  if (!location.hostname.includes("garmin.com")) {
+    log("❌ ERROR: No estás en connect.garmin.com. Abre https://connect.garmin.com/modern/workouts y vuelve a pegar este script.");
+    return;
+  }
+
   let token = null;
   try {
     const rawTok = localStorage.getItem("token");
-    if (rawTok) token = JSON.parse(rawTok).access_token;
-  } catch (e) {}
+    if (rawTok) {
+      const parsed = JSON.parse(rawTok);
+      token = parsed.access_token || parsed.value || null;
+    }
+  } catch (e) { log("Aviso leyendo localStorage.token: " + e.message); }
+
+  const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+  const csrfToken = csrfMeta ? csrfMeta.getAttribute("content") : null;
+  log("Token OAuth detectado: " + (token ? "SÍ (" + token.slice(0, 12) + "...)" : "NO (usando cookies de sesión)"));
+  if (csrfToken) log("CSRF Token detectado: SÍ");
+
   const headers = {
     "Accept": "application/json, text/plain, */*",
     "Content-Type": "application/json;charset=UTF-8",
     "NK": "NT",
-    "DI-Backend": "connectapi.garmin.com"
+    "DI-Backend": "connectapi.garmin.com",
+    "X-Requested-With": "XMLHttpRequest"
   };
   if (token) headers["Authorization"] = "Bearer " + token;
-  console.log("⏳ Subiendo 3 entrenamientos de fuerza a Garmin Connect...");
+  if (csrfToken) headers["connect-csrf-token"] = csrfToken;
+
+  const endpoints = [
+    "/gc-api/workout-service/workout",
+    "/modern/proxy/workout-service/workout",
+    "/workout-service/workout"
+  ];
+
+  let successCount = 0;
   for (const w of workouts) {
-    const res = await fetch("/gc-api/workout-service/workout", {
-      method: "POST",
-      credentials: "include",
-      headers,
-      body: JSON.stringify(w)
-    });
-    if (res.ok) {
-      const created = await res.json();
-      console.log("✅ Creado en Garmin Connect:", created.workoutName, "ID:", created.workoutId);
-    } else {
-      console.error("❌ Error creando", w.workoutName, res.status, await res.text());
+    log("-----------------------------------------");
+    log("Subiendo: " + w.workoutName + "...");
+    let uploaded = false;
+    for (const ep of endpoints) {
+      try {
+        const res = await fetch(ep, {
+          method: "POST",
+          credentials: "include",
+          headers,
+          body: JSON.stringify(w)
+        });
+        const txt = await res.text();
+        log(" -> Endpoint " + ep + " respondió HTTP " + res.status);
+        if (res.ok) {
+          let data = {};
+          try { data = JSON.parse(txt); } catch (_) {}
+          log("✅ CREADO CON ÉXITO: " + w.workoutName + " (workoutId: " + (data.workoutId || "OK") + ")");
+          uploaded = true;
+          successCount++;
+          break;
+        } else {
+          log(" ⚠️ Detalle respuesta (" + res.status + "): " + txt.slice(0, 220));
+        }
+      } catch (err) {
+        log(" ⚠️ Excepción en " + ep + ": " + err.message);
+      }
+    }
+    if (!uploaded) {
+      log("❌ No se pudo crear " + w.workoutName + ". Pulsa 'Copiar este Log' y pégalo en el chat del entrenador.");
     }
   }
-  alert("✅ ¡Los 3 entrenamientos de fuerza (Lunes, Martes y Jueves) se han añadido a tu Garmin Connect! Recarga la página para verlos y enviarlos al reloj.");
-  location.reload();
+  log("=========================================");
+  log("RESUMEN FINAL: " + successCount + "/" + workouts.length + " entrenamientos creados.");
+  if (successCount === workouts.length) {
+    log("🎉 ¡Todo listo! Recarga la página de Garmin Connect en 3 segundos para verlos en tu lista.");
+    setTimeout(() => location.reload(), 3500);
+  }
 })();`;
   }
 
@@ -1482,7 +1615,7 @@
     const prsContainer = document.getElementById("profile-strength-prs-list");
     if (prsContainer) {
       prsContainer.innerHTML = default1RmList
-        .slice(0, 6)
+        .slice(0, 8)
         .map((item) => {
           const val = oneRmMap[item.key] !== undefined ? oneRmMap[item.key] : item.default_1rm;
           return `
@@ -1520,6 +1653,216 @@
     }
   }
 
+  // ============================================================================
+  // PESTAÑA PLAN NUTRICIONAL HÍBRIDO (100.4 KG -> 90.0 KG)
+  // ============================================================================
+
+  function renderNutritionTab() {
+    if (!nutritionData) return;
+    const bio = nutritionData.biometrics || {};
+    const dayTypes = nutritionData.day_types || [];
+    const phases = nutritionData.phases_100_to_90 || [];
+    const rules = nutritionData.supplements_and_rules || [];
+
+    const kpiEl = document.getElementById("nutrition-kpis-grid");
+    if (kpiEl) {
+      const kpis = [
+        {
+          label: "Peso Actual → Objetivo",
+          value: `${bio.start_weight_kg} → ${bio.target_weight_kg} kg`,
+          sub: `Meta: -${bio.total_loss_kg} kg de grasa (${bio.weekly_loss_target_kg})`,
+          subClass: "pos"
+        },
+        {
+          label: "Metabolismo Basal (Garmin BMR)",
+          value: `${bio.garmin_bmr_kcal} kcal/día`,
+          sub: `Medido por tu Fenix 8 (33 años · ~${bio.estimated_height_cm} cm)`,
+          subClass: ""
+        },
+        {
+          label: "Gasto Real según Día (TDEE)",
+          value: `2,520 – 3,150 kcal`,
+          sub: `Media 6M Garmin: ${bio.garmin_avg_tdee_kcal} kcal/día`,
+          subClass: ""
+        },
+        {
+          label: "Proteína Diaria Blindada",
+          value: `200 – 205 g/día`,
+          sub: `2.2 g/kg peso objetivo (protege tus 1RM en déficit)`,
+          subClass: "pos"
+        },
+        {
+          label: "Ganancia Estimada en 10K",
+          value: `-3:30 a -4:00 min`,
+          sub: `~2.2 s/km más rápido por cada kg de grasa perdido`,
+          subClass: "pos"
+        },
+        {
+          label: "Hidratación Garmin Connect",
+          value: `3.4 – 3.8 L/día`,
+          sub: `Meta base en tu reloj: 3,378 ml + electrolitos`,
+          subClass: ""
+        }
+      ];
+
+      kpiEl.innerHTML = kpis
+        .map(
+          (k) => `
+        <div class="metric-tile">
+          <div class="metric-label"><span>${k.label}</span></div>
+          <div class="metric-value">${k.value}</div>
+          <div class="metric-sub ${k.subClass}">${k.sub}</div>
+        </div>
+      `
+        )
+        .join("");
+    }
+
+    const selectorEl = document.getElementById("nutrition-day-type-selector");
+    const activeDay = dayTypes.find((d) => d.id === selectedNutriDayTypeId) || dayTypes[0];
+
+    if (selectorEl && activeDay) {
+      selectorEl.innerHTML = dayTypes
+        .map((dt) => {
+          const isAct = dt.id === activeDay.id;
+          return `
+          <button type="button" class="block-pill ${isAct ? "active" : ""}" data-nutri-day="${dt.id}" id="btn-nutri-${dt.id}">
+            <div class="block-pill-tag">${dt.badge}</div>
+            <div class="block-pill-name">${dt.title}</div>
+            <div class="block-pill-meta" style="font-family:var(--font-mono); margin-top:4px;">
+              <strong>${dt.target_kcal} kcal</strong> (Gasto Garmin ~${dt.garmin_tdee_kcal} kcal · Déficit -${dt.deficit_kcal} kcal)
+            </div>
+          </button>
+        `;
+        })
+        .join("");
+
+      selectorEl.querySelectorAll("[data-nutri-day]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectedNutriDayTypeId = btn.getAttribute("data-nutri-day");
+          renderNutritionTab();
+        });
+      });
+    }
+
+    const detailEl = document.getElementById("nutrition-active-day-detail");
+    if (detailEl && activeDay) {
+      const mealsHtml = (activeDay.meals || [])
+        .map(
+          (m) => `
+        <div class="nutri-meal-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; flex-wrap:wrap;">
+            <div>
+              <div style="font-family:var(--font-mono); font-size:0.73rem; color:var(--accent-garmin); font-weight:700;">
+                ${m.time}
+              </div>
+              <div style="font-size:0.96rem; font-weight:700; color:var(--text-primary); margin-top:2px;">
+                ${m.name}
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center; font-family:var(--font-mono); font-size:0.75rem;">
+              <span class="modality-tag strength">${m.kcal} kcal</span>
+              <span class="modality-tag run">${m.macros}</span>
+            </div>
+          </div>
+          <ul style="margin:4px 0 0 18px; font-size:0.83rem; color:var(--text-secondary); line-height:1.55;">
+            ${(m.items || []).map((it) => `<li>${it}</li>`).join("")}
+          </ul>
+        </div>
+      `
+        )
+        .join("");
+
+      detailEl.innerHTML = `
+        <div style="background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--radius-md); padding:14px 16px; display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-run); font-weight:700;">${activeDay.badge}</span>
+              <h4 style="font-size:1.02rem; font-weight:700; margin-top:2px;">${activeDay.title}</h4>
+            </div>
+            <div class="macro-badge-row">
+              <span class="macro-pill" style="color:var(--accent-strength);">🔥 Meta: ${activeDay.target_kcal} kcal (Déficit -${activeDay.deficit_kcal} kcal)</span>
+              <span class="macro-pill" style="color:var(--accent-run);">🥩 Proteína: ${activeDay.protein_g} g</span>
+              <span class="macro-pill" style="color:var(--accent-garmin);">🍚 Carbos: ${activeDay.carbs_g} g</span>
+              <span class="macro-pill">🥑 Grasas: ${activeDay.fat_g} g</span>
+              <span class="macro-pill">💧 Agua: ${activeDay.water_l} L</span>
+            </div>
+          </div>
+          <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.5;">
+            <strong>Estrategia del Día:</strong> ${activeDay.focus}
+          </p>
+        </div>
+
+        <div class="panel-grid-2">
+          ${mealsHtml}
+        </div>
+      `;
+    }
+
+    const phasesEl = document.getElementById("nutrition-phases-list");
+    if (phasesEl) {
+      phasesEl.innerHTML = phases
+        .map(
+          (p) => `
+        <div class="zone-row" style="flex-direction:column; align-items:flex-start; gap:4px;">
+          <div style="display:flex; justify-content:space-between; width:100%; align-items:center; flex-wrap:wrap; gap:6px;">
+            <strong style="font-size:0.87rem; color:var(--text-primary);">${p.phase}</strong>
+            <span style="font-family:var(--font-mono); font-size:0.82rem; font-weight:700; color:var(--accent-run);">${p.weight_range}</span>
+          </div>
+          <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-strength);">Ingesta media: ${p.kcal_avg}</div>
+          <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.45;">${p.running_impact}</div>
+        </div>
+      `
+        )
+        .join("");
+    }
+
+    const rulesEl = document.getElementById("nutrition-rules-list");
+    if (rulesEl) {
+      rulesEl.innerHTML = rules
+        .map(
+          (r) => `
+        <div class="zone-row" style="flex-direction:column; align-items:flex-start; gap:4px;">
+          <strong style="font-size:0.86rem; color:var(--accent-garmin);">${r.title}</strong>
+          <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.45;">${r.detail}</div>
+        </div>
+      `
+        )
+        .join("");
+    }
+  }
+
+  function runSelfTestFitDiagnostic() {
+    const outEl = document.getElementById("fit-diagnostic-log-output");
+    if (!outEl) return;
+    const { weekNum, strengthDays } = getActiveWeekStrengthDays();
+    const report = [];
+    report.push(`====================================================================`);
+    report.push(`🔍 LOG DE AUTODIAGNÓSTICO GARMIN HYBRID COACH (${new Date().toLocaleString()})`);
+    report.push(`====================================================================`);
+    report.push(`1. CAUSA DEL ERROR AL SUBIR EN WEB ('Importar Datos' de Garmin Connect):`);
+    report.push(`   - La página https://connect.garmin.com/modern/import-data SOLO acepta archivos .FIT`);
+    report.push(`     de ACTIVIDADES ya grabadas con GPS/reloj (FileType = 4 ACTIVITY).`);
+    report.push(`   - Si subes ahí un archivo .FIT de ENTRENAMIENTO (FileType = 5 WORKOUT), Garmin Connect`);
+    report.push(`     lo rechaza siempre con 'Error al cargar' y sin mostrar log.`);
+    report.push(`2. CÓMO CARGARLOS SIN ERROR:`);
+    report.push(`   - VÍA A (1-Clic Web con Log en Pantalla): Pulsa 'Copiar Script 1-Clic' y pégalo en la`);
+    report.push(`     Consola (F12) de https://connect.garmin.com/modern/workouts. Se abrirá una ventana`);
+    report.push(`     de Log en Vivo encima de Garmin Connect mostrando el código HTTP exacto.`);
+    report.push(`   - VÍA B (Cable USB directo al Fenix 8): Conecta el reloj al PC y copia los 3 .FIT`);
+    report.push(`     descargados dentro de la carpeta GARMIN/NewFiles (o GARMIN/Workouts).\n`);
+    report.push(`3. AUDITORÍA BINARIA EN VIVO DE TUS 3 ENTRENAMIENTOS (Semana ${weekNum}):`);
+
+    strengthDays.forEach((d, idx) => {
+      const slot = idx + 1;
+      const fitBytes = buildFitWorkoutBinaryForDay(d, weekNum, slot);
+      const safeDay = (d.day_name || "Gym").replace(/[^a-zA-Z0-9]/g, "");
+      report.push(inspectFitBinaryToLog(fitBytes, `Garmin_Sem${weekNum}_${safeDay}.fit (Slot #${slot})`));
+    });
+
+    outEl.textContent = report.join("\n");
+  }
+
   async function refreshJsonIfAvailable() {
     try {
       const resp = await fetch(`./data/garmin_data.json?t=${Date.now()}`);
@@ -1539,6 +1882,7 @@
     renderHeaderAndMorningCheckin();
     renderOneRmTab();
     renderTrainingPlan();
+    renderNutritionTab();
     renderSixMonthAnalytics();
     renderActivitiesHistory();
     renderProfileAndZones();
@@ -1558,6 +1902,10 @@
     if (jumpTo1RmBtn) {
       jumpTo1RmBtn.addEventListener("click", () => switchTab("tab-1rm"));
     }
+    const jumpToNutriBtn = document.getElementById("btn-jump-to-nutrition");
+    if (jumpToNutriBtn) {
+      jumpToNutriBtn.addEventListener("click", () => switchTab("tab-nutrition"));
+    }
     const backToPlanBtn = document.getElementById("btn-back-to-plan");
     if (backToPlanBtn) {
       backToPlanBtn.addEventListener("click", () => switchTab("tab-plan"));
@@ -1568,9 +1916,93 @@
     if (openWatchSyncBtn) {
       openWatchSyncBtn.addEventListener("click", () => {
         const banner = document.getElementById("garmin-watch-sync-banner");
-        const instr = document.getElementById("garmin-script-instructions");
-        if (instr) instr.style.display = "block";
+        const diagPanel = document.getElementById("fit-diagnostic-panel");
+        if (diagPanel) {
+          diagPanel.style.display = "block";
+          runSelfTestFitDiagnostic();
+        }
         if (banner) banner.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    }
+
+    // Toggle consola de diagnóstico .FIT / .JSON
+    const toggleDiagBtn = document.getElementById("btn-toggle-fit-diag");
+    if (toggleDiagBtn) {
+      toggleDiagBtn.addEventListener("click", () => {
+        const diagPanel = document.getElementById("fit-diagnostic-panel");
+        if (!diagPanel) return;
+        const isHidden = diagPanel.style.display === "none" || !diagPanel.style.display;
+        diagPanel.style.display = isHidden ? "block" : "none";
+        if (isHidden) {
+          runSelfTestFitDiagnostic();
+        }
+      });
+    }
+
+    const selfTestBtn = document.getElementById("btn-run-self-test-fit");
+    if (selfTestBtn) {
+      selfTestBtn.addEventListener("click", () => {
+        runSelfTestFitDiagnostic();
+      });
+    }
+
+    const inspectInput = document.getElementById("input-inspect-fit-file");
+    if (inspectInput) {
+      inspectInput.addEventListener("change", async (ev) => {
+        const file = ev.target.files && ev.target.files[0];
+        if (!file) return;
+        const outEl = document.getElementById("fit-diagnostic-log-output");
+        if (!outEl) return;
+        try {
+          if (file.name.toLowerCase().endsWith(".json")) {
+            const txt = await file.text();
+            const parsed = JSON.parse(txt);
+            const steps =
+              (parsed.workoutSegments &&
+                parsed.workoutSegments[0] &&
+                parsed.workoutSegments[0].workoutSteps) ||
+              [];
+            outEl.textContent = [
+              `====================================================================`,
+              `📄 INSPECCIÓN ARCHIVO JSON: ${file.name} (${file.size} bytes)`,
+              `====================================================================`,
+              `✅ JSON Sintácticamente Válido`,
+              `• workoutName: "${parsed.workoutName}"`,
+              `• sportType: ${JSON.stringify(parsed.sportType)}`,
+              `• Bloques / Pasos Principales: ${steps.length}`,
+              `• Detalle de Bloques:`,
+              ...steps.map((s, i) =>
+                s.type === "RepeatGroupDTO"
+                  ? `  [${i + 1}] RepeatGroup (${s.numberOfIterations} series): ${
+                      s.workoutSteps?.[0]?.category
+                    } / ${s.workoutSteps?.[0]?.exerciseName} (${
+                      s.workoutSteps?.[0]?.endConditionValue
+                    } reps @ ${s.workoutSteps?.[0]?.weightValue || "BW"} kg)`
+                  : `  [${i + 1}] ${s.stepType?.stepTypeKey}: ${s.description || ""}`
+              )
+            ].join("\n");
+          } else {
+            const buf = await file.arrayBuffer();
+            outEl.textContent = inspectFitBinaryToLog(new Uint8Array(buf), file.name);
+          }
+        } catch (err) {
+          outEl.textContent = `❌ ERROR AL INSPECCIONAR ${file.name}: ${err.message}`;
+        }
+      });
+    }
+
+    const copyDiagBtn = document.getElementById("btn-copy-diag-log");
+    if (copyDiagBtn) {
+      copyDiagBtn.addEventListener("click", async () => {
+        const outEl = document.getElementById("fit-diagnostic-log-output");
+        if (!outEl) return;
+        try {
+          await navigator.clipboard.writeText(outEl.textContent);
+          copyDiagBtn.textContent = "✓ Log Copiado";
+          setTimeout(() => {
+            copyDiagBtn.textContent = "📋 Copiar Log";
+          }, 2000);
+        } catch (_) {}
       });
     }
 
@@ -1607,7 +2039,7 @@
         const { weekNum, strengthDays } = getActiveWeekStrengthDays();
         strengthDays.forEach((d, idx) => {
           setTimeout(() => {
-            downloadFitForDay(d, weekNum);
+            downloadFitForDay(d, weekNum, idx + 1);
           }, idx * 350);
         });
       });

@@ -11,7 +11,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Superior A (Lunes)",
     unit: "kg",
     step: 2.5,
-    default_1rm: 107.5,
+    default_1rm: 120.0,
     cat_id: 0,
     name_id: 1,
     category_key: "BENCH_PRESS",
@@ -26,7 +26,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Inferior (Martes)",
     unit: "kg",
     step: 2.5,
-    default_1rm: 105.0,
+    default_1rm: 130.0,
     cat_id: 28,
     name_id: 6,
     category_key: "SQUAT",
@@ -41,7 +41,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Inferior (Martes)",
     unit: "kg",
     step: 2.5,
-    default_1rm: 150.0,
+    default_1rm: 160.0,
     cat_id: 8,
     name_id: 0,
     category_key: "DEADLIFT",
@@ -56,7 +56,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Inferior (Martes)",
     unit: "kg",
     step: 2.5,
-    default_1rm: 100.0,
+    default_1rm: 140.0,
     cat_id: 8,
     name_id: 23,
     category_key: "DEADLIFT",
@@ -71,7 +71,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Superior A/B (Lunes y Jueves)",
     unit: "kg",
     step: 2.5,
-    default_1rm: 62.5,
+    default_1rm: 65.0,
     cat_id: 24,
     name_id: 25,
     category_key: "SHOULDER_PRESS",
@@ -86,7 +86,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Superior B (Jueves)",
     unit: "kg/manc",
     step: 1.0,
-    default_1rm: 38.0,
+    default_1rm: 40.0,
     cat_id: 0,
     name_id: 9,
     category_key: "BENCH_PRESS",
@@ -101,7 +101,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Superior A/B (Lunes y Jueves)",
     unit: "kg/manc",
     step: 1.0,
-    default_1rm: 36.0,
+    default_1rm: 40.0,
     cat_id: 23,
     name_id: 2,
     category_key: "ROW",
@@ -116,7 +116,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Superior A/B (Lunes y Jueves)",
     unit: "kg",
     step: 2.5,
-    default_1rm: 85.0,
+    default_1rm: 90.0,
     cat_id: 23,
     name_id: 45,
     category_key: "ROW",
@@ -131,7 +131,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Superior A/B (Lunes y Jueves)",
     unit: "kg lastre",
     step: 1.25,
-    default_1rm: 15.0,
+    default_1rm: 20.0,
     cat_id: 21,
     name_id: 38,
     category_key: "PULL_UP",
@@ -146,7 +146,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Tren Inferior (Martes)",
     unit: "kg/manc",
     step: 1.0,
-    default_1rm: 24.0,
+    default_1rm: 35.0,
     cat_id: 17,
     name_id: 27,
     category_key: "LUNGE",
@@ -176,7 +176,7 @@ window.DEFAULT_1RM_CONFIG = [
     category: "Protección Aquiles (Martes)",
     unit: "kg",
     step: 2.5,
-    default_1rm: 50.0,
+    default_1rm: 60.0,
     cat_id: 1,
     name_id: 6,
     category_key: "CALF_RAISE",
@@ -1718,3 +1718,258 @@ window.HYBRID_TRAINING_PLAN = {
     }
   ]
 };
+
+/**
+ * Plan Nutricional Híbrido de Recomposición Corporal (100.4 kg -> 90.0 kg)
+ * Calibrado con el Gasto Calórico Real (TDEE) medido por el reloj Garmin Fenix 8 durante 186 días:
+ * - Metabolismo Basal (BMR Garmin burnedResting): 2,361 kcal/día
+ * - Calorías Activas medias: 318 kcal/día (520 kcal días de gimnasio, 750-900 kcal días de carrera, 170 kcal domingos)
+ * - Gasto Total Diario (TDEE Real): 2,530 a 3,200 kcal según el día (Media 2,689 kcal/día)
+ */
+window.NUTRITION_PLAN_DATA = {
+  biometrics: {
+    start_weight_kg: 100.4,
+    target_weight_kg: 90.0,
+    total_loss_kg: 10.4,
+    estimated_height_cm: 177,
+    start_bmi: 32.1,
+    target_bmi: 28.7,
+    age: 33,
+    garmin_bmr_kcal: 2361,
+    garmin_avg_active_kcal: 318,
+    garmin_avg_tdee_kcal: 2689,
+    hydration_goal_ml: 3400,
+    weekly_loss_target_kg: "0.65 – 0.75 kg/sem",
+    estimated_duration_weeks: "14 – 16 semanas",
+    pace_gain_10k_estimate: "~3:30 a 4:00 min más rápido en 10K (~2.2 s/km por cada kg de grasa perdido)"
+  },
+  day_types: [
+    {
+      id: "gym",
+      badge: "LUNES · MARTES · JUEVES",
+      title: "🏋️ Día de Gimnasio (Fuerza Pesada Upper / Lower)",
+      garmin_tdee_kcal: 2880,
+      target_kcal: 2250,
+      deficit_kcal: 630,
+      protein_g: 205,
+      carbs_g: 205,
+      fat_g: 67,
+      water_l: 3.5,
+      focus: "Proteger tus nuevos 1RM (Banca 120 kg, Sentadilla 130 kg, Peso Muerto 160 kg, RDL 140 kg) concentrando el 65% de los carbohidratos alrededor del entrenamiento y manteniendo 205 g de proteína.",
+      meals: [
+        {
+          time: "08:00 – 09:00 · Desayuno Proteico & Saciedad",
+          name: "Tortilla / Revuelto Proteico + Avena o Pan Integral",
+          kcal: 540,
+          macros: "48g P · 45g C · 18g G",
+          items: [
+            "3 huevos enteros L + 150 ml de claras líquidas (o 1 cazo de Whey en bol)",
+            "60 g de copos de avena (o 80 g de pan 100% integral de masa madre con tomate natural)",
+            "1 pieza de fruta entera (kiwi, manzana o 100 g de frutos rojos) + Café solo / cortado"
+          ]
+        },
+        {
+          time: "14:00 – 15:00 · Comida Principal (Carga de Glucógeno Limpia)",
+          name: "Pechuga de Pollo / Pavo o Ternera Magra + Arroz / Patata + Verdura",
+          kcal: 690,
+          macros: "62g P · 72g C · 16g G",
+          items: [
+            "230 g de pechuga de pollo, pavo o solomillo/lomo de ternera magra (peso en crudo)",
+            "180 g de arroz basmati cocido (70 g en crudo) o 320 g de patata/boniato asado o al vapor",
+            "250 g de verdura salteada o ensalada grande (brócoli, calabacín, espinacas, pimientos)",
+            "10 g (1 cucharada sopera rasa) de Aceite de Oliva Virgen Extra (AOVE)"
+          ]
+        },
+        {
+          time: "17:30 – 18:30 · Pre-Entreno de Fuerza (45–60 min antes del Gym)",
+          name: "Snack Rápido Peri-Entreno + Creatina",
+          kcal: 330,
+          macros: "35g P · 42g C · 2g G",
+          items: [
+            "1 cazo (35 g) de Proteína Whey Isolate o 250 g de Yogur Griego 0% / Queso Fresco Batido 0%",
+            "1 plátano maduro mediano (120 g) + 2 tortitas de arroz o 25 g de crema de arroz",
+            "5 g de Creatina Monohidrato + 1 café expreso (opcional si entrenas antes de las 18:30)"
+          ]
+        },
+        {
+          time: "21:00 – 21:30 · Cena de Recuperación Muscular & VFC Nocturna",
+          name: "Pescado Blanco / Salmón + Patata Cocida (Efecto Triptófano) + Ensalada",
+          kcal: 690,
+          macros: "60g P · 46g C · 31g G",
+          items: [
+            "220 g de salmón al horno / lubina / dorada (o 250 g de merluza/bacalao + 1/2 aguacate)",
+            "200 g de patata cocida o boniato asado (45 g de carbohidratos suaves que mejoran el sueño profundo y tu VFC)",
+            "Ensalada verde abundante o espárragos trigueros / judías verdes con 10 g de AOVE",
+            "Postre: 1 yogur proteico 0% o gelatina 0% + 300 mg Magnesio Bisglicinato 30 min antes de dormir"
+          ]
+        }
+      ]
+    },
+    {
+      id: "run",
+      badge: "MIÉRCOLES · VIERNES · SÁBADO",
+      title: "🏃 Día de Carrera (Rodaje Z2 · Series Viernes · Tirada Larga Sábado)",
+      garmin_tdee_kcal: 3080,
+      target_kcal: 2400,
+      deficit_kcal: 680,
+      protein_g: 200,
+      carbs_g: 255,
+      fat_g: 62,
+      water_l: 3.8,
+      focus: "Aumentar +50 g los carbohidratos limpios para recargar glucógeno hepático y muscular sin pesadez digestiva, protegiendo el tendón de Aquiles y evitando la caída de VFC tras las series o la tirada larga.",
+      meals: [
+        {
+          time: "08:00 – 09:00 · Desayuno Energético Digestivo",
+          name: "Porridge de Avena Proteico o Tostadas con Jamón Ibérico / Huevos",
+          kcal: 610,
+          macros: "46g P · 72g C · 15g G",
+          items: [
+            "75 g de copos de avena cocidos con agua/leche desnatada + 1 cazo (35 g) de Whey + canela",
+            "1 plátano en rodajas + 10 g de miel cruda o arándanos",
+            "(Alternativa salada): 100 g de pan de masa madre + 2 huevos + 80 g de jamón serrano magro / pavo + fruta"
+          ]
+        },
+        {
+          time: "14:00 – 15:00 · Comida Principal (Alta en Carbohidrato Complejo)",
+          name: "Pasta Integral / Arroz Basmati con Solomillo o Pollo",
+          kcal: 760,
+          macros: "60g P · 92g C · 16g G",
+          items: [
+            "95 g de arroz basmati o pasta integral en seco (240 g cocido) o 400 g de patata asada",
+            "220 g de pechuga de pollo/pavo o ternera magra a la plancha",
+            "200 g de verduras al vapor / plancha (bajas en fibra insoluble si corres por la tarde) + 10 g AOVE"
+          ]
+        },
+        {
+          time: "Pre / Post Carrera · Ventana de Rendimiento y Tendón de Aquiles",
+          name: "Protocolo Colágeno Pre-Run + Recuperador Rápido",
+          kcal: 380,
+          macros: "38g P · 52g C · 2g G",
+          items: [
+            "45 min ANTES de correr: 15 g de Colágeno Hidrolizado + 50 mg Vitamina C + 1 plátano o 30 g de dátiles",
+            "DESPUÉS de correr: 1 batido de 30 g Whey Isolate + 250 ml bebida isotónica o 2 tortitas de arroz con miel",
+            "5 g de Creatina Monohidrato + 500 ml de agua con 1 pellizco de sal marina (electrolitos)"
+          ]
+        },
+        {
+          time: "21:00 – 21:30 · Cena Antiinflamatoria & Reparación Articular",
+          name: "Pescado Azul (Omega-3) o Pollo + Boniato + Verdura",
+          kcal: 650,
+          macros: "56g P · 39g C · 29g G",
+          items: [
+            "220 g de salmón, trucha, caballa o atún fresco (o 230 g de pollo de corral + 15 g de nueces)",
+            "180 g de boniato o patata al horno con especias",
+            "Crema de calabacín/calabaza sin nata o ensalada de tomate y ventresca con 10 g de AOVE"
+          ]
+        }
+      ]
+    },
+    {
+      id: "rest",
+      badge: "DOMINGO (DESCANSO TOTAL)",
+      title: "🧘 Día de Descanso Total (Oxidación de Grasa & Control de Insulina)",
+      garmin_tdee_kcal: 2520,
+      target_kcal: 1950,
+      deficit_kcal: 570,
+      protein_g: 200,
+      carbs_g: 130,
+      fat_g: 70,
+      water_l: 3.2,
+      focus: "El domingo no entrenas: reducimos los carbohidratos almidonados a 130 g (procedentes de verdura, fruta, legumbre o tubérculo moderado) y subimos grasas saludables y proteína para máxima saciedad y quema de grasa en reposo.",
+      meals: [
+        {
+          time: "09:00 – 10:00 · Desayuno Dominical Saciante (Low-Carb Moderado)",
+          name: "Huevos Revueltos con Aguacate, Jamón/Salmón y Fruta",
+          kcal: 520,
+          macros: "45g P · 26g C · 26g G",
+          items: [
+            "3 huevos camperos + 100 ml de claras + 50 g de jamón ibérico magro o salmón ahumado",
+            "1 rebanada (45 g) de pan integral de centeno/masa madre con 1/3 de aguacate",
+            "100 g de frutos rojos o 1 kiwi + Café o infusión"
+          ]
+        },
+        {
+          time: "14:30 – 15:30 · Comida Dominical Familiar (Flexible y Limpia)",
+          name: "Carne Asada / Pescado al Horno o Arroz Dominguero Controlado",
+          kcal: 720,
+          macros: "65g P · 58g C · 24g G",
+          items: [
+            "Opción A: 250 g de entrecot magro / solomillo / lubina al horno + 200 g de patata panadera al horno + ensalada grande",
+            "Opción B (Si hay paella/arroz familiar): 1 plato raso de arroz con marisco/pollo (60 g arroz en crudo) + 150 g extra de sepia/gambas/pollo + ensalada previa para saciar",
+            "Postre: 1 pieza de fruta o yogur griego natural + 5 g de Creatina Monohidrato"
+          ]
+        },
+        {
+          time: "18:00 · Merienda Saciante de Proteína",
+          name: "Yogur Proteico con Frutos Secos",
+          kcal: 230,
+          macros: "30g P · 12g C · 7g G",
+          items: [
+            "250 g de Skyr / Queso Fresco Batido 0% o 1 batido de Whey con agua/leche de almendras sin azúcar",
+            "12 g de nueces o almendras naturales tostadas sin sal + canela"
+          ]
+        },
+        {
+          time: "20:45 – 21:15 · Cena Ligera Temprana (Máxima VFC el Lunes)",
+          name: "Pescado Blanco / Sepia / Pollo a la Plancha + Parrillada de Verduras",
+          kcal: 480,
+          macros: "60g P · 34g C · 13g G",
+          items: [
+            "250 g de merluza, sepia, calamar a la plancha o pechuga de pavo",
+            "300 g de verduras al horno o salteadas (espárragos, champiñones, calabacín, berenjena) + 120 g de patata cocida",
+            "10 g de AOVE + 300 mg de Magnesio Bisglicinato antes de dormir para empezar el Lunes con Body Battery >85"
+          ]
+        }
+      ]
+    }
+  ],
+  phases_100_to_90: [
+    {
+      phase: "Fase 1 · Semanas 1 a 4 (Bloque 1 Base)",
+      weight_range: "100.4 kg → 97.4 kg (-3.0 kg)",
+      kcal_avg: "2,240 kcal/día media semanal",
+      running_impact: "Reducción inmediata de retención hídrica e inflamación sistémica. Tu FC en Zona 2 bajará 3–4 ppm al mismo ritmo (6:05/km) y las rodillas/Aquiles reciben 3 kg menos por impacto."
+    },
+    {
+      phase: "Fase 2 · Semanas 5 a 8 (Bloque 2 Específico)",
+      weight_range: "97.4 kg → 94.6 kg (-2.8 kg)",
+      kcal_avg: "2,200 kcal/día media semanal",
+      running_impact: "Con ~5.8 kg menos que en el 10K Ponle Freno, tu ritmo Umbral (160 ppm) pasará de 5:18/km a ~5:03/km manteniendo intactos los 120 kg en Banca y 130 kg en Sentadilla."
+    },
+    {
+      phase: "Fase 3 · Semanas 9 a 12 (Bloque 3 Pico 10K)",
+      weight_range: "94.6 kg → 92.0 kg (-2.6 kg)",
+      kcal_avg: "2,250 kcal/día (Refeed semana 12 previo al 10K)",
+      running_impact: "En la Semana 12 llegas al Test 10K Sub-50' con ~8.4 kg menos de lastre graso (+12% de VO2max relativo en ml/kg/min). En los últimos 48h de la Semana 12 subimos a mantenimiento (2,750 kcal altas en carbohidratos) para correr con el depósito lleno."
+    },
+    {
+      phase: "Fase 4 · Semanas 13 a 15 (Consolidación Final)",
+      weight_range: "92.0 kg → 90.0 kg (-2.0 kg · META)",
+      kcal_avg: "2,180 kcal/día → Transición a 2,650 kcal (Mantenimiento)",
+      running_impact: "Objetivo de 90.0 kg alcanzado (-10.4 kg totales) con cintura reducida ~9–11 cm, ratio fuerza/peso corporal en máximos personales (Dominadas con +20 kg mucho más fáciles y Sentadilla 1.45× peso corporal)."
+    }
+  ],
+  supplements_and_rules: [
+    {
+      title: "1. Creatina Monohidrato (5 g/día todos los días)",
+      detail: "Imprescindible en déficit calórico para no perder fuerza en tus básicos (120 kg Banca / 130 kg Sentadilla / 160 kg Peso Muerto) y acelerar la resíntesis de fosfocreatina en las series de carrera."
+    },
+    {
+      title: "2. Regla de las 4 Tomas de Proteína (45–60 g por comida)",
+      detail: "A los 33 años y en déficit de 600 kcal, alcanzar 200 g de proteína/día (2.2 g/kg de tu peso objetivo de 90 kg) evita que el cuerpo degrade masa muscular y mantiene la grelina (hormona del hambre) controlada."
+    },
+    {
+      title: "3. Protocolo Tendón de Aquiles & Fascia Plantar (15 g Colágeno + Vit C)",
+      detail: "Correr con 95–100 kg exige blindar los tendones: toma 15 g de péptidos de colágeno (o gelatina neutra) con 50 mg de Vitamina C 45 minutos antes del Martes de pierna y del Viernes/Sábado de carrera."
+    },
+    {
+      title: "4. Higiene de Cena & Magnesio para subir tu VFC de 52 ms a >58 ms",
+      detail: "Tus datos de Garmin muestran que cuando cenas pesado o tarde o duermes <6.5h, tu FC en reposo sube de 45 a 49–52 ppm y tu VFC cae por debajo de 48 ms. Cena al menos 2 horas antes de acostarte, evita el alcohol (1 sola copa hunde la VFC un 18% esa noche) y añade 300–400 mg de Magnesio Bisglicinato."
+    },
+    {
+      title: "5. Hidratación Calibrada con Garmin (3.4 a 3.8 L/día)",
+      detail: "Tu objetivo base en Garmin Connect es 3,378 ml/día. Añade 1 pizca de sal marina o 1 pastilla de electrolitos sin azúcar los días de carrera para evitar calambres y falsas sensaciones de hambre."
+    }
+  ]
+};
+
