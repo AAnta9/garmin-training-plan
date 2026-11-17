@@ -442,31 +442,51 @@ def build_dashboard_data() -> dict[str, Any]:
     # Estado matutino de hoy (09:00 AM Check-in)
     readiness_today = today_row.get("readiness") or 68
     hrv_status_today = today_row.get("hrv_status") or "UNBALANCED"
+    hrv_night_today = today_row.get("hrv_night") or 52
+    hrv_wk_today = today_row.get("hrv_weekly") or 50
+    sleep_h_today = today_row.get("sleep_hours") or 7.0
+    sleep_sc_today = today_row.get("sleep_score") or 78
+    rhr_today = today_row.get("rhr") or 46
+    rhr_avg_6m = round(statistics.mean(rhrs), 1) if rhrs else 45.6
+    rhr_delta = round(rhr_today - rhr_avg_6m, 1)
+    bb_today = today_row.get("bb_max") or 75
     acwr_today = today_row.get("acwr") or 1.15
 
-    if readiness_today >= 75 and hrv_status_today == "BALANCED" and acwr_today <= 1.3:
-        coach_Semaphore = "GREEN"
-        coach_headline = "Listo para sesión de calidad (Readiness Óptimo)"
+    weekday_plan_map = {
+        0: ("Lunes · Gimnasio 1 (Upper A)", "Prioriza Tren Superior A (Press Banca, Dominadas, Militar y Remo) según tu % de 1RM."),
+        1: ("Martes · Gimnasio 2 (Lower)", "Toca Tren Inferior Híbrido (Sentadilla, RDL, Búlgara y Sóleo) dejando 2 repeticiones en recámara (RIR 2) para llegar fresco al rodaje Z2 de mañana."),
+        2: ("Miércoles · Carrera 1 (Base Z2)", "Toca Rodaje Aeróbico en Zona 2 estricta (135–151 ppm, cadencia >166 spm) para oxigenar piernas."),
+        3: ("Jueves · Gimnasio 3 (Upper B)", "Toca Tren Superior B (Press Militar, Remo Barra, Inclinado Mancuernas y Dominadas) sin fatigar el tren inferior."),
+        4: ("Viernes · Carrera 2 (Calidad / Umbral)", "Sesión de calidad de carrera (piernas con 72h de margen desde el martes de gimnasio). Calienta bien 10 min en Z1-Z2."),
+        5: ("Sábado · Carrera 3 (Tirada Larga Z2)", "Tirada Larga aeróbica en Zona 2 controlada (135–151 ppm). Mañana domingo tienes descanso total."),
+        6: ("Domingo · Descanso Total", "Día fijo de descanso total y supercompensación. Hidratación, pasos suaves y dormir 7.5–8h."),
+    }
+    wd_label, wd_prescription = weekday_plan_map.get(latest_date.weekday(), ("Sesión del Día", "Sigue las zonas prescritas."))
+
+    if readiness_today >= 75 and (hrv_status_today == "BALANCED" or hrv_night_today >= 50) and acwr_today <= 1.35:
+        coach_Semaphore = "GREEN" if hrv_status_today == "BALANCED" else "AMBER"
+        coach_headline = (
+            f"{wd_label} — Buena recuperación nocturna (VFC anoche {hrv_night_today} ms · Readiness {readiness_today}/100)"
+        )
         coach_advice = (
-            "Tu VFC está dentro del rango equilibrado (50–60 ms) y la carga aguda está controlada. "
-            "Puedes ejecutar la sesión principal del día al 100% de las zonas y pesos prescritos."
+            f"Anoche dormiste {sleep_h_today}h (score {sleep_sc_today}/100), tu Body Battery subió a {bb_today}/100, "
+            f"tu FC en reposo está en {rhr_today} ppm ({rhr_delta:+.1f} vs tu media de {rhr_avg_6m}) y tu VFC nocturna alcanzó {hrv_night_today} ms "
+            f"(media 7d: {hrv_wk_today} ms, estado {hrv_status_today}). {wd_prescription}"
         )
     elif readiness_today >= 50 or hrv_status_today == "UNBALANCED":
         coach_Semaphore = "AMBER"
-        coach_headline = "Precaución / Carga Moderada — Recuperación Post-10K en curso"
+        coach_headline = f"{wd_label} — Carga Adaptada (Readiness {readiness_today}/100 · VFC 7d {hrv_wk_today} ms)"
         coach_advice = (
-            f"Tras el 10K Ponle Freno de ayer (54:05, Carga 215, TE 5.0) y el pico de fatiga del fin de semana, "
-            f"tu sueño anoche se recuperó muy bien ({today_row.get('sleep_hours', 7.95)}h, score {today_row.get('sleep_score', 80)}), "
-            f"pero tu VFC semanal ({today_row.get('hrv_weekly', 48)} ms) sigue en estado DESEQUILIBRADO (debajo de tu base de 50–60 ms) "
-            f"y la FC en reposo está en {today_row.get('rhr', 49)} ppm (+3.4 ppm sobre tu media de 45.6). "
-            "Hoy prioriza Fuerza de Tren Superior sin impacto articular (RIR 2) y mantén hidratación alta."
+            f"Sueño anoche: {sleep_h_today}h (score {sleep_sc_today}/100), Body Battery {bb_today}/100, "
+            f"VFC anoche {hrv_night_today} ms (media 7d {hrv_wk_today} ms en {hrv_status_today}) y FC en reposo {rhr_today} ppm "
+            f"({rhr_delta:+.1f} ppm sobre tu media de {rhr_avg_6m}). {wd_prescription}"
         )
     else:
         coach_Semaphore = "RED"
-        coach_headline = "Prioridad Descanso & Regeneración Parasimpática"
+        coach_headline = f"{wd_label} — Prioridad Descanso & Regeneración Parasimpática"
         coach_advice = (
-            "Tus biomarcadores indican fatiga aguda elevada (VFC baja o sueño insuficiente). "
-            "Sustituye cualquier sesión intensa por movilidad, paseo suave Z1 (30 min) y 8h de sueño."
+            f"Tus biomarcadores hoy muestran fatiga acumulada (VFC anoche {hrv_night_today} ms, sueño {sleep_h_today}h, BB {bb_today}/100). "
+            "Reduce el volumen un 30% o sustituye la sesión por movilidad y paseo suave Z1."
         )
 
     # Extraer zonas de FC de carrera

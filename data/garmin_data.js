@@ -1,6 +1,6 @@
 window.GARMIN_DATA = {
   "metadata": {
-    "last_sync": "2026-11-17 10:34:01",
+    "last_sync": "2026-11-17 10:39:00",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
     "analysis_window_start": "2026-05-21",
@@ -131,8 +131,8 @@ window.GARMIN_DATA = {
     "date": "2026-11-17",
     "semaphore": "AMBER",
     "readiness_score": 84,
-    "headline": "Precaución / Carga Moderada — Recuperación Post-10K en curso",
-    "coach_advice": "Tras el 10K Ponle Freno de ayer (54:05, Carga 215, TE 5.0) y el pico de fatiga del fin de semana, tu sueño anoche se recuperó muy bien (6.88h, score 82), pero tu VFC semanal (48 ms) sigue en estado DESEQUILIBRADO (debajo de tu base de 50–60 ms) y la FC en reposo está en 46 ppm (+3.4 ppm sobre tu media de 45.6). Hoy prioriza Fuerza de Tren Superior sin impacto articular (RIR 2) y mantén hidratación alta.",
+    "headline": "Martes · Gimnasio 2 (Lower) — Buena recuperación nocturna (VFC anoche 56 ms · Readiness 84/100)",
+    "coach_advice": "Anoche dormiste 6.88h (score 82/100), tu Body Battery subió a 80/100, tu FC en reposo está en 46 ppm (+0.4 vs tu media de 45.6) y tu VFC nocturna alcanzó 56 ms (media 7d: 48 ms, estado UNBALANCED). Toca Tren Inferior Híbrido (Sentadilla, RDL, Búlgara y Sóleo) dejando 2 repeticiones en recámara (RIR 2) para llegar fresco al rodaje Z2 de mañana.",
     "metrics_today": {
       "hrv_last_night_ms": 56,
       "hrv_weekly_avg_ms": 48,

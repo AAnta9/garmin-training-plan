@@ -812,13 +812,26 @@
       `;
     }
 
+    // Calcular dinámicamente qué tarjeta corresponde al día de HOY (inicio del plan: Lunes 2026-11-16)
+    const todayIso =
+      (garminData && garminData.morning_check_in && garminData.morning_check_in.date) ||
+      new Date().toISOString().slice(0, 10);
+    const startMs = Date.UTC(2026, 10, 16); // 2026-11-16
+    const parts = todayIso.split("-").map((x) => parseInt(x, 10));
+    const curMs = parts.length === 3 ? Date.UTC(parts[0], parts[1] - 1, parts[2]) : startMs;
+    const diffDays = Math.max(0, Math.floor((curMs - startMs) / 86400000));
+    const todayBlockNum = Math.min(3, Math.floor(diffDays / 28) + 1);
+    const todayWeekNum = Math.min(12, Math.floor(diffDays / 7) + 1);
+    const todayDayNum = (diffDays % 7) + 1;
+    const todayPlanId = `b${todayBlockNum}-w${todayWeekNum}-d${todayDayNum}`;
+
     // 4. Render 7 Day Cards with dynamically calculated 1RM weights & Garmin Watch export buttons
     const daysGrid = document.getElementById("week-days-grid");
     if (daysGrid) {
       daysGrid.innerHTML = days
         .map((d) => {
           const isDone = !!completedMap[d.id];
-          const isToday = d.id === "b1-w1-d1";
+          const isToday = d.id === todayPlanId;
           const isStrength = d.modality === "strength";
           const noteVal = (notesMap[d.id] || "").replace(/"/g, "&quot;");
           const resolvedTitle = resolveDynamicText(d.title);

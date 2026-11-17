@@ -2,8 +2,10 @@ name: "09:00 AM Daily Garmin Coach Sync"
 
 on:
   schedule:
-    # 09:00 AM Europe/Madrid (CET = UTC+1 -> 08:00 UTC)
-    - cron: "0 8 * * *"
+    # 08:52 AM Europe/Madrid (evita el pico de cola de las en punto en GitHub Actions para estar listo a las 09:00 AM)
+    - cron: "52 7 * * *"
+    # 09:05 AM Europe/Madrid (ejecución de respaldo por si GitHub Actions retrasa el primer slot)
+    - cron: "5 8 * * *"
   workflow_dispatch:
 
 permissions:
@@ -29,6 +31,8 @@ jobs:
           python3 scripts/sync_garmin.py
 
       - name: Commit and push updated Garmin data
+        env:
+          TZ: "Europe/Madrid"
         run: |
           git config user.name "Garmin Hybrid Coach Bot"
           git config user.email "actions@github.com"
@@ -36,6 +40,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes in Garmin data."
           else
-            git commit -m "chore(sync): actualizacion matutina 09:00 Garmin Connect ($(date +'%Y-%m-%d'))"
+            git commit -m "chore(sync): actualizacion matutina 09:00 Garmin Connect ($(date +'%Y-%m-%d %H:%M'))"
             git push
           fi
