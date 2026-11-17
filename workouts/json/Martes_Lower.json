@@ -1,6 +1,6 @@
 {
-  "workoutName": "HYBRID · Martes Lower",
-  "description": "Gimnasio Día 2 (Martes) — Tren Inferior Híbrido & Protección Tendón de Aquiles. 72h antes de las series del viernes.",
+  "workoutName": "HYBRID Martes Lower",
+  "description": "Gimnasio Dia 2 (Martes) - Tren Inferior Hibrido & Proteccion Tendon de Aquiles. 72h antes de las series del viernes.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -21,7 +21,7 @@
           "stepId": null,
           "stepOrder": 1,
           "childStepId": null,
-          "description": "Movilidad escapular/cadera y series de aproximación",
+          "description": "Movilidad escapular/cadera y series de aproximacion",
           "stepType": {
             "stepTypeId": 1,
             "stepTypeKey": "warmup",
@@ -67,7 +67,7 @@
               "stepId": null,
               "stepOrder": 3,
               "childStepId": 1,
-              "description": "RIR 2 (concéntrica explosiva)",
+              "description": "RIR 2 (concentrica explosiva)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -379,7 +379,7 @@
               "stepId": null,
               "stepOrder": 15,
               "childStepId": 5,
-              "description": "Estabilidad pélvica",
+              "description": "Estabilidad pelvica",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",

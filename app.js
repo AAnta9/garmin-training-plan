@@ -195,6 +195,7 @@
 
   /**
    * Construye un archivo binario .FIT de entrenamiento Garmin (FileType=5 WORKOUT, Sport=10, SubSport=20)
+   * con el esquema exacto de 7/21/30/5 campos de Garmin Fenix 8 (idéntico a 'WE ARE BACK!')
    * usando los 1RM actuales del usuario para cualquier día de gimnasio del plan.
    */
   function buildFitWorkoutBinaryForDay(dayObj, weekNum) {
@@ -211,41 +212,93 @@
       chunks.push(b);
     };
 
-    // 1. Definition Local 0 -> file_id (GMSG 0)
+    const pushFenix8Step = (
+      msgIdx,
+      durType,
+      durVal,
+      tgtType,
+      tgtVal,
+      intensity,
+      exCat,
+      exName,
+      exWeight,
+      wtUnit,
+      f18,
+      secTgtType,
+      secTgtVal
+    ) => {
+      pushBytes([0x02]);
+      pushU32(durVal);
+      pushU32(tgtVal);
+      pushU32(0xffffffff);
+      pushU32(0xffffffff);
+      chunks.push(new Uint8Array(200)); // notes (200 bytes empty)
+      pushU32(secTgtVal);
+      pushU32(0xffffffff);
+      pushU32(0xffffffff);
+      pushU32(0xffffffff);
+      pushU32(0);
+      pushU16(msgIdx);
+      pushU16(exCat);
+      pushU16(exName);
+      pushU16(exWeight);
+      pushU16(wtUnit);
+      pushU16(0xffff);
+      pushU16(0xffff);
+      chunks.push(new Uint8Array(25)); // wkt_step_name (25 bytes empty, resolved via GMSG 264)
+      pushBytes([
+        durType & 0xff,
+        tgtType & 0xff,
+        intensity & 0xff,
+        0xff,
+        0xff,
+        f18 & 0xff,
+        secTgtType & 0xff,
+        0xff
+      ]);
+      chunks.push(new Uint8Array(37));
+      pushBytes([0xff, 0xff, 0xff]);
+    };
+
+    // 1. Definition Local 0 -> file_id (GMSG 0, 7 campos exactos de Fenix 8)
     pushBytes([
-      0x40, 0x00, 0x00, 0x00, 0x00, 6,
-      3, 4, 0x8c,
-      4, 4, 0x86,
-      1, 2, 0x84,
-      2, 2, 0x84,
-      5, 2, 0x84,
-      0, 1, 0x00
+      0x40, 0x00, 0x00, 0x00, 0x00, 7,
+      3, 4, 140,
+      4, 4, 134,
+      7, 4, 134,
+      1, 2, 132,
+      2, 2, 132,
+      5, 2, 132,
+      0, 1, 0
     ]);
     pushBytes([0x00]);
     pushU32(3620636920);
     pushU32(1161433847);
+    pushU32(0xffffffff);
     pushU16(1); // Garmin
-    pushU16(4536); // Reloj del usuario
-    pushU16(weekNum * 10 + 1);
+    pushU16(4536); // Fenix 8
+    pushU16(0xffff);
     pushBytes([5]); // FileType = 5 (WORKOUT)
 
-    // Construir pasos del entrenamiento
-    const steps = [];
-    const usedTitles = new Map();
-    usedTitles.set("2:65535", { cat_id: 2, name_id: 65535, title_es: "Calentamiento / Movilidad" });
+    // Precalcular pasos y títulos únicos
+    const stepRecords = [];
+    const usedTitles = [];
+    const seenTitleKeys = new Set();
 
-    steps.push({
-      msg_idx: 0,
-      dur_type: 5, // open (botón Lap)
-      dur_val: 0xffffffff,
-      tgt_type: 2,
-      tgt_val: 0,
-      intensity: 2, // warmup
-      ex_cat: 2,
-      ex_name: 65535,
-      ex_weight: 65535,
-      wt_unit: 1,
-      notes: "Calentamiento 5 min"
+    // Step 0: Warmup
+    stepRecords.push({
+      durType: 5,
+      durVal: 0xffffffff,
+      tgtType: 2,
+      tgtVal: 0,
+      intensity: 2,
+      exCat: 2,
+      exName: 0xffff,
+      exWeight: 0xffff,
+      wtUnit: 1,
+      f18: 0xff,
+      secTgtType: 0xff,
+      secTgtVal: 0
     });
 
     (dayObj.steps || []).forEach((st) => {
@@ -254,141 +307,195 @@
       const setsCount = parseInt(st.sets, 10) || 3;
       const repsCount = parseRepsCount(st.reps);
       const weightKg = calcLiftWeight(st.lift, st.pct || 0);
-      const exWeightVal = weightKg > 0 ? Math.round(weightKg * 100) : 65535;
+      const exWeightVal = weightKg > 0 ? Math.round(weightKg * 100) : 0xffff;
       const restMs = (cfg.rest_sec || 90) * 1000;
 
-      const workIdx = steps.length;
-      const noteStr =
-        weightKg > 0
-          ? `${formatNumberClean(weightKg)} kg (${Math.round((st.pct || 0) * 100)}% 1RM)`
-          : "Peso corporal";
-
-      steps.push({
-        msg_idx: workIdx,
-        dur_type: 29, // reps
-        dur_val: repsCount,
-        tgt_type: 2,
-        tgt_val: 0,
-        intensity: 0, // active
-        ex_cat: cfg.cat_id,
-        ex_name: cfg.name_id,
-        ex_weight: exWeightVal,
-        wt_unit: 1,
-        notes: noteStr
-      });
-      usedTitles.set(`${cfg.cat_id}:${cfg.name_id}`, {
-        cat_id: cfg.cat_id,
-        name_id: cfg.name_id,
-        title_es: cfg.title_es || cfg.name
+      const workIdx = stepRecords.length;
+      stepRecords.push({
+        durType: 29,
+        durVal: repsCount,
+        tgtType: 2,
+        tgtVal: 0,
+        intensity: 0,
+        exCat: cfg.cat_id,
+        exName: cfg.name_id,
+        exWeight: exWeightVal,
+        wtUnit: 1,
+        f18: 0xff,
+        secTgtType: 0xff,
+        secTgtVal: 0
       });
 
-      const restIdx = steps.length;
-      steps.push({
-        msg_idx: restIdx,
-        dur_type: 0, // time (ms)
-        dur_val: restMs,
-        tgt_type: 2,
-        tgt_val: 0,
-        intensity: 1, // rest
-        ex_cat: 65535,
-        ex_name: 65535,
-        ex_weight: 65535,
-        wt_unit: 1,
-        notes: "Descanso"
+      const tkey = `${cfg.cat_id}:${cfg.name_id}`;
+      if (!seenTitleKeys.has(tkey)) {
+        seenTitleKeys.add(tkey);
+        usedTitles.push({
+          cat_id: cfg.cat_id,
+          name_id: cfg.name_id,
+          title_es: cfg.title_es || cfg.name
+        });
+      }
+
+      stepRecords.push({
+        durType: 0,
+        durVal: restMs,
+        tgtType: 2,
+        tgtVal: 0,
+        intensity: 1,
+        exCat: 0xffff,
+        exName: 0xffff,
+        exWeight: 0xffff,
+        wtUnit: 1,
+        f18: 0xff,
+        secTgtType: 2,
+        secTgtVal: 0
       });
 
-      const repIdx = steps.length;
-      steps.push({
-        msg_idx: repIdx,
-        dur_type: 6, // repeat_until_steps_cmplt
-        dur_val: workIdx,
-        tgt_type: 255,
-        tgt_val: setsCount,
-        intensity: 255,
-        ex_cat: 65535,
-        ex_name: 65535,
-        ex_weight: 65535,
-        wt_unit: 65535,
-        notes: ""
+      stepRecords.push({
+        durType: 6,
+        durVal: workIdx,
+        tgtType: 0xff,
+        tgtVal: setsCount,
+        intensity: 0xff,
+        exCat: 0xffff,
+        exName: 0xffff,
+        exWeight: 0xffff,
+        wtUnit: 0xffff,
+        f18: 0,
+        secTgtType: 0xff,
+        secTgtVal: 0xffffffff
       });
     });
 
-    steps.push({
-      msg_idx: steps.length,
-      dur_type: 5,
-      dur_val: 0xffffffff,
-      tgt_type: 2,
-      tgt_val: 0,
-      intensity: 3, // cooldown
-      ex_cat: 2,
-      ex_name: 65535,
-      ex_weight: 65535,
-      wt_unit: 1,
-      notes: "Vuelta a la calma"
+    // Cooldown
+    stepRecords.push({
+      durType: 5,
+      durVal: 0xffffffff,
+      tgtType: 2,
+      tgtVal: 0,
+      intensity: 3,
+      exCat: 2,
+      exName: 0xffff,
+      exWeight: 0xffff,
+      wtUnit: 1,
+      f18: 0xff,
+      secTgtType: 0xff,
+      secTgtVal: 0
     });
+    if (!seenTitleKeys.has("2:65535")) {
+      usedTitles.push({ cat_id: 2, name_id: 0xffff, title_es: "Cardio" });
+    }
 
-    // 2. Definition Local 1 -> workout (GMSG 26)
+    // 2. Definition Local 1 -> workout (GMSG 26, 21 campos exactos de Fenix 8)
     pushBytes([
-      0x41, 0x00, 0x00, 26, 0x00, 5,
-      5, 4, 0x8c,
-      8, 32, 0x07,
-      6, 2, 0x84,
-      4, 1, 0x00,
-      11, 1, 0x00
+      0x41, 0x00, 0x00, 26, 0x00, 21,
+      5, 4, 140,
+      8, 32, 7,
+      10, 4, 134,
+      16, 16, 13,
+      17, 160, 7,
+      21, 4, 134,
+      22, 4, 134,
+      6, 2, 132,
+      7, 2, 132,
+      12, 2, 132,
+      14, 2, 132,
+      20, 2, 132,
+      4, 1, 0,
+      9, 1, 0,
+      11, 1, 0,
+      13, 1, 0,
+      15, 1, 0,
+      18, 37, 7,
+      19, 1, 0,
+      23, 1, 0,
+      24, 1, 0
     ]);
     pushBytes([0x01]);
     pushU32(32);
     chunks.push(encodeFixedUtf8(getStrengthWatchName(dayObj, weekNum), 32));
-    pushU16(steps.length);
-    pushBytes([10, 20]); // sport=10 (training), sub_sport=20 (strength_training)
+    pushU32(0);
+    pushBytes(new Array(16).fill(0xff));
+    chunks.push(new Uint8Array(160));
+    pushU32(0);
+    pushU32(0);
+    pushU16(stepRecords.length);
+    pushU16(0xffff);
+    pushU16(0xffff);
+    pushU16(0xffff);
+    pushU16(0xffff);
+    pushBytes([10, 1, 20, 0xff, 0xff]);
+    chunks.push(new Uint8Array(37));
+    pushBytes([0xff, 0, 0]);
 
-    // 3. Definition Local 2 -> workout_step (GMSG 27)
+    // 3. Definition Local 2 -> workout_step (GMSG 27, 30 campos exactos de Fenix 8)
     pushBytes([
-      0x42, 0x00, 0x00, 27, 0x00, 12,
-      2, 4, 0x86,
-      4, 4, 0x86,
-      8, 32, 0x07,
-      254, 2, 0x84,
-      10, 2, 0x84,
-      11, 2, 0x84,
-      12, 2, 0x84,
-      13, 2, 0x84,
-      0, 32, 0x07,
-      1, 1, 0x00,
-      3, 1, 0x00,
-      7, 1, 0x00
+      0x42, 0x00, 0x00, 27, 0x00, 30,
+      2, 4, 134,
+      4, 4, 134,
+      5, 4, 134,
+      6, 4, 134,
+      8, 200, 7,
+      20, 4, 134,
+      21, 4, 134,
+      22, 4, 134,
+      37, 4, 0,
+      38, 4, 140,
+      254, 2, 132,
+      10, 2, 132,
+      11, 2, 132,
+      12, 2, 132,
+      13, 2, 132,
+      27, 2, 132,
+      31, 2, 132,
+      0, 25, 7,
+      1, 1, 0,
+      3, 1, 0,
+      7, 1, 0,
+      9, 1, 0,
+      17, 1, 0,
+      18, 1, 0,
+      19, 1, 0,
+      26, 1, 2,
+      28, 37, 7,
+      30, 1, 0,
+      35, 1, 2,
+      36, 1, 0
     ]);
-    steps.forEach((st) => {
-      const tInfo = usedTitles.get(`${st.ex_cat}:${st.ex_name}`);
-      const stepTitle = tInfo ? tInfo.title_es : "";
-      pushBytes([0x02]);
-      pushU32(st.dur_val);
-      pushU32(st.tgt_val);
-      chunks.push(encodeFixedUtf8(st.notes, 32));
-      pushU16(st.msg_idx);
-      pushU16(st.ex_cat);
-      pushU16(st.ex_name);
-      pushU16(st.ex_weight);
-      pushU16(st.wt_unit);
-      chunks.push(encodeFixedUtf8(stepTitle, 32));
-      pushBytes([st.dur_type, st.tgt_type, st.intensity]);
+    stepRecords.forEach((st, idx) => {
+      pushFenix8Step(
+        idx,
+        st.durType,
+        st.durVal,
+        st.tgtType,
+        st.tgtVal,
+        st.intensity,
+        st.exCat,
+        st.exName,
+        st.exWeight,
+        st.wtUnit,
+        st.f18,
+        st.secTgtType,
+        st.secTgtVal
+      );
     });
 
-    // 4. Definition Local 3 -> exercise_title (GMSG 264)
+    // 4. Definition Local 3 -> exercise_title (GMSG 264, 5 campos exactos de Fenix 8)
     pushBytes([
-      0x43, 0x00, 0x00, 0x08, 0x01, 4,
-      2, 48, 0x07,
-      254, 2, 0x84,
-      0, 2, 0x84,
-      1, 2, 0x84
+      0x43, 0x00, 0x00, 0x08, 0x01, 5,
+      2, 200, 7,
+      254, 2, 132,
+      0, 2, 132,
+      1, 2, 132,
+      3, 2, 132
     ]);
-    let titleIdx = 0;
-    usedTitles.forEach((info) => {
+    usedTitles.forEach((info, titleIdx) => {
       pushBytes([0x03]);
-      chunks.push(encodeFixedUtf8(info.title_es, 48));
-      pushU16(titleIdx++);
+      chunks.push(encodeFixedUtf8(info.title_es, 200));
+      pushU16(titleIdx);
       pushU16(info.cat_id);
       pushU16(info.name_id);
+      pushU16(0xffff);
     });
 
     let dataSize = 0;
@@ -397,7 +504,7 @@
     const header12 = new Uint8Array(12);
     header12[0] = 14;
     header12[1] = 0x10;
-    new DataView(header12.buffer).setUint16(2, 2113, true);
+    new DataView(header12.buffer).setUint16(2, 21301, true);
     new DataView(header12.buffer).setUint32(4, dataSize, true);
     header12[8] = 0x2e; // '.'
     header12[9] = 0x46; // 'F'

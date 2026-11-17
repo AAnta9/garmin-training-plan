@@ -1,6 +1,6 @@
 {
-  "workoutName": "HYBRID · Lunes Upper A",
-  "description": "Gimnasio Día 1 (Lunes) — Tren Superior A (Empuje & Tracción Pesada). Generado por Garmin Hybrid Coach.",
+  "workoutName": "HYBRID Lunes Upper A",
+  "description": "Gimnasio Dia 1 (Lunes) - Tren Superior A (Empuje & Traccion Pesada). Generado por Garmin Hybrid Coach.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -21,7 +21,7 @@
           "stepId": null,
           "stepOrder": 1,
           "childStepId": null,
-          "description": "Movilidad escapular/cadera y series de aproximación",
+          "description": "Movilidad escapular/cadera y series de aproximacion",
           "stepType": {
             "stepTypeId": 1,
             "stepTypeKey": "warmup",

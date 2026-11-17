@@ -1,6 +1,6 @@
 {
-  "workoutName": "HYBRID · Jueves Upper B",
-  "description": "Gimnasio Día 3 (Jueves) — Tren Superior B (Hombro, Tracción Horizontal & Hipertrofia Funcional). Piernas frescas para el viernes.",
+  "workoutName": "HYBRID Jueves Upper B",
+  "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Traccion Horizontal & Hipertrofia Funcional). Piernas frescas para el viernes.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -21,7 +21,7 @@
           "stepId": null,
           "stepOrder": 1,
           "childStepId": null,
-          "description": "Movilidad escapular/cadera y series de aproximación",
+          "description": "Movilidad escapular/cadera y series de aproximacion",
           "stepType": {
             "stepTypeId": 1,
             "stepTypeKey": "warmup",
