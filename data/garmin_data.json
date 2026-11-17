@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "last_sync": "2026-11-16 17:21:27",
+    "last_sync": "2026-11-17 10:34:01",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
-    "analysis_window_start": "2026-05-20",
-    "analysis_window_end": "2026-11-16",
+    "analysis_window_start": "2026-05-21",
+    "analysis_window_end": "2026-11-17",
     "total_days_analyzed": 181
   },
   "athlete_profile": {
     "age": 33,
-    "fitness_age": 32.4,
+    "fitness_age": 32.7,
     "achievable_fitness_age": 27.0,
     "weight_kg": 100.4,
     "weight_prev_kg": 101.9,
@@ -128,35 +128,35 @@
     ]
   },
   "morning_check_in": {
-    "date": "2026-11-16",
+    "date": "2026-11-17",
     "semaphore": "AMBER",
-    "readiness_score": 66,
+    "readiness_score": 84,
     "headline": "Precaución / Carga Moderada — Recuperación Post-10K en curso",
-    "coach_advice": "Tras el 10K Ponle Freno de ayer (54:05, Carga 215, TE 5.0) y el pico de fatiga del fin de semana, tu sueño anoche se recuperó muy bien (7.95h, score 80), pero tu VFC semanal (48 ms) sigue en estado DESEQUILIBRADO (debajo de tu base de 50–60 ms) y la FC en reposo está en 49 ppm (+3.4 ppm sobre tu media de 45.6). Hoy prioriza Fuerza de Tren Superior sin impacto articular (RIR 2) y mantén hidratación alta.",
+    "coach_advice": "Tras el 10K Ponle Freno de ayer (54:05, Carga 215, TE 5.0) y el pico de fatiga del fin de semana, tu sueño anoche se recuperó muy bien (6.88h, score 82), pero tu VFC semanal (48 ms) sigue en estado DESEQUILIBRADO (debajo de tu base de 50–60 ms) y la FC en reposo está en 46 ppm (+3.4 ppm sobre tu media de 45.6). Hoy prioriza Fuerza de Tren Superior sin impacto articular (RIR 2) y mantén hidratación alta.",
     "metrics_today": {
-      "hrv_last_night_ms": 47,
+      "hrv_last_night_ms": 56,
       "hrv_weekly_avg_ms": 48,
       "hrv_status": "UNBALANCED",
       "hrv_baseline": "50 - 60 ms",
-      "rhr_bpm": 49,
-      "rhr_delta_vs_avg": 3.4,
-      "sleep_hours": 7.95,
-      "sleep_score": 80,
-      "deep_sleep_hours": 1.7,
-      "rem_sleep_hours": 1.37,
-      "body_battery_wake": 45,
-      "stress_yesterday": 56,
-      "acute_load": 363,
-      "chronic_load": 253,
-      "acwr": 1.44,
-      "ctl": 31.5,
-      "atl": 47.3,
-      "tsb": -20.4
+      "rhr_bpm": 46,
+      "rhr_delta_vs_avg": 0.4,
+      "sleep_hours": 6.88,
+      "sleep_score": 82,
+      "deep_sleep_hours": 1.78,
+      "rem_sleep_hours": 1.45,
+      "body_battery_wake": 80,
+      "stress_yesterday": 27,
+      "acute_load": 299,
+      "chronic_load": 252,
+      "acwr": 1.18,
+      "ctl": 30.7,
+      "atl": 40.5,
+      "tsb": -15.8
     }
   },
   "six_month_summary": {
-    "total_activities": 120,
-    "total_hours": 87.4,
+    "total_activities": 119,
+    "total_hours": 86.1,
     "running": {
       "sessions": 27,
       "total_km": 120.9,
@@ -171,32 +171,32 @@
       "avg_duration_min": 44
     },
     "hiit": {
-      "sessions": 40,
-      "total_hours": 40.1
+      "sessions": 39,
+      "total_hours": 38.9
     },
     "health_averages": {
       "hrv_mean_ms": 51.9,
       "hrv_balanced_days_pct": 76,
       "rhr_mean_bpm": 45.6,
-      "sleep_mean_hours": 6.51,
-      "sleep_mean_score": 73.6,
+      "sleep_mean_hours": 6.52,
+      "sleep_mean_score": 73.7,
       "stress_mean": 28.1,
       "body_battery_max_mean": 73.4,
-      "steps_mean": 10818
+      "steps_mean": 10788
     }
   },
   "monthly_progression": [
     {
       "month": "2026-05",
-      "total_sessions": 9,
-      "total_hours": 7.5,
-      "total_load": 307,
+      "total_sessions": 8,
+      "total_hours": 6.3,
+      "total_load": 291,
       "run_sessions": 0,
       "run_km": 0.0,
       "strength_sessions": 1,
       "strength_hours": 0.5,
-      "hiit_sessions": 6,
-      "hiit_hours": 6.4,
+      "hiit_sessions": 5,
+      "hiit_hours": 5.2,
       "run_avg_pace": null
     },
     {
@@ -280,32 +280,6 @@
   ],
   "daily_series": [
     {
-      "date": "2026-05-20",
-      "rhr": 44,
-      "stress": 23,
-      "bb_max": 74,
-      "bb_min": 19,
-      "steps": 10150,
-      "active_kcal": 373,
-      "sleep_score": 69,
-      "sleep_hours": 5.35,
-      "deep_hours": 1.72,
-      "rem_hours": 1.02,
-      "hrv_night": 57,
-      "hrv_weekly": 56,
-      "hrv_status": "BALANCED",
-      "hrv_base_low": 50,
-      "hrv_base_high": 69,
-      "readiness": 78,
-      "load": 15.9,
-      "acute_load": 254,
-      "chronic_load": 274,
-      "acwr": 0.93,
-      "ctl": 39.9,
-      "atl": 36.2,
-      "tsb": 0.9
-    },
-    {
       "date": "2026-05-21",
       "rhr": 45,
       "stress": 34,
@@ -327,7 +301,7 @@
       "acute_load": 296,
       "chronic_load": 265,
       "acwr": 1.12,
-      "ctl": 40.6,
+      "ctl": 40.5,
       "atl": 40.6,
       "tsb": 3.7
     },
@@ -353,7 +327,7 @@
       "acute_load": 292,
       "chronic_load": 259,
       "acwr": 1.13,
-      "ctl": 40.5,
+      "ctl": 40.4,
       "atl": 40.3,
       "tsb": -0.1
     },
@@ -379,9 +353,9 @@
       "acute_load": 243,
       "chronic_load": 237,
       "acwr": 1.02,
-      "ctl": 39.6,
+      "ctl": 39.5,
       "atl": 34.8,
-      "tsb": 0.2
+      "tsb": 0.1
     },
     {
       "date": "2026-05-24",
@@ -407,7 +381,7 @@
       "acwr": 0.99,
       "ctl": 39.4,
       "atl": 34.6,
-      "tsb": 4.8
+      "tsb": 4.7
     },
     {
       "date": "2026-05-25",
@@ -431,9 +405,9 @@
       "acute_load": 199,
       "chronic_load": 238,
       "acwr": 0.83,
-      "ctl": 38.5,
+      "ctl": 38.4,
       "atl": 29.6,
-      "tsb": 4.9
+      "tsb": 4.8
     },
     {
       "date": "2026-05-26",
@@ -459,7 +433,7 @@
       "acwr": 0.95,
       "ctl": 38.6,
       "atl": 31.6,
-      "tsb": 8.9
+      "tsb": 8.8
     },
     {
       "date": "2026-05-27",
@@ -511,7 +485,7 @@
       "acwr": 0.98,
       "ctl": 38.9,
       "atl": 34.8,
-      "tsb": 2.5
+      "tsb": 2.4
     },
     {
       "date": "2026-05-29",
@@ -535,7 +509,7 @@
       "acute_load": 227,
       "chronic_load": 259,
       "acwr": 0.88,
-      "ctl": 38.4,
+      "ctl": 38.3,
       "atl": 32.3,
       "tsb": 4.1
     },
@@ -561,7 +535,7 @@
       "acute_load": 186,
       "chronic_load": 250,
       "acwr": 0.75,
-      "ctl": 37.5,
+      "ctl": 37.4,
       "atl": 27.7,
       "tsb": 6.1
     },
@@ -587,7 +561,7 @@
       "acute_load": 153,
       "chronic_load": 250,
       "acwr": 0.61,
-      "ctl": 36.6,
+      "ctl": 36.5,
       "atl": 23.7,
       "tsb": 9.8
     },
@@ -615,7 +589,7 @@
       "acwr": 0.83,
       "ctl": 37.2,
       "atl": 29.4,
-      "tsb": 12.9
+      "tsb": 12.8
     },
     {
       "date": "2026-06-02",
@@ -641,7 +615,7 @@
       "acwr": 1.13,
       "ctl": 38.5,
       "atl": 38.3,
-      "tsb": 7.9
+      "tsb": 7.8
     },
     {
       "date": "2026-06-03",
@@ -667,7 +641,7 @@
       "acwr": 0.97,
       "ctl": 37.6,
       "atl": 32.8,
-      "tsb": 0.3
+      "tsb": 0.2
     },
     {
       "date": "2026-06-04",
@@ -691,7 +665,7 @@
       "acute_load": 236,
       "chronic_load": 253,
       "acwr": 0.93,
-      "ctl": 37.5,
+      "ctl": 37.4,
       "atl": 32.7,
       "tsb": 4.8
     },
@@ -717,9 +691,9 @@
       "acute_load": 220,
       "chronic_load": 229,
       "acwr": 0.96,
-      "ctl": 37.1,
+      "ctl": 37.0,
       "atl": 30.9,
-      "tsb": 4.8
+      "tsb": 4.7
     },
     {
       "date": "2026-06-06",
@@ -743,7 +717,7 @@
       "acute_load": 181,
       "chronic_load": 229,
       "acwr": 0.79,
-      "ctl": 36.2,
+      "ctl": 36.1,
       "atl": 26.5,
       "tsb": 6.1
     },
@@ -771,7 +745,7 @@
       "acwr": 0.65,
       "ctl": 35.3,
       "atl": 22.7,
-      "tsb": 9.7
+      "tsb": 9.6
     },
     {
       "date": "2026-06-08",
@@ -797,7 +771,7 @@
       "acwr": 0.88,
       "ctl": 36.0,
       "atl": 28.8,
-      "tsb": 12.6
+      "tsb": 12.5
     },
     {
       "date": "2026-06-09",
@@ -823,7 +797,7 @@
       "acwr": 1.0,
       "ctl": 35.8,
       "atl": 28.6,
-      "tsb": 7.3
+      "tsb": 7.2
     },
     {
       "date": "2026-06-10",
@@ -847,7 +821,7 @@
       "acute_load": 238,
       "chronic_load": 214,
       "acwr": 1.11,
-      "ctl": 36.3,
+      "ctl": 36.2,
       "atl": 32.3,
       "tsb": 7.2
     },
@@ -875,7 +849,7 @@
       "acwr": 1.22,
       "ctl": 37.0,
       "atl": 37.3,
-      "tsb": 4.0
+      "tsb": 3.9
     },
     {
       "date": "2026-06-12",
@@ -927,7 +901,7 @@
       "acwr": 1.23,
       "ctl": 37.5,
       "atl": 41.0,
-      "tsb": 4.2
+      "tsb": 4.1
     },
     {
       "date": "2026-06-14",
@@ -951,7 +925,7 @@
       "acute_load": 257,
       "chronic_load": 213,
       "acwr": 1.21,
-      "ctl": 36.7,
+      "ctl": 36.6,
       "atl": 35.2,
       "tsb": -3.5
     },
@@ -979,7 +953,7 @@
       "acwr": 1.11,
       "ctl": 36.4,
       "atl": 33.9,
-      "tsb": 1.5
+      "tsb": 1.4
     },
     {
       "date": "2026-06-16",
@@ -1109,7 +1083,7 @@
       "acwr": 0.95,
       "ctl": 36.2,
       "atl": 31.4,
-      "tsb": 0.5
+      "tsb": 0.4
     },
     {
       "date": "2026-06-21",
@@ -1133,7 +1107,7 @@
       "acute_load": 178,
       "chronic_load": 219,
       "acwr": 0.81,
-      "ctl": 35.4,
+      "ctl": 35.3,
       "atl": 26.9,
       "tsb": 4.8
     },
@@ -1159,7 +1133,7 @@
       "acute_load": 244,
       "chronic_load": 238,
       "acwr": 1.03,
-      "ctl": 36.4,
+      "ctl": 36.3,
       "atl": 34.0,
       "tsb": 8.4
     },
@@ -1187,7 +1161,7 @@
       "acwr": 0.98,
       "ctl": 36.0,
       "atl": 32.1,
-      "tsb": 2.4
+      "tsb": 2.3
     },
     {
       "date": "2026-06-24",
@@ -1211,9 +1185,9 @@
       "acute_load": 280,
       "chronic_load": 233,
       "acwr": 1.2,
-      "ctl": 36.9,
+      "ctl": 36.8,
       "atl": 37.9,
-      "tsb": 3.9
+      "tsb": 3.8
     },
     {
       "date": "2026-06-25",
@@ -1265,7 +1239,7 @@
       "acwr": 0.85,
       "ctl": 35.1,
       "atl": 27.9,
-      "tsb": 3.5
+      "tsb": 3.4
     },
     {
       "date": "2026-06-27",
@@ -1291,7 +1265,7 @@
       "acwr": 0.7,
       "ctl": 34.3,
       "atl": 23.9,
-      "tsb": 7.3
+      "tsb": 7.2
     },
     {
       "date": "2026-06-28",
@@ -1315,7 +1289,7 @@
       "acute_load": 128,
       "chronic_load": 223,
       "acwr": 0.57,
-      "ctl": 33.5,
+      "ctl": 33.4,
       "atl": 20.5,
       "tsb": 10.4
     },
@@ -1341,7 +1315,7 @@
       "acute_load": 105,
       "chronic_load": 208,
       "acwr": 0.51,
-      "ctl": 32.7,
+      "ctl": 32.6,
       "atl": 17.5,
       "tsb": 13.0
     },
@@ -1393,7 +1367,7 @@
       "acute_load": 160,
       "chronic_load": 204,
       "acwr": 0.79,
-      "ctl": 33.0,
+      "ctl": 32.9,
       "atl": 23.0,
       "tsb": 11.7
     },
@@ -1447,7 +1421,7 @@
       "acwr": 0.76,
       "ctl": 32.2,
       "atl": 21.7,
-      "tsb": 11.1
+      "tsb": 11.0
     },
     {
       "date": "2026-07-04",
@@ -1499,7 +1473,7 @@
       "acwr": 0.9,
       "ctl": 32.9,
       "atl": 27.5,
-      "tsb": 1.7
+      "tsb": 1.6
     },
     {
       "date": "2026-07-06",
@@ -1551,7 +1525,7 @@
       "acwr": 0.78,
       "ctl": 31.9,
       "atl": 23.1,
-      "tsb": 5.8
+      "tsb": 5.7
     },
     {
       "date": "2026-07-08",
@@ -1575,7 +1549,7 @@
       "acute_load": 176,
       "chronic_load": 201,
       "acwr": 0.88,
-      "ctl": 32.0,
+      "ctl": 31.9,
       "atl": 24.7,
       "tsb": 8.8
     },
@@ -1601,7 +1575,7 @@
       "acute_load": 170,
       "chronic_load": 189,
       "acwr": 0.9,
-      "ctl": 31.7,
+      "ctl": 31.6,
       "atl": 23.9,
       "tsb": 7.3
     },
@@ -1707,7 +1681,7 @@
       "acwr": 0.63,
       "ctl": 29.3,
       "atl": 15.9,
-      "tsb": 11.5
+      "tsb": 11.4
     },
     {
       "date": "2026-07-14",
@@ -1811,7 +1785,7 @@
       "acwr": 1.18,
       "ctl": 30.2,
       "atl": 25.3,
-      "tsb": 1.4
+      "tsb": 1.3
     },
     {
       "date": "2026-07-18",
@@ -1889,7 +1863,7 @@
       "acwr": 1.01,
       "ctl": 29.4,
       "atl": 22.2,
-      "tsb": 4.3
+      "tsb": 4.2
     },
     {
       "date": "2026-07-21",
@@ -1939,9 +1913,9 @@
       "acute_load": 229,
       "chronic_load": 158,
       "acwr": 1.45,
-      "ctl": 30.6,
+      "ctl": 30.5,
       "atl": 30.5,
-      "tsb": 2.8
+      "tsb": 2.7
     },
     {
       "date": "2026-07-23",
@@ -1965,7 +1939,7 @@
       "acute_load": 266,
       "chronic_load": 173,
       "acwr": 1.54,
-      "ctl": 31.3,
+      "ctl": 31.2,
       "atl": 34.7,
       "tsb": 0.1
     },
@@ -1993,7 +1967,7 @@
       "acwr": 1.46,
       "ctl": 31.4,
       "atl": 35.1,
-      "tsb": -3.4
+      "tsb": -3.5
     },
     {
       "date": "2026-07-25",
@@ -2277,7 +2251,7 @@
       "acute_load": 169,
       "chronic_load": 204,
       "acwr": 0.83,
-      "ctl": 30.6,
+      "ctl": 30.5,
       "atl": 25.1,
       "tsb": 7.8
     },
@@ -2459,7 +2433,7 @@
       "acute_load": 246,
       "chronic_load": 241,
       "acwr": 1.02,
-      "ctl": 31.9,
+      "ctl": 31.8,
       "atl": 33.5,
       "tsb": -4.0
     },
@@ -2511,7 +2485,7 @@
       "acute_load": 176,
       "chronic_load": 216,
       "acwr": 0.82,
-      "ctl": 30.6,
+      "ctl": 30.5,
       "atl": 25.8,
       "tsb": 2.0
     },
@@ -2719,7 +2693,7 @@
       "acute_load": 184,
       "chronic_load": 207,
       "acwr": 0.89,
-      "ctl": 30.2,
+      "ctl": 30.1,
       "atl": 26.4,
       "tsb": 0.8
     },
@@ -2799,7 +2773,7 @@
       "acwr": 1.16,
       "ctl": 30.8,
       "atl": 31.1,
-      "tsb": -4.2
+      "tsb": -4.3
     },
     {
       "date": "2026-08-25",
@@ -2877,7 +2851,7 @@
       "acwr": 1.23,
       "ctl": 31.1,
       "atl": 32.7,
-      "tsb": -6.2
+      "tsb": -6.3
     },
     {
       "date": "2026-08-28",
@@ -3031,7 +3005,7 @@
       "acute_load": 164,
       "chronic_load": 194,
       "acwr": 0.84,
-      "ctl": 30.2,
+      "ctl": 30.1,
       "atl": 24.7,
       "tsb": 2.1
     },
@@ -3239,7 +3213,7 @@
       "acute_load": 130,
       "chronic_load": 196,
       "acwr": 0.66,
-      "ctl": 28.8,
+      "ctl": 28.7,
       "atl": 20.0,
       "tsb": 7.2
     },
@@ -3603,7 +3577,7 @@
       "acute_load": 162,
       "chronic_load": 176,
       "acwr": 0.92,
-      "ctl": 28.0,
+      "ctl": 27.9,
       "atl": 23.0,
       "tsb": 3.2
     },
@@ -3811,7 +3785,7 @@
       "acute_load": 126,
       "chronic_load": 176,
       "acwr": 0.72,
-      "ctl": 26.4,
+      "ctl": 26.3,
       "atl": 18.6,
       "tsb": 5.5
     },
@@ -4305,7 +4279,7 @@
       "acute_load": 185,
       "chronic_load": 163,
       "acwr": 1.13,
-      "ctl": 26.2,
+      "ctl": 26.1,
       "atl": 25.3,
       "tsb": 8.2
     },
@@ -4962,11 +4936,11 @@
     {
       "date": "2026-11-16",
       "rhr": 49,
-      "stress": 23,
+      "stress": 27,
       "bb_max": 45,
       "bb_min": 5,
-      "steps": 7891,
-      "active_kcal": 390,
+      "steps": 11422,
+      "active_kcal": 521,
       "sleep_score": 80,
       "sleep_hours": 7.95,
       "deep_hours": 1.7,
@@ -4976,7 +4950,7 @@
       "hrv_status": "UNBALANCED",
       "hrv_base_low": 50,
       "hrv_base_high": 60,
-      "readiness": 66,
+      "readiness": 65,
       "load": 17.7,
       "acute_load": 363,
       "chronic_load": 253,
@@ -4984,6 +4958,32 @@
       "ctl": 31.5,
       "atl": 47.3,
       "tsb": -20.4
+    },
+    {
+      "date": "2026-11-17",
+      "rhr": 46,
+      "stress": 18,
+      "bb_max": 80,
+      "bb_min": 17,
+      "steps": 1300,
+      "active_kcal": 9,
+      "sleep_score": 82,
+      "sleep_hours": 6.88,
+      "deep_hours": 1.78,
+      "rem_hours": 1.45,
+      "hrv_night": 56,
+      "hrv_weekly": 48,
+      "hrv_status": "UNBALANCED",
+      "hrv_base_low": 50,
+      "hrv_base_high": 60,
+      "readiness": 84,
+      "load": 0.0,
+      "acute_load": 299,
+      "chronic_load": 252,
+      "acwr": 1.18,
+      "ctl": 30.7,
+      "atl": 40.5,
+      "tsb": -15.8
     }
   ],
   "recent_activities": [
