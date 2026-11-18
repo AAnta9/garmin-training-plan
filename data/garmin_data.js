@@ -1,57 +1,57 @@
 window.GARMIN_DATA = {
   "metadata": {
-    "last_sync": "2026-11-17 10:39:00",
+    "last_sync": "2026-11-18 17:44:17",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
-    "analysis_window_start": "2026-05-21",
-    "analysis_window_end": "2026-11-17",
+    "analysis_window_start": "2026-05-22",
+    "analysis_window_end": "2026-11-18",
     "total_days_analyzed": 181
   },
   "athlete_profile": {
     "age": 33,
-    "fitness_age": 32.7,
+    "fitness_age": 32.4,
     "achievable_fitness_age": 27.0,
     "weight_kg": 100.4,
     "weight_prev_kg": 101.9,
     "bmi": 32.0,
     "rhr_6m_avg": 45.6,
     "max_hr": 183,
-    "lthr_running": 163,
+    "lthr_running": 165,
     "hrv_baseline_low": 50,
     "hrv_baseline_high": 60,
     "hr_zones_running": [
       {
         "zone": "Z1",
         "name": "Recuperación / Calentamiento",
-        "min": 113,
-        "max": 134,
+        "min": 114,
+        "max": 136,
         "pace_guide": "6:35 - 7:10 /km"
       },
       {
         "zone": "Z2",
         "name": "Base Aeróbica (80% del volumen)",
-        "min": 135,
-        "max": 153,
+        "min": 137,
+        "max": 154,
         "pace_guide": "5:55 - 6:30 /km"
       },
       {
         "zone": "Z3",
         "name": "Tempo / Ritmo Sostenido",
-        "min": 154,
-        "max": 160,
+        "min": 155,
+        "max": 162,
         "pace_guide": "5:25 - 5:50 /km"
       },
       {
         "zone": "Z4",
         "name": "Umbral de Lactato (LTHR 163)",
-        "min": 161,
-        "max": 167,
+        "min": 163,
+        "max": 169,
         "pace_guide": "5:00 - 5:25 /km"
       },
       {
         "zone": "Z5",
         "name": "VO2 Máx / Capacidad Anaeróbica",
-        "min": 168,
+        "min": 170,
         "max": 183,
         "pace_guide": "< 4:55 /km"
       }
@@ -128,75 +128,75 @@ window.GARMIN_DATA = {
     ]
   },
   "morning_check_in": {
-    "date": "2026-11-17",
+    "date": "2026-11-18",
     "semaphore": "AMBER",
-    "readiness_score": 84,
-    "headline": "Martes · Gimnasio 2 (Lower) — Buena recuperación nocturna (VFC anoche 56 ms · Readiness 84/100)",
-    "coach_advice": "Anoche dormiste 6.88h (score 82/100), tu Body Battery subió a 80/100, tu FC en reposo está en 46 ppm (+0.4 vs tu media de 45.6) y tu VFC nocturna alcanzó 56 ms (media 7d: 48 ms, estado UNBALANCED). Toca Tren Inferior Híbrido (Sentadilla, RDL, Búlgara y Sóleo) dejando 2 repeticiones en recámara (RIR 2) para llegar fresco al rodaje Z2 de mañana.",
+    "readiness_score": 76,
+    "headline": "Miércoles · Carrera 1 (Base Z2) — Carga Adaptada (Readiness 76/100 · VFC 7d 48 ms)",
+    "coach_advice": "Sueño anoche: 7.35h (score 68/100), Body Battery 81/100, VFC anoche 54 ms (media 7d 48 ms en UNBALANCED) y FC en reposo 48 ppm (+2.4 ppm sobre tu media de 45.6). Toca Rodaje Aeróbico en Zona 2 estricta (135–151 ppm, cadencia >166 spm) para oxigenar piernas.",
     "metrics_today": {
-      "hrv_last_night_ms": 56,
+      "hrv_last_night_ms": 54,
       "hrv_weekly_avg_ms": 48,
       "hrv_status": "UNBALANCED",
       "hrv_baseline": "50 - 60 ms",
-      "rhr_bpm": 46,
-      "rhr_delta_vs_avg": 0.4,
-      "sleep_hours": 6.88,
-      "sleep_score": 82,
-      "deep_sleep_hours": 1.78,
-      "rem_sleep_hours": 1.45,
-      "body_battery_wake": 80,
-      "stress_yesterday": 27,
-      "acute_load": 299,
+      "rhr_bpm": 48,
+      "rhr_delta_vs_avg": 2.4,
+      "sleep_hours": 7.35,
+      "sleep_score": 68,
+      "deep_sleep_hours": 1.8,
+      "rem_sleep_hours": 1.38,
+      "body_battery_wake": 81,
+      "stress_yesterday": 23,
+      "acute_load": 342,
       "chronic_load": 252,
-      "acwr": 1.18,
-      "ctl": 30.7,
-      "atl": 40.5,
-      "tsb": -15.8
+      "acwr": 1.36,
+      "ctl": 31.8,
+      "atl": 45.5,
+      "tsb": -10.2
     }
   },
   "six_month_summary": {
-    "total_activities": 119,
-    "total_hours": 86.1,
+    "total_activities": 120,
+    "total_hours": 86.2,
     "running": {
-      "sessions": 27,
-      "total_km": 120.9,
-      "total_hours": 12.2,
+      "sessions": 28,
+      "total_km": 124.4,
+      "total_hours": 12.5,
       "avg_hr": 142,
       "avg_cadence": 163,
-      "avg_distance_km": 4.48
+      "avg_distance_km": 4.44
     },
     "strength": {
-      "sessions": 41,
-      "total_hours": 29.8,
+      "sessions": 42,
+      "total_hours": 30.7,
       "avg_duration_min": 44
     },
     "hiit": {
-      "sessions": 39,
-      "total_hours": 38.9
+      "sessions": 38,
+      "total_hours": 37.6
     },
     "health_averages": {
       "hrv_mean_ms": 51.9,
-      "hrv_balanced_days_pct": 76,
+      "hrv_balanced_days_pct": 75,
       "rhr_mean_bpm": 45.6,
-      "sleep_mean_hours": 6.52,
-      "sleep_mean_score": 73.7,
-      "stress_mean": 28.1,
+      "sleep_mean_hours": 6.53,
+      "sleep_mean_score": 73.6,
+      "stress_mean": 28.0,
       "body_battery_max_mean": 73.4,
-      "steps_mean": 10788
+      "steps_mean": 10809
     }
   },
   "monthly_progression": [
     {
       "month": "2026-05",
-      "total_sessions": 8,
-      "total_hours": 6.3,
-      "total_load": 291,
+      "total_sessions": 7,
+      "total_hours": 5.0,
+      "total_load": 224,
       "run_sessions": 0,
       "run_km": 0.0,
       "strength_sessions": 1,
       "strength_hours": 0.5,
-      "hiit_sessions": 5,
-      "hiit_hours": 5.2,
+      "hiit_sessions": 4,
+      "hiit_hours": 3.9,
       "run_avg_pace": null
     },
     {
@@ -266,45 +266,19 @@ window.GARMIN_DATA = {
     },
     {
       "month": "2026-11",
-      "total_sessions": 10,
-      "total_hours": 7.1,
-      "total_load": 721,
-      "run_sessions": 4,
-      "run_km": 21.2,
-      "strength_sessions": 5,
-      "strength_hours": 4.3,
+      "total_sessions": 12,
+      "total_hours": 8.4,
+      "total_load": 797,
+      "run_sessions": 5,
+      "run_km": 24.7,
+      "strength_sessions": 6,
+      "strength_hours": 5.2,
       "hiit_sessions": 0,
       "hiit_hours": 0.0,
-      "run_avg_pace": "5:42"
+      "run_avg_pace": "5:47"
     }
   ],
   "daily_series": [
-    {
-      "date": "2026-05-21",
-      "rhr": 45,
-      "stress": 34,
-      "bb_max": 72,
-      "bb_min": 9,
-      "steps": 10931,
-      "active_kcal": 576,
-      "sleep_score": 75,
-      "sleep_hours": 6.05,
-      "deep_hours": 1.62,
-      "rem_hours": 1.05,
-      "hrv_night": 53,
-      "hrv_weekly": 55,
-      "hrv_status": "BALANCED",
-      "hrv_base_low": 50,
-      "hrv_base_high": 69,
-      "readiness": 73,
-      "load": 67.4,
-      "acute_load": 296,
-      "chronic_load": 265,
-      "acwr": 1.12,
-      "ctl": 40.5,
-      "atl": 40.6,
-      "tsb": 3.7
-    },
     {
       "date": "2026-05-22",
       "rhr": 46,
@@ -4962,11 +4936,11 @@ window.GARMIN_DATA = {
     {
       "date": "2026-11-17",
       "rhr": 46,
-      "stress": 18,
+      "stress": 23,
       "bb_max": 80,
       "bb_min": 17,
-      "steps": 1300,
-      "active_kcal": 9,
+      "steps": 9568,
+      "active_kcal": 233,
       "sleep_score": 82,
       "sleep_hours": 6.88,
       "deep_hours": 1.78,
@@ -4976,17 +4950,137 @@ window.GARMIN_DATA = {
       "hrv_status": "UNBALANCED",
       "hrv_base_low": 50,
       "hrv_base_high": 60,
-      "readiness": 84,
-      "load": 0.0,
-      "acute_load": 299,
-      "chronic_load": 252,
-      "acwr": 1.18,
-      "ctl": 30.7,
-      "atl": 40.5,
+      "readiness": 82,
+      "load": 3.6,
+      "acute_load": 303,
+      "chronic_load": 253,
+      "acwr": 1.2,
+      "ctl": 30.8,
+      "atl": 41.1,
       "tsb": -15.8
+    },
+    {
+      "date": "2026-11-18",
+      "rhr": 48,
+      "stress": 25,
+      "bb_max": 81,
+      "bb_min": 27,
+      "steps": 6436,
+      "active_kcal": 339,
+      "sleep_score": 68,
+      "sleep_hours": 7.35,
+      "deep_hours": 1.8,
+      "rem_hours": 1.38,
+      "hrv_night": 54,
+      "hrv_weekly": 48,
+      "hrv_status": "UNBALANCED",
+      "hrv_base_low": 50,
+      "hrv_base_high": 60,
+      "readiness": 76,
+      "load": 72.3,
+      "acute_load": 342,
+      "chronic_load": 252,
+      "acwr": 1.36,
+      "ctl": 31.8,
+      "atl": 45.5,
+      "tsb": -10.2
     }
   ],
   "recent_activities": [
+    {
+      "id": 25120378541,
+      "date": "2026-11-18",
+      "start_time": "2026-11-18 15:12:11",
+      "name": "Rivas-Vaciamadrid Carrera",
+      "type": "running",
+      "duration_min": 21.9,
+      "distance_km": 3.51,
+      "pace_min_km": "6:14",
+      "pace_sec": 374,
+      "avg_hr": 143,
+      "max_hr": 158,
+      "cadence": 166,
+      "load": 72,
+      "aerobic_te": 3.1,
+      "anaerobic_te": 0,
+      "te_label": "TEMPO",
+      "calories": 335,
+      "total_sets": null,
+      "total_reps": null,
+      "hr_zones_min": [
+        2.6,
+        17.7,
+        1.3,
+        0.0,
+        0.0
+      ],
+      "exercises": []
+    },
+    {
+      "id": 25109243169,
+      "date": "2026-11-17",
+      "start_time": "2026-11-17 14:36:28",
+      "name": "Fuerza",
+      "type": "strength_training",
+      "duration_min": 56.4,
+      "distance_km": 0.0,
+      "pace_min_km": null,
+      "pace_sec": null,
+      "avg_hr": 81,
+      "max_hr": 119,
+      "cadence": null,
+      "load": 4,
+      "aerobic_te": 0.3,
+      "anaerobic_te": 0,
+      "te_label": "AEROBIC_BASE",
+      "calories": 236,
+      "total_sets": 17,
+      "total_reps": 114,
+      "hr_zones_min": [
+        0.4,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exercises": [
+        {
+          "name": "Lunge",
+          "sets": 1,
+          "reps": 8,
+          "max_weight_kg": 25.0,
+          "volume_kg": 200.0
+        },
+        {
+          "name": "Straight Leg Deadlift",
+          "sets": 1,
+          "reps": 6,
+          "max_weight_kg": 0.0,
+          "volume_kg": 0.0
+        },
+        {
+          "name": "Unknown",
+          "sets": 12,
+          "reps": 74,
+          "max_weight_kg": 105.0,
+          "volume_kg": 4250.0
+        },
+        {
+          "name": "Shrug",
+          "sets": 1,
+          "reps": 14,
+          "max_weight_kg": 50.0,
+          "volume_kg": 700.0
+        },
+        {
+          "name": "Barbell Deadlift",
+          "sets": 2,
+          "reps": 12,
+          "max_weight_kg": 105.0,
+          "volume_kg": 1260.0
+        }
+      ]
+    },
     {
       "id": 25097560250,
       "date": "2026-11-16",
@@ -8140,64 +8234,6 @@ window.GARMIN_DATA = {
           "volume_kg": 0.0
         }
       ]
-    },
-    {
-      "id": 24027330717,
-      "date": "2026-08-18",
-      "start_time": "2026-08-18 19:55:24",
-      "name": "Valdáliga Senderismo",
-      "type": "hiking",
-      "duration_min": 57.1,
-      "distance_km": 4.32,
-      "pace_min_km": null,
-      "pace_sec": null,
-      "avg_hr": 88,
-      "max_hr": 103,
-      "cadence": 99,
-      "load": 11,
-      "aerobic_te": 1.0,
-      "anaerobic_te": 0,
-      "te_label": "RECOVERY",
-      "calories": 333,
-      "total_sets": null,
-      "total_reps": null,
-      "hr_zones_min": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "exercises": []
-    },
-    {
-      "id": 24019687802,
-      "date": "2026-08-18",
-      "start_time": "2026-08-18 10:25:48",
-      "name": "Valdáliga Carrera",
-      "type": "running",
-      "duration_min": 24.0,
-      "distance_km": 4.15,
-      "pace_min_km": "5:47",
-      "pace_sec": 347,
-      "avg_hr": 142,
-      "max_hr": 156,
-      "cadence": 164,
-      "load": 123,
-      "aerobic_te": 4.0,
-      "anaerobic_te": 0,
-      "te_label": "TEMPO",
-      "calories": 359,
-      "total_sets": null,
-      "total_reps": null,
-      "hr_zones_min": [
-        0.9,
-        21.6,
-        0.7,
-        0.0,
-        0.0
-      ],
-      "exercises": []
     }
   ]
 };
