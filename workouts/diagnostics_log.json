@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19 16:15:43 UTC",
+  "generated_at": "2026-11-19 23:47:04 UTC",
   "default_1rm_kg": {
     "bench": 120.0,
     "squat": 130.0,
@@ -26,13 +26,13 @@
   ],
   "files": [
     {
-      "slug": "Lunes_Upper_A",
+      "slug": "Lunes_Lower",
       "day": "Lunes",
-      "fit_file": "workouts/fit/Lunes_Upper_A.fit",
-      "json_file": "workouts/json/Lunes_Upper_A.json",
-      "size_bytes": 2265,
-      "header_crc_hex": "0x63de",
-      "file_crc_hex": "0x9e7",
+      "fit_file": "workouts/fit/Lunes_Lower.fit",
+      "json_file": "workouts/json/Lunes_Lower.json",
+      "size_bytes": 2717,
+      "header_crc_hex": "0x60f8",
+      "file_crc_hex": "0x991a",
       "sdk_validation": {
         "sdk_available": true,
         "is_fit": true,
@@ -48,76 +48,7 @@
         "file_type": "workout",
         "garmin_product": "fenix8",
         "workout_slot_number": 1,
-        "workout_name": "HYBRID Lunes Upper A",
-        "sport": "training",
-        "sub_sport": "strength_training",
-        "num_valid_steps": 14,
-        "decoded_steps_count": 14,
-        "decoded_titles_count": 4,
-        "sample_work_steps": [
-          {
-            "idx": 1,
-            "name": "Press de banca con barra",
-            "cat": "bench_press",
-            "ex_name": 1,
-            "reps": 6,
-            "weight_kg": 95.0,
-            "notes": "4x6 @ 95kg (80% 1RM)"
-          },
-          {
-            "idx": 4,
-            "name": "Dominadas",
-            "cat": "pull_up",
-            "ex_name": 38,
-            "reps": 6,
-            "weight_kg": 10.0,
-            "notes": "4x6 @ 10kg (50% 1RM)"
-          },
-          {
-            "idx": 7,
-            "name": "Press militar con barra",
-            "cat": "shoulder_press",
-            "ex_name": 25,
-            "reps": 8,
-            "weight_kg": 50.0,
-            "notes": "3x8 @ 50kg (76% 1RM)"
-          },
-          {
-            "idx": 10,
-            "name": "Remo con mancuerna",
-            "cat": "row",
-            "ex_name": 2,
-            "reps": 10,
-            "weight_kg": 31.0,
-            "notes": "3x10 @ 31kg (78% 1RM)"
-          }
-        ]
-      }
-    },
-    {
-      "slug": "Martes_Lower",
-      "day": "Martes",
-      "fit_file": "workouts/fit/Martes_Lower.fit",
-      "json_file": "workouts/json/Martes_Lower.json",
-      "size_bytes": 2717,
-      "header_crc_hex": "0x60f8",
-      "file_crc_hex": "0x2637",
-      "sdk_validation": {
-        "sdk_available": true,
-        "is_fit": true,
-        "crc_integrity_ok": true,
-        "errors": [],
-        "message_keys": [
-          "file_id_mesgs",
-          "file_creator_mesgs",
-          "workout_mesgs",
-          "workout_step_mesgs",
-          "exercise_title_mesgs"
-        ],
-        "file_type": "workout",
-        "garmin_product": "fenix8",
-        "workout_slot_number": 2,
-        "workout_name": "HYBRID Martes Lower",
+        "workout_name": "HYBRID Lunes Lower",
         "sport": "training",
         "sub_sport": "strength_training",
         "num_valid_steps": 17,
@@ -168,6 +99,75 @@
             "reps": 12,
             "weight_kg": null,
             "notes": "3x12 (Peso corporal)"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "Martes_Upper_A",
+      "day": "Martes",
+      "fit_file": "workouts/fit/Martes_Upper_A.fit",
+      "json_file": "workouts/json/Martes_Upper_A.json",
+      "size_bytes": 2265,
+      "header_crc_hex": "0x63de",
+      "file_crc_hex": "0x564",
+      "sdk_validation": {
+        "sdk_available": true,
+        "is_fit": true,
+        "crc_integrity_ok": true,
+        "errors": [],
+        "message_keys": [
+          "file_id_mesgs",
+          "file_creator_mesgs",
+          "workout_mesgs",
+          "workout_step_mesgs",
+          "exercise_title_mesgs"
+        ],
+        "file_type": "workout",
+        "garmin_product": "fenix8",
+        "workout_slot_number": 2,
+        "workout_name": "HYBRID Martes Upper A",
+        "sport": "training",
+        "sub_sport": "strength_training",
+        "num_valid_steps": 14,
+        "decoded_steps_count": 14,
+        "decoded_titles_count": 4,
+        "sample_work_steps": [
+          {
+            "idx": 1,
+            "name": "Press de banca con barra",
+            "cat": "bench_press",
+            "ex_name": 1,
+            "reps": 6,
+            "weight_kg": 95.0,
+            "notes": "4x6 @ 95kg (80% 1RM)"
+          },
+          {
+            "idx": 4,
+            "name": "Dominadas",
+            "cat": "pull_up",
+            "ex_name": 38,
+            "reps": 6,
+            "weight_kg": 10.0,
+            "notes": "4x6 @ 10kg (50% 1RM)"
+          },
+          {
+            "idx": 7,
+            "name": "Press militar con barra",
+            "cat": "shoulder_press",
+            "ex_name": 25,
+            "reps": 8,
+            "weight_kg": 50.0,
+            "notes": "3x8 @ 50kg (76% 1RM)"
+          },
+          {
+            "idx": 10,
+            "name": "Remo con mancuerna",
+            "cat": "row",
+            "ex_name": 2,
+            "reps": 10,
+            "weight_kg": 31.0,
+            "notes": "3x10 @ 31kg (78% 1RM)"
           }
         ]
       }

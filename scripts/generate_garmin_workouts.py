@@ -657,23 +657,10 @@ def build_garmin_connect_workout_json(
 THREE_CORE_DAYS = [
     {
         "slot": 1,
-        "slug": "Lunes_Upper_A",
+        "slug": "Lunes_Lower",
         "day": "Lunes",
-        "workoutName": "HYBRID Lunes Upper A",
-        "description": "Gimnasio Dia 1 (Lunes) - Tren Superior A (Empuje & Traccion Pesada). 1RM Actualizados: Banca 120kg, Dominadas +20kg, Militar 65kg, Remo Manc 40kg.",
-        "exercises": [
-            {"lift": "bench", "sets": 4, "reps": 6, "pct": 0.80, "rest_sec": 120, "rir": "RIR 2"},
-            {"lift": "pullup_load", "sets": 4, "reps": 6, "pct": 0.50, "rest_sec": 105, "rir": "RIR 1-2"},
-            {"lift": "ohp", "sets": 3, "reps": 8, "pct": 0.76, "rest_sec": 90, "rir": "RIR 2"},
-            {"lift": "row_db", "sets": 3, "reps": 10, "pct": 0.78, "rest_sec": 75, "rir": "RIR 1-2"},
-        ],
-    },
-    {
-        "slot": 2,
-        "slug": "Martes_Lower",
-        "day": "Martes",
-        "workoutName": "HYBRID Martes Lower",
-        "description": "Gimnasio Dia 2 (Martes) - Tren Inferior Hibrido & Proteccion Tendon de Aquiles. 1RM Actualizados: Sentadilla 130kg, RDL 140kg, Bulgara 35kg, Soleo 60kg.",
+        "workoutName": "HYBRID Lunes Lower",
+        "description": "Gimnasio Dia 1 (Lunes 13:30) - Tren Inferior Hibrido & Proteccion Rodilla/Aquiles (53.5h antes de correr el Miercoles). 1RM: Sentadilla 130kg, RDL 140kg, Bulgara 35kg, Soleo 60kg.",
         "exercises": [
             {"lift": "squat", "sets": 4, "reps": 5, "pct": 0.80, "rest_sec": 150, "rir": "RIR 2 (concentrica explosiva)"},
             {"lift": "rdl", "sets": 3, "reps": 6, "pct": 0.78, "rest_sec": 105, "rir": "RIR 2 (isquios)"},
@@ -683,11 +670,24 @@ THREE_CORE_DAYS = [
         ],
     },
     {
+        "slot": 2,
+        "slug": "Martes_Upper_A",
+        "day": "Martes",
+        "workoutName": "HYBRID Martes Upper A",
+        "description": "Gimnasio Dia 2 (Martes 13:30) - Tren Superior A (Empuje & Traccion Pesada, 0 impacto en rodillas). 1RM: Banca 120kg, Dominadas +20kg, Militar 65kg, Remo Manc 40kg.",
+        "exercises": [
+            {"lift": "bench", "sets": 4, "reps": 6, "pct": 0.80, "rest_sec": 120, "rir": "RIR 2"},
+            {"lift": "pullup_load", "sets": 4, "reps": 6, "pct": 0.50, "rest_sec": 105, "rir": "RIR 1-2"},
+            {"lift": "ohp", "sets": 3, "reps": 8, "pct": 0.76, "rest_sec": 90, "rir": "RIR 2"},
+            {"lift": "row_db", "sets": 3, "reps": 10, "pct": 0.78, "rest_sec": 75, "rir": "RIR 1-2"},
+        ],
+    },
+    {
         "slot": 3,
         "slug": "Jueves_Upper_B",
         "day": "Jueves",
         "workoutName": "HYBRID Jueves Upper B",
-        "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Arrancada con Mancuerna 1 Mano 25kg). 1RM Actualizados: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
+        "description": "Gimnasio Dia 3 (Jueves 13:30) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Arrancada con Mancuerna 1 Mano 25kg). 1RM: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
         "exercises": [
             {"lift": "ohp", "sets": 4, "reps": 5, "pct": 0.82, "rest_sec": 105, "rir": "RIR 2"},
             {"lift": "incline_db", "sets": 3, "reps": 10, "pct": 0.76, "rest_sec": 90, "rir": "RIR 2"},

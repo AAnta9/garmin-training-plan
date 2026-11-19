@@ -80,16 +80,16 @@
     if (completedMap["b1-w1-d1"] === undefined) {
       completedMap["b1-w1-d1"] = true;
     }
-    if (!notesMap["b1-w1-d1"]) {
+    if (!notesMap["b1-w1-d1"] || notesMap["b1-w1-d1"].includes("Press Banca")) {
       notesMap["b1-w1-d1"] =
-        "Sincronizado de Garmin: 56.4 min, 13 series, Press Banca 85kg (3x8), Dominadas 4x6, Militar 45kg";
+        "Sincronizado de Garmin (Sesión Lower completada): 56.4 min, 17 series (114 reps), Sentadilla/PM 105kg, Búlgara 25kg, Sóleo 50kg";
     }
     if (completedMap["b1-w1-d2"] === undefined) {
       completedMap["b1-w1-d2"] = true;
     }
-    if (!notesMap["b1-w1-d2"]) {
+    if (!notesMap["b1-w1-d2"] || notesMap["b1-w1-d2"].includes("Sentadilla")) {
       notesMap["b1-w1-d2"] =
-        "Sincronizado de Garmin (17 Nov): 56.4 min, 17 series (114 reps), Sentadilla/PM 105kg, Búlgara 25kg, Sóleo 50kg";
+        "Sincronizado de Garmin (Sesión Upper A completada): 56.4 min, 13 series, Press Banca 85kg (3x8), Dominadas 4x6, Militar 45kg";
     }
     if (completedMap["b1-w1-d3"] === undefined) {
       completedMap["b1-w1-d3"] = true;
@@ -104,6 +104,14 @@
     if (!notesMap["b1-w1-d4"]) {
       notesMap["b1-w1-d4"] =
         "Sincronizado de Garmin (19 Nov): HYBRID Sem 1 Jueves (43.3 min) · Militar 4x4 @ 52.5kg, Inclinado 3x8-10 @ 30kg, Remo 4x10 @ 67.5kg, Fondos y Swings 20kg";
+    }
+    if (!notesMap["b1-w1-d5"]) {
+      notesMap["b1-w1-d5"] =
+        "Adaptado por dolor de rodilla: 0 km impacto · Wall Sit isométrico 4x30-40s + movilidad cadera/tobillo";
+    }
+    if (!notesMap["b1-w1-d6"]) {
+      notesMap["b1-w1-d6"] =
+        "Adaptado por dolor de rodilla: 0 km impacto · Activación glúteo medio + recuperación completa para el Lunes de Pierna";
     }
   }
 

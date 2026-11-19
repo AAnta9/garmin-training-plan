@@ -453,11 +453,11 @@ def build_dashboard_data() -> dict[str, Any]:
     acwr_today = today_row.get("acwr") or 1.15
 
     weekday_plan_map = {
-        0: ("Lunes · Gimnasio 1 (Upper A)", "Prioriza Tren Superior A (Press Banca, Dominadas, Militar y Remo) según tu % de 1RM."),
-        1: ("Martes · Gimnasio 2 (Lower)", "Toca Tren Inferior Híbrido (Sentadilla, RDL, Búlgara y Sóleo) dejando 2 repeticiones en recámara (RIR 2) para llegar fresco al rodaje Z2 de mañana."),
-        2: ("Miércoles · Carrera 1 (Base Z2)", "Toca Rodaje Aeróbico en Zona 2 estricta (135–151 ppm, cadencia >166 spm) para oxigenar piernas."),
-        3: ("Jueves · Gimnasio 3 (Upper B)", "Toca Tren Superior B (Press Militar, Press Inclinado Mancuernas, Remo Barra, Fondos en Paralelas y Arrancada con Mancuerna a 1 Mano @ 25 kg) sin fatigar el tren inferior."),
-        4: ("Viernes · Carrera 2 (Calidad / Umbral)", "Sesión de calidad de carrera (piernas con 72h de margen desde el martes de gimnasio). Calienta bien 10 min en Z1-Z2."),
+        0: ("Lunes · Gimnasio 1 (Lower · Pierna)", "Toca Tren Inferior Híbrido (Sentadilla, RDL, Búlgara y Sóleo) dejando 2 repeticiones en recámara (RIR 2). Tienes 53.5h sin impacto hasta la carrera del miércoles y >100h hasta el viernes."),
+        1: ("Martes · Gimnasio 2 (Upper A · Torso)", "Prioriza Tren Superior A (Press Banca, Dominadas, Militar y Remo) según tu % de 1RM con 0 impacto articular en las rodillas."),
+        2: ("Miércoles · Carrera 1 (Base Z2)", "Toca Rodaje Aeróbico en Zona 2 estricta (135–151 ppm, cadencia >=168 spm) para oxigenar piernas con rodillas descansadas desde el lunes."),
+        3: ("Jueves · Gimnasio 3 (Upper B · Torso)", "Toca Tren Superior B (Press Militar, Press Inclinado Mancuernas, Remo Barra, Fondos en Paralelas y Arrancada con Mancuerna a 1 Mano @ 25 kg) sin fatigar el tren inferior."),
+        4: ("Viernes · Carrera 2 (Calidad / Base Z2)", "Sesión de carrera (tus piernas llevan >100 horas sin gimnasio de pierna desde el lunes). Calienta bien y mantén cadencia >=168 spm."),
         5: ("Sábado · Carrera 3 (Tirada Larga Z2)", "Tirada Larga aeróbica en Zona 2 controlada (135–151 ppm). Mañana domingo tienes descanso total."),
         6: ("Domingo · Descanso Total", "Día fijo de descanso total y supercompensación. Hidratación, pasos suaves y dormir 7.5–8h."),
     }
