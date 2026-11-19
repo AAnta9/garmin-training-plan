@@ -198,6 +198,16 @@ window.AUX_EXERCISES_CONFIG = {
     rest_sec: 75,
     default_weight_kg: 0
   },
+  db_snatch: {
+    key: "db_snatch",
+    cat_id: 18,
+    name_id: 16,
+    category_key: "OLYMPIC_LIFT",
+    exercise_key: "SINGLE_ARM_DUMBBELL_SNATCH",
+    title_es: "Arrancada mancuerna 1 mano",
+    rest_sec: 75,
+    default_weight_kg: 25.0
+  },
   kb_swing: {
     key: "kb_swing",
     cat_id: 10,
@@ -357,16 +367,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Hombro, Espalda, Fondos & KB Swing ({ohp:0.82} Militar)",
+              title: "Tren Superior B — Hombro, Espalda, Fondos & DB Snatch ({ohp:0.82} Militar)",
               duration_min: 50,
               target_zone: "76–82% 1RM | RIR 2",
-              summary: "Día 3 de gimnasio (Jueves): cerramos el trabajo de fuerza semanal incluyendo Fondos en Paralelas y Swing de Kettlebell (24 kg) dejando las piernas frescas para viernes y sábado.",
+              summary: "Día 3 de gimnasio (Jueves): cerramos el trabajo de fuerza semanal incluyendo Fondos en Paralelas y Arrancada con Mancuerna a 1 Mano (25 kg) dejando las piernas frescas para viernes y sábado.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4-5", pct: 0.82, rir: "RIR 2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "10", pct: 0.76, rir: "RIR 2" },
                 { name: "Remo en Polea / Barra", lift: "row_bar", sets: 4, reps: "8-10", pct: 0.75, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "7-8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 7-8 reps @ Peso Corporal (RIR 2)" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 reps @ 24 kg (explosivos)" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "12", weight_kg: 25, rest_sec: 75, rir: "6/brazo explosivas @ 25 kg", target: "3 series × 12 reps (6/brazo) @ 25 kg (explosivas)" }
               ]
             },
             {
@@ -484,16 +494,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.84} Militar) + Fondos & KB Swing",
+              title: "Tren Superior B ({ohp:0.84} Militar) + Fondos & DB Snatch",
               duration_min: 50,
               target_zone: "80–84% 1RM | RIR 1-2",
-              summary: "Tercer y último día de gimnasio de la semana: empuje vertical, press inclinado, fondos en paralelas y swing de kettlebell.",
+              summary: "Tercer y último día de gimnasio de la semana: empuje vertical, press inclinado, fondos en paralelas y arrancada con mancuerna a una mano.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.84, rir: "RIR 1-2" },
                 { name: "Press Banca Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8-10", pct: 0.80, rir: "RIR 2" },
                 { name: "Remo con Mancuerna Unilateral", lift: "row_db", sets: 4, reps: "8-10", pct: 0.80, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 4, reps: "7-8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "4 series × 7-8 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg (+45s comba opcional)", target: "3 series × 12 Swings @ 24 kg (descanso 75s)" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "12", weight_kg: 25, rest_sec: 75, rir: "6/brazo explosivas @ 25 kg", target: "3 series × 12 reps (6/brazo) @ 25 kg (descanso 75s)" }
               ]
             },
             {
@@ -610,16 +620,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Pico Bloque 1 ({ohp:0.86} Militar) + Fondos & KB Swing",
+              title: "Tren Superior B — Pico Bloque 1 ({ohp:0.86} Militar) + Fondos & DB Snatch",
               duration_min: 52,
               target_zone: "82–86% 1RM | RIR 1-2",
-              summary: "Sesión fuerte de torso cerrando los 3 días de gimnasio de la semana con Fondos y Swing de Kettlebell.",
+              summary: "Sesión fuerte de torso cerrando los 3 días de gimnasio de la semana con Fondos y Arrancada con Mancuerna a 1 Mano.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3-4", pct: 0.86, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 4, reps: "8", pct: 0.84, rir: "RIR 1-2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.82, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 4, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 1-2)", target: "4 series × 8 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 reps @ 24 kg (explosivos)" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "12", weight_kg: 25, rest_sec: 75, rir: "6/brazo explosivas @ 25 kg", target: "3 series × 12 reps (6/brazo) @ 25 kg (explosivas)" }
               ]
             },
             {
@@ -734,7 +744,7 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Descarga Upper B",
-              title: "Tren Superior B — Bombeo, Fondos & KB Swing ({incline_db:0.72})",
+              title: "Tren Superior B — Bombeo, Fondos & DB Snatch ({incline_db:0.72})",
               duration_min: 38,
               target_zone: "70–72% 1RM | RIR 3",
               summary: "Sesión ligera y técnica cerrando el gimnasio de la semana.",
@@ -742,7 +752,7 @@ window.HYBRID_TRAINING_PLAN = {
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.72, rir: "RIR 3" },
                 { name: "Remo en Polea / Barra", lift: "row_bar", sets: 3, reps: "10", pct: 0.70, rir: "RIR 3" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 2, reps: "6", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 3)", target: "2 series × 6 reps @ Peso Corporal (RIR 3)" },
-                { name: "Swing de Kettlebell (Activación)", aux_type: "kb_swing", sets: 2, reps: "10", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "2 series × 10 reps @ 24 kg (explosivos)" }
+                { name: "Arrancada con Mancuerna a 1 Mano (Activación)", aux_type: "db_snatch", sets: 2, reps: "10", weight_kg: 22.5, rest_sec: 75, rir: "5/brazo explosivas @ 22.5 kg", target: "2 series × 10 reps (5/brazo) @ 22.5 kg" }
               ]
             },
             {
@@ -868,16 +878,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.86} Militar) + Fondos & KB Swing",
+              title: "Tren Superior B ({ohp:0.86} Militar) + Fondos & DB Snatch",
               duration_min: 50,
               target_zone: "84–86% 1RM | RIR 2",
-              summary: "Fuerza de torso, fondos en paralelas y cadena posterior explosiva con Kettlebell.",
+              summary: "Fuerza de torso, fondos en paralelas y potencia explosiva unilateral con Arrancada de Mancuerna.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.86, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.84, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 Fondos @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 Swings @ 24 kg" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "14", weight_kg: 25, rest_sec: 75, rir: "7/brazo explosivas @ 25 kg", target: "3 series × 14 reps (7/brazo) @ 25 kg" }
               ]
             },
             {
@@ -991,16 +1001,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.88} Militar) + Fondos & KB Swing — Nochebuena",
+              title: "Tren Superior B ({ohp:0.88} Militar) + Fondos & DB Snatch — Nochebuena",
               duration_min: 48,
               target_zone: "85–88% 1RM | RIR 2",
-              summary: "Completamos los 3 días de gimnasio (L-M-J) al mediodía incluyendo Fondos y Swing de Kettlebell.",
+              summary: "Completamos los 3 días de gimnasio (L-M-J) al mediodía incluyendo Fondos y Arrancada con Mancuerna a 1 Mano.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3-4", pct: 0.88, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
                 { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8-10", pct: 0.85, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 Swings @ 24 kg" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "14", weight_kg: 27.5, rest_sec: 75, rir: "7/brazo explosivas @ 27.5 kg", target: "3 series × 14 reps (7/brazo) @ 27.5 kg" }
               ]
             },
             {
@@ -1116,16 +1126,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.90} Militar) + Fondos & KB Swing — Fin de Año",
+              title: "Tren Superior B ({ohp:0.90} Militar) + Fondos & DB Snatch — Fin de Año",
               duration_min: 50,
               target_zone: "86–90% 1RM | RIR 1-2",
-              summary: "Última sesión de gimnasio del año el jueves al mediodía con Fondos y Swing de Kettlebell.",
+              summary: "Última sesión de gimnasio del año el jueves al mediodía con Fondos y Arrancada con Mancuerna a 1 Mano.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3", pct: 0.90, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.88, rir: "RIR 1-2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.86, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 1-2)", target: "3 series × 8 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 Swings @ 24 kg" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "14", weight_kg: 27.5, rest_sec: 75, rir: "7/brazo explosivas @ 27.5 kg", target: "3 series × 14 reps (7/brazo) @ 27.5 kg" }
               ]
             },
             {
@@ -1238,7 +1248,7 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Descarga Upper B",
-              title: "Tren Superior B Ligero ({incline_db:0.74}) + Fondos & KB Swing",
+              title: "Tren Superior B Ligero ({incline_db:0.74}) + Fondos & DB Snatch",
               duration_min: 38,
               target_zone: "72–74% 1RM | RIR 3",
               summary: "Bombeo articular sin estrés sistémico.",
@@ -1246,7 +1256,7 @@ window.HYBRID_TRAINING_PLAN = {
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.74, rir: "RIR 3" },
                 { name: "Remo en Polea / Barra", lift: "row_bar", sets: 3, reps: "8-10", pct: 0.72, rir: "RIR 3" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 2, reps: "7", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 3)", target: "2 series × 7 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Activación)", aux_type: "kb_swing", sets: 2, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Fluido @ 24 kg", target: "2 series × 12 Swings @ 24 kg" }
+                { name: "Arrancada con Mancuerna a 1 Mano (Activación)", aux_type: "db_snatch", sets: 2, reps: "10", weight_kg: 22.5, rest_sec: 75, rir: "5/brazo fluido @ 22.5 kg", target: "2 series × 10 reps (5/brazo) @ 22.5 kg" }
               ]
             },
             {
@@ -1371,16 +1381,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.88} Militar) + Fondos, KB Swing & Core",
+              title: "Tren Superior B ({ohp:0.88} Militar) + Fondos, DB Snatch & Core",
               duration_min: 50,
               target_zone: "85–88% 1RM | RIR 2",
-              summary: "Empuje, tracción, fondos en paralelas, swing de kettlebell y estabilidad de tronco.",
+              summary: "Empuje, tracción, fondos en paralelas, arrancada con mancuerna a 1 mano y estabilidad de tronco.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.88, rir: "RIR 2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 Swings @ 24 kg" },
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "12", weight_kg: 27.5, rest_sec: 75, rir: "6/brazo explosivas @ 27.5 kg", target: "3 series × 12 reps (6/brazo) @ 27.5 kg" },
                 { name: "Press Pallof + Plancha Lateral", aux_type: "core", sets: 3, reps: "12", weight_kg: 0, rest_sec: 45, rir: "Core antirotación", target: "3 series × 12 reps/lado" }
               ]
             },
@@ -1495,16 +1505,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.90} Militar) + Fondos & KB Swing",
+              title: "Tren Superior B ({ohp:0.90} Militar) + Fondos & DB Snatch",
               duration_min: 48,
               target_zone: "86–90% 1RM | RIR 2",
-              summary: "Tercer día de gimnasio (Jueves): torso fuerte, fondos en paralelas y swing de kettlebell sin fatiga de piernas.",
+              summary: "Tercer día de gimnasio (Jueves): torso fuerte, fondos en paralelas y arrancada con mancuerna a 1 mano sin fatiga de piernas.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3", pct: 0.90, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.88, rir: "RIR 2" },
                 { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 Swings @ 24 kg" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "12", weight_kg: 27.5, rest_sec: 75, rir: "6/brazo explosivas @ 27.5 kg", target: "3 series × 12 reps (6/brazo) @ 27.5 kg" }
               ]
             },
             {
@@ -1617,16 +1627,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Mantenimiento ({ohp:0.85} Militar) + Fondos & KB Swing",
+              title: "Tren Superior B — Mantenimiento ({ohp:0.85} Militar) + Fondos & DB Snatch",
               duration_min: 48,
               target_zone: "84–85% 1RM | RIR 2",
-              summary: "Sesión limpia de torso con Fondos y Swing de Kettlebell cerrando el gimnasio semanal.",
+              summary: "Sesión limpia de torso con Fondos y Arrancada con Mancuerna a 1 Mano cerrando el gimnasio semanal.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "4-5", pct: 0.85, rir: "RIR 2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.84, rir: "RIR 2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8", pct: 0.82, rir: "RIR 2" },
                 { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
-                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 Swings @ 24 kg" }
+                { name: "Arrancada con Mancuerna a 1 Mano (DB Snatch)", aux_type: "db_snatch", sets: 3, reps: "12", weight_kg: 25, rest_sec: 75, rir: "6/brazo explosivas @ 25 kg", target: "3 series × 12 reps (6/brazo) @ 25 kg" }
               ]
             },
             {

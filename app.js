@@ -184,6 +184,7 @@
     if (!auxKey) {
       const lower = `${st.name || ""} ${st.target || ""}`.toLowerCase();
       if (lower.includes("fondo") || lower.includes("dip")) auxKey = "dips";
+      else if (lower.includes("arrancada") || lower.includes("snatch")) auxKey = "db_snatch";
       else if (lower.includes("kettlebell") || lower.includes("swing") || lower.includes("kb ")) auxKey = "kb_swing";
       else if (lower.includes("plancha") || lower.includes("plank") || lower.includes("deadbug")) auxKey = "plank";
       else if (lower.includes("pallof") || lower.includes("antirotaci")) auxKey = "core";

@@ -154,6 +154,16 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "step": 1.0,
         "default_1rm": 0.0,
     },
+    "db_snatch": {
+        "cat_id": 18,
+        "name_id": 16,
+        "category_key": "OLYMPIC_LIFT",
+        "exercise_key": "SINGLE_ARM_DUMBBELL_SNATCH",
+        "title_es": "Arrancada mancuerna 1 mano",
+        "rest_sec": 75,
+        "step": 2.5,
+        "default_1rm": 25.0,
+    },
     "kb_swing": {
         "cat_id": 10,
         "name_id": 23,
@@ -223,7 +233,7 @@ def calc_weight_kg(lift_key: str, pct: float, one_rm_map: dict[str, float], fixe
         return round_step(rm * pct, cfg["step"])
     if lift_key in ("core", "dips", "plank"):
         return 0.0
-    if lift_key == "kb_swing":
+    if lift_key in ("kb_swing", "db_snatch"):
         return float(rm if pct <= 0 else round_step(rm * pct, cfg["step"]))
     return max(cfg["step"], round_step(rm * pct, cfg["step"]))
 
@@ -677,13 +687,13 @@ THREE_CORE_DAYS = [
         "slug": "Jueves_Upper_B",
         "day": "Jueves",
         "workoutName": "HYBRID Jueves Upper B",
-        "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Swing de Kettlebell 24kg). 1RM Actualizados: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
+        "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Arrancada con Mancuerna 1 Mano 25kg). 1RM Actualizados: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
         "exercises": [
             {"lift": "ohp", "sets": 4, "reps": 5, "pct": 0.82, "rest_sec": 105, "rir": "RIR 2"},
             {"lift": "incline_db", "sets": 3, "reps": 10, "pct": 0.76, "rest_sec": 90, "rir": "RIR 2"},
             {"lift": "row_bar", "sets": 4, "reps": 8, "pct": 0.75, "rest_sec": 90, "rir": "RIR 2"},
             {"lift": "dips", "sets": 3, "reps": 8, "pct": 0.0, "weight_kg": 0.0, "rest_sec": 75, "rir": "Peso Corporal (RIR 2)"},
-            {"lift": "kb_swing", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 24.0, "rest_sec": 75, "rir": "Explosivos @ 24 kg"},
+            {"lift": "db_snatch", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 75, "rir": "6/brazo explosivas @ 25 kg"},
         ],
     },
 ]

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19 12:27:37 UTC",
+  "generated_at": "2026-11-19 16:15:43 UTC",
   "default_1rm_kg": {
     "bench": 120.0,
     "squat": 130.0,
@@ -14,6 +14,7 @@
     "hip_thrust": 90.0,
     "soleus": 60.0,
     "dips": 0.0,
+    "db_snatch": 25.0,
     "kb_swing": 24.0,
     "plank": 0.0,
     "core": 0.0
@@ -178,7 +179,7 @@
       "json_file": "workouts/json/Jueves_Upper_B.json",
       "size_bytes": 2717,
       "header_crc_hex": "0x60f8",
-      "file_crc_hex": "0x8254",
+      "file_crc_hex": "0xca8b",
       "sdk_validation": {
         "sdk_available": true,
         "is_fit": true,
@@ -239,12 +240,12 @@
           },
           {
             "idx": 13,
-            "name": "Swing con pesa rusa (Kettlebell",
-            "cat": "hip_raise",
-            "ex_name": 23,
+            "name": "Arrancada mancuerna 1 mano",
+            "cat": "olympic_lift",
+            "ex_name": 16,
             "reps": 12,
-            "weight_kg": 24.0,
-            "notes": "3x12 @ 24kg (Explosivos @ 24 kg)"
+            "weight_kg": 25.0,
+            "notes": "3x12 @ 25kg (6/brazo explosivas @ 25 kg)"
           }
         ]
       }

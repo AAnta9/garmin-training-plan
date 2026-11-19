@@ -1,6 +1,6 @@
 {
   "workoutName": "HYBRID Jueves Upper B",
-  "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Swing de Kettlebell 24kg). 1RM Actualizados: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
+  "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Arrancada con Mancuerna 1 Mano 25kg). 1RM Actualizados: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -371,7 +371,7 @@
               "stepId": null,
               "stepOrder": 15,
               "childStepId": 5,
-              "description": "3x12 @ 24 kg · Explosivos @ 24 kg",
+              "description": "3x12 @ 25 kg · 6/brazo explosivas @ 25 kg",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -389,9 +389,9 @@
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "HIP_RAISE",
-              "exerciseName": "KETTLEBELL_SWING",
-              "weightValue": 24.0,
+              "category": "OLYMPIC_LIFT",
+              "exerciseName": "SINGLE_ARM_DUMBBELL_SNATCH",
+              "weightValue": 25.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
