@@ -377,7 +377,7 @@
               "stepId": null,
               "stepOrder": 15,
               "childStepId": 5,
-              "description": "0% 1RM · Estabilidad pelvica",
+              "description": "3x12 · Plancha RKC + Deadbug",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -395,8 +395,8 @@
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "CORE",
-              "exerciseName": "CABLE_CORE_PRESS"
+              "category": "PLANK",
+              "exerciseName": "PLANK"
             },
             {
               "type": "ExecutableStepDTO",

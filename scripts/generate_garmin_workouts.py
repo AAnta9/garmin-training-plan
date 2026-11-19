@@ -125,8 +125,8 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "default_1rm": 35.0,
     },
     "hip_thrust": {
-        "cat_id": 12,
-        "name_id": 1,
+        "cat_id": 10,
+        "name_id": 0,
         "category_key": "HIP_RAISE",
         "exercise_key": "BARBELL_HIP_THRUST_ON_FLOOR",
         "title_es": "Hip Thrust con barra",
@@ -143,6 +143,36 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "rest_sec": 60,
         "step": 2.5,
         "default_1rm": 60.0,
+    },
+    "dips": {
+        "cat_id": 30,
+        "name_id": 2,
+        "category_key": "TRICEPS_EXTENSION",
+        "exercise_key": "BODY_WEIGHT_DIP",
+        "title_es": "Fondos en paralelas",
+        "rest_sec": 75,
+        "step": 1.0,
+        "default_1rm": 0.0,
+    },
+    "kb_swing": {
+        "cat_id": 10,
+        "name_id": 23,
+        "category_key": "HIP_RAISE",
+        "exercise_key": "KETTLEBELL_SWING",
+        "title_es": "Swing con pesa rusa (Kettlebell)",
+        "rest_sec": 75,
+        "step": 2.0,
+        "default_1rm": 24.0,
+    },
+    "plank": {
+        "cat_id": 19,
+        "name_id": 43,
+        "category_key": "PLANK",
+        "exercise_key": "PLANK",
+        "title_es": "Plancha abdominal",
+        "rest_sec": 45,
+        "step": 1.0,
+        "default_1rm": 0.0,
     },
     "core": {
         "cat_id": 5,
@@ -182,15 +212,19 @@ def round_step(val: float, step: float) -> float:
     return round(val / step) * step
 
 
-def calc_weight_kg(lift_key: str, pct: float, one_rm_map: dict[str, float]) -> float:
+def calc_weight_kg(lift_key: str, pct: float, one_rm_map: dict[str, float], fixed_weight_kg: float | None = None) -> float:
+    if fixed_weight_kg is not None:
+        return float(fixed_weight_kg)
     cfg = GARMIN_EXERCISES[lift_key]
     rm = one_rm_map.get(lift_key, cfg["default_1rm"])
     if lift_key == "pullup_load":
         if not pct or pct <= 0 or rm <= 0:
             return 0.0
         return round_step(rm * pct, cfg["step"])
-    if lift_key == "core":
+    if lift_key in ("core", "dips", "plank"):
         return 0.0
+    if lift_key == "kb_swing":
+        return float(rm if pct <= 0 else round_step(rm * pct, cfg["step"]))
     return max(cfg["step"], round_step(rm * pct, cfg["step"]))
 
 
@@ -326,10 +360,16 @@ def build_fit_workout_bytes(
         sets_count = int(ex["sets"])
         reps_count = int(ex["reps"])
         pct = float(ex.get("pct", 0.0))
-        weight_kg = calc_weight_kg(lift_key, pct, one_rm_map)
+        fixed_wt = ex.get("weight_kg")
+        weight_kg = calc_weight_kg(lift_key, pct, one_rm_map, fixed_wt)
         ex_weight_val = int(round(weight_kg * 100)) if weight_kg > 0 else 0xFFFF
         rest_ms = int(ex.get("rest_sec", cfg["rest_sec"])) * 1000
-        pct_str = f"{int(round(pct * 100))}% 1RM" if pct > 0 else "Peso corporal"
+        if pct > 0:
+            pct_str = f"{int(round(pct * 100))}% 1RM"
+        elif weight_kg > 0:
+            pct_str = str(ex.get("rir", f"{weight_kg:g} kg"))
+        else:
+            pct_str = "Peso corporal"
         step_note = f"{sets_count}x{reps_count} @ {weight_kg:g}kg ({pct_str})" if weight_kg > 0 else f"{sets_count}x{reps_count} ({pct_str})"
 
         work_idx = len(step_packets)
@@ -520,18 +560,26 @@ def build_garmin_connect_workout_json(
         sets_count = int(ex["sets"])
         reps_count = int(ex["reps"])
         pct = float(ex.get("pct", 0.0))
-        weight_kg = calc_weight_kg(lift_key, pct, one_rm_map)
+        fixed_wt = ex.get("weight_kg")
+        weight_kg = calc_weight_kg(lift_key, pct, one_rm_map, fixed_wt)
         rest_sec = int(ex.get("rest_sec", cfg["rest_sec"]))
 
         work_step_order = step_order + 1
         rest_step_order = step_order + 2
+
+        if pct > 0:
+            desc_str = f"{int(round(pct * 100))}% 1RM · {ex.get('rir', 'RIR 1-2')}"
+        elif weight_kg > 0:
+            desc_str = f"{sets_count}x{reps_count} @ {weight_kg:g} kg · {ex.get('rir', 'Explosivo')}"
+        else:
+            desc_str = f"{sets_count}x{reps_count} · {ex.get('rir', 'Peso Corporal')}"
 
         work_step: dict[str, Any] = {
             "type": "ExecutableStepDTO",
             "stepId": None,
             "stepOrder": work_step_order,
             "childStepId": child_id,
-            "description": f"{int(round(pct * 100))}% 1RM · {ex.get('rir', 'RIR 1-2')}",
+            "description": desc_str,
             "stepType": {"stepTypeId": 3, "stepTypeKey": "interval", "displayOrder": 3},
             "endCondition": {"conditionTypeId": 10, "conditionTypeKey": "reps", "displayOrder": 10, "displayable": True},
             "endConditionValue": float(reps_count),
@@ -621,7 +669,7 @@ THREE_CORE_DAYS = [
             {"lift": "rdl", "sets": 3, "reps": 6, "pct": 0.78, "rest_sec": 105, "rir": "RIR 2 (isquios)"},
             {"lift": "split_squat_db", "sets": 3, "reps": 8, "pct": 0.75, "rest_sec": 75, "rir": "8 reps por pierna"},
             {"lift": "soleus", "sets": 4, "reps": 12, "pct": 0.78, "rest_sec": 60, "rir": "1s pausa arriba (Aquiles)"},
-            {"lift": "core", "sets": 3, "reps": 12, "pct": 0.0, "rest_sec": 45, "rir": "Estabilidad pelvica"},
+            {"lift": "plank", "sets": 3, "reps": 12, "pct": 0.0, "rest_sec": 45, "rir": "Plancha RKC + Deadbug"},
         ],
     },
     {
@@ -629,12 +677,13 @@ THREE_CORE_DAYS = [
         "slug": "Jueves_Upper_B",
         "day": "Jueves",
         "workoutName": "HYBRID Jueves Upper B",
-        "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Traccion Horizontal & Hipertrofia). 1RM Actualizados: Militar 65kg, Remo Barra 90kg, Inclinado 40kg.",
+        "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Swing de Kettlebell 24kg). 1RM Actualizados: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
         "exercises": [
-            {"lift": "ohp", "sets": 4, "reps": 6, "pct": 0.80, "rest_sec": 120, "rir": "RIR 1-2"},
-            {"lift": "row_bar", "sets": 4, "reps": 8, "pct": 0.78, "rest_sec": 90, "rir": "RIR 1-2"},
-            {"lift": "incline_db", "sets": 3, "reps": 8, "pct": 0.79, "rest_sec": 90, "rir": "RIR 2"},
-            {"lift": "pullup_load", "sets": 3, "reps": 8, "pct": 0.0, "rest_sec": 90, "rir": "Peso corporal estricto"},
+            {"lift": "ohp", "sets": 4, "reps": 5, "pct": 0.82, "rest_sec": 105, "rir": "RIR 2"},
+            {"lift": "incline_db", "sets": 3, "reps": 10, "pct": 0.76, "rest_sec": 90, "rir": "RIR 2"},
+            {"lift": "row_bar", "sets": 4, "reps": 8, "pct": 0.75, "rest_sec": 90, "rir": "RIR 2"},
+            {"lift": "dips", "sets": 3, "reps": 8, "pct": 0.0, "weight_kg": 0.0, "rest_sec": 75, "rir": "Peso Corporal (RIR 2)"},
+            {"lift": "kb_swing", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 24.0, "rest_sec": 75, "rir": "Explosivos @ 24 kg"},
         ],
     },
 ]

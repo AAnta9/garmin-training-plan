@@ -1,6 +1,6 @@
 {
   "workoutName": "HYBRID Jueves Upper B",
-  "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Traccion Horizontal & Hipertrofia). 1RM Actualizados: Militar 65kg, Remo Barra 90kg, Inclinado 40kg.",
+  "description": "Gimnasio Dia 3 (Jueves) - Tren Superior B (Hombro, Espalda, Fondos en Paralelas & Swing de Kettlebell 24kg). 1RM Actualizados: Militar 65kg, Inclinado 40kg, Remo Barra 90kg.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -65,7 +65,7 @@
               "stepId": null,
               "stepOrder": 3,
               "childStepId": 1,
-              "description": "80% 1RM · RIR 1-2",
+              "description": "82% 1RM · RIR 2",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -77,7 +77,7 @@
                 "displayOrder": 10,
                 "displayable": true
               },
-              "endConditionValue": 6.0,
+              "endConditionValue": 5.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
@@ -109,7 +109,7 @@
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 120.0,
+              "endConditionValue": 105.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
@@ -128,7 +128,7 @@
             "displayOrder": 6
           },
           "childStepId": 2,
-          "numberOfIterations": 4,
+          "numberOfIterations": 3,
           "smartRepeat": false,
           "endCondition": {
             "conditionTypeId": 7,
@@ -136,14 +136,14 @@
             "displayOrder": 7,
             "displayable": false
           },
-          "endConditionValue": 4.0,
+          "endConditionValue": 3.0,
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
               "stepId": null,
               "stepOrder": 6,
               "childStepId": 2,
-              "description": "78% 1RM · RIR 1-2",
+              "description": "76% 1RM · RIR 2",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -155,15 +155,15 @@
                 "displayOrder": 10,
                 "displayable": true
               },
-              "endConditionValue": 8.0,
+              "endConditionValue": 10.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "ROW",
-              "exerciseName": "BARBELL_ROW",
-              "weightValue": 70.0,
+              "category": "BENCH_PRESS",
+              "exerciseName": "INCLINE_DUMBBELL_BENCH_PRESS",
+              "weightValue": 30.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -206,7 +206,7 @@
             "displayOrder": 6
           },
           "childStepId": 3,
-          "numberOfIterations": 3,
+          "numberOfIterations": 4,
           "smartRepeat": false,
           "endCondition": {
             "conditionTypeId": 7,
@@ -214,14 +214,14 @@
             "displayOrder": 7,
             "displayable": false
           },
-          "endConditionValue": 3.0,
+          "endConditionValue": 4.0,
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
               "stepId": null,
               "stepOrder": 9,
               "childStepId": 3,
-              "description": "79% 1RM · RIR 2",
+              "description": "75% 1RM · RIR 2",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -239,9 +239,9 @@
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "BENCH_PRESS",
-              "exerciseName": "INCLINE_DUMBBELL_BENCH_PRESS",
-              "weightValue": 32.0,
+              "category": "ROW",
+              "exerciseName": "BARBELL_ROW",
+              "weightValue": 67.5,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -299,7 +299,7 @@
               "stepId": null,
               "stepOrder": 12,
               "childStepId": 4,
-              "description": "0% 1RM · Peso corporal estricto",
+              "description": "3x8 · Peso Corporal (RIR 2)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -317,8 +317,8 @@
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "PULL_UP",
-              "exerciseName": "PULL_UP"
+              "category": "TRICEPS_EXTENSION",
+              "exerciseName": "BODY_WEIGHT_DIP"
             },
             {
               "type": "ExecutableStepDTO",
@@ -337,7 +337,85 @@
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 90.0,
+              "endConditionValue": 75.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "RepeatGroupDTO",
+          "stepId": null,
+          "stepOrder": 14,
+          "stepType": {
+            "stepTypeId": 6,
+            "stepTypeKey": "repeat",
+            "displayOrder": 6
+          },
+          "childStepId": 5,
+          "numberOfIterations": 3,
+          "smartRepeat": false,
+          "endCondition": {
+            "conditionTypeId": 7,
+            "conditionTypeKey": "iterations",
+            "displayOrder": 7,
+            "displayable": false
+          },
+          "endConditionValue": 3.0,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 15,
+              "childStepId": 5,
+              "description": "3x12 @ 24 kg · Explosivos @ 24 kg",
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "endCondition": {
+                "conditionTypeId": 10,
+                "conditionTypeKey": "reps",
+                "displayOrder": 10,
+                "displayable": true
+              },
+              "endConditionValue": 12.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              },
+              "category": "HIP_RAISE",
+              "exerciseName": "KETTLEBELL_SWING",
+              "weightValue": 24.0,
+              "weightUnit": {
+                "unitId": 8,
+                "unitKey": "kilogram",
+                "factor": 1000.0
+              }
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 16,
+              "childStepId": 5,
+              "description": "Descanso entre series",
+              "stepType": {
+                "stepTypeId": 4,
+                "stepTypeKey": "rest",
+                "displayOrder": 4
+              },
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 75.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
@@ -349,7 +427,7 @@
         {
           "type": "ExecutableStepDTO",
           "stepId": null,
-          "stepOrder": 14,
+          "stepOrder": 17,
           "childStepId": null,
           "description": "Vuelta a la calma y movilidad",
           "stepType": {

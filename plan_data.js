@@ -162,8 +162,8 @@ window.DEFAULT_1RM_CONFIG = [
     unit: "kg",
     step: 2.5,
     default_1rm: 90.0,
-    cat_id: 12,
-    name_id: 1,
+    cat_id: 10,
+    name_id: 0,
     category_key: "HIP_RAISE",
     exercise_key: "BARBELL_HIP_THRUST_ON_FLOOR",
     title_es: "Hip Thrust con barra",
@@ -186,6 +186,79 @@ window.DEFAULT_1RM_CONFIG = [
     note: "Carga en máquina de gemelo/sóleo sentado"
   }
 ];
+
+window.AUX_EXERCISES_CONFIG = {
+  dips: {
+    key: "dips",
+    cat_id: 30,
+    name_id: 2,
+    category_key: "TRICEPS_EXTENSION",
+    exercise_key: "BODY_WEIGHT_DIP",
+    title_es: "Fondos en paralelas",
+    rest_sec: 75,
+    default_weight_kg: 0
+  },
+  kb_swing: {
+    key: "kb_swing",
+    cat_id: 10,
+    name_id: 23,
+    category_key: "HIP_RAISE",
+    exercise_key: "KETTLEBELL_SWING",
+    title_es: "Swing con pesa rusa (Kettlebell)",
+    rest_sec: 75,
+    default_weight_kg: 24.0
+  },
+  plank: {
+    key: "plank",
+    cat_id: 19,
+    name_id: 43,
+    category_key: "PLANK",
+    exercise_key: "PLANK",
+    title_es: "Plancha abdominal",
+    rest_sec: 45,
+    default_weight_kg: 0
+  },
+  core: {
+    key: "core",
+    cat_id: 5,
+    name_id: 6,
+    category_key: "CORE",
+    exercise_key: "CABLE_CORE_PRESS",
+    title_es: "Press Pallof / Core",
+    rest_sec: 45,
+    default_weight_kg: 0
+  },
+  leg_curl: {
+    key: "leg_curl",
+    cat_id: 15,
+    name_id: 1,
+    category_key: "LEG_CURL",
+    exercise_key: "WEIGHTED_LEG_CURL",
+    title_es: "Curl femoral",
+    rest_sec: 75,
+    default_weight_kg: 0
+  },
+  knee_raise: {
+    key: "knee_raise",
+    cat_id: 16,
+    name_id: 0,
+    category_key: "LEG_RAISE",
+    exercise_key: "HANGING_KNEE_RAISE",
+    title_es: "Elevación de rodillas colgado",
+    rest_sec: 60,
+    default_weight_kg: 0
+  },
+  arm_superset: {
+    key: "arm_superset",
+    cat_id: 7,
+    name_id: 46,
+    category_key: "CURL",
+    exercise_key: "DUMBBELL_BICEPS_CURL",
+    title_es: "Curl de bíceps con mancuernas",
+    rest_sec: 60,
+    default_weight_kg: 0
+  }
+};
 
 window.HYBRID_TRAINING_PLAN = {
   methodology: {
@@ -258,7 +331,7 @@ window.HYBRID_TRAINING_PLAN = {
                 { name: "Peso Muerto Rumano (RDL)", lift: "rdl", sets: 3, reps: "6", pct: 0.75, rir: "RIR 2 (bajada 2s)" },
                 { name: "Split Squat Búlgaro", lift: "split_squat_db", sets: 3, reps: "8/pierna", pct: 0.70, rir: "RIR 2" },
                 { name: "Elevación de Talones Sentado (Sóleo)", lift: "soleus", sets: 4, reps: "12-15", pct: 0.72, rir: "1s pausa arriba" },
-                { name: "Plancha Abdominal RKC + Deadbug", target: "3 series × 40s" }
+                { name: "Plancha Abdominal RKC + Deadbug", aux_type: "plank", sets: 3, reps: 12, rest_sec: 45, rir: "40s isométrico / 12 reps", target: "3 series × 40s (12 reps controladas)" }
               ]
             },
             {
@@ -284,16 +357,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Hombro, Espalda & Fondos ({ohp:0.82} Militar)",
+              title: "Tren Superior B — Hombro, Espalda, Fondos & KB Swing ({ohp:0.82} Militar)",
               duration_min: 50,
               target_zone: "76–82% 1RM | RIR 2",
-              summary: "Día 3 de gimnasio (Jueves): cerramos el trabajo de fuerza semanal dejando las piernas descansadas para viernes y sábado.",
+              summary: "Día 3 de gimnasio (Jueves): cerramos el trabajo de fuerza semanal incluyendo Fondos en Paralelas y Swing de Kettlebell (24 kg) dejando las piernas frescas para viernes y sábado.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4-5", pct: 0.82, rir: "RIR 2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "10", pct: 0.76, rir: "RIR 2" },
                 { name: "Remo en Polea / Barra", lift: "row_bar", sets: 4, reps: "8-10", pct: 0.75, rir: "RIR 2" },
-                { name: "Fondos en Paralelas (Dips)", target: "3 series × 7-8 reps @ Peso Corporal (RIR 2)" },
-                { name: "Kettlebell Swings (Potencia Cadera)", target: "3 series × 12 reps @ 24 kg (explosivos)" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "7-8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 7-8 reps @ Peso Corporal (RIR 2)" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 reps @ 24 kg (explosivos)" }
               ]
             },
             {
@@ -368,7 +441,7 @@ window.HYBRID_TRAINING_PLAN = {
                 { name: "Dominadas Lastradas / Estrictras", lift: "pullup_load", sets: 4, reps: "6", pct: 0.50, rir: "RIR 2" },
                 { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "6-8", pct: 0.78, rir: "RIR 2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8-10", pct: 0.78, rir: "RIR 2" },
-                { name: "Curl Bíceps + Extensión Tríceps", target: "2 superseries × 12 reps" }
+                { name: "Curl Bíceps + Extensión Tríceps", aux_type: "arm_superset", sets: 2, reps: "12", rest_sec: 60, rir: "Superserie brazos", target: "2 superseries × 12 reps" }
               ]
             },
             {
@@ -384,9 +457,9 @@ window.HYBRID_TRAINING_PLAN = {
               steps: [
                 { name: "Peso Muerto Barra (Deadlift)", lift: "deadlift", sets: 3, reps: "3-4", pct: 0.82, rir: "RIR 2" },
                 { name: "Sentadilla Trasera Barra", lift: "squat", sets: 3, reps: "5", pct: 0.78, rir: "RIR 2" },
-                { name: "Curl Femoral Sentado/Tumbado", target: "3 series × 10 reps (excéntrica 3s para proteger isquios)" },
+                { name: "Curl Femoral Sentado/Tumbado", aux_type: "leg_curl", sets: 3, reps: "10", rest_sec: 75, rir: "Excéntrica 3s (isquios)", target: "3 series × 10 reps (excéntrica 3s para proteger isquios)" },
                 { name: "Elevación de Sóleo Sentado", lift: "soleus", sets: 4, reps: "12", pct: 0.76, rir: "RIR 2" },
-                { name: "Hanging Knee Raises (Core)", target: "3 series × 10 reps" }
+                { name: "Hanging Knee Raises (Core)", aux_type: "knee_raise", sets: 3, reps: "10", rest_sec: 60, rir: "Control pélvico", target: "3 series × 10 reps" }
               ]
             },
             {
@@ -411,16 +484,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.84} Militar) + Potencia Aláctica",
+              title: "Tren Superior B ({ohp:0.84} Militar) + Fondos & KB Swing",
               duration_min: 50,
               target_zone: "80–84% 1RM | RIR 1-2",
-              summary: "Tercer y último día de gimnasio de la semana: empuje vertical, press inclinado y potencia de cadera.",
+              summary: "Tercer y último día de gimnasio de la semana: empuje vertical, press inclinado, fondos en paralelas y swing de kettlebell.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.84, rir: "RIR 1-2" },
                 { name: "Press Banca Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8-10", pct: 0.80, rir: "RIR 2" },
                 { name: "Remo con Mancuerna Unilateral", lift: "row_db", sets: 4, reps: "8-10", pct: 0.80, rir: "RIR 2" },
-                { name: "Fondos en Paralelas", target: "4 series × 7-8 reps @ Peso Corporal" },
-                { name: "Salto a la Comba + KB Swings", target: "3 rondas: 45s comba + 12 Swings @ 24 kg (descanso 60s)" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 4, reps: "7-8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "4 series × 7-8 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg (+45s comba opcional)", target: "3 series × 12 Swings @ 24 kg (descanso 75s)" }
               ]
             },
             {
@@ -537,15 +610,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Pico Bloque 1 ({ohp:0.86} Militar)",
+              title: "Tren Superior B — Pico Bloque 1 ({ohp:0.86} Militar) + Fondos & KB Swing",
               duration_min: 52,
               target_zone: "82–86% 1RM | RIR 1-2",
-              summary: "Sesión fuerte de torso cerrando los 3 días de gimnasio de la semana.",
+              summary: "Sesión fuerte de torso cerrando los 3 días de gimnasio de la semana con Fondos y Swing de Kettlebell.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3-4", pct: 0.86, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 4, reps: "8", pct: 0.84, rir: "RIR 1-2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.82, rir: "RIR 2" },
-                { name: "Fondos en Paralelas", target: "4 series × 8 reps @ Peso Corporal" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 4, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 1-2)", target: "4 series × 8 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 reps @ 24 kg (explosivos)" }
               ]
             },
             {
@@ -660,14 +734,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Descarga Upper B",
-              title: "Tren Superior B — Bombeo & Movilidad ({incline_db:0.72})",
+              title: "Tren Superior B — Bombeo, Fondos & KB Swing ({incline_db:0.72})",
               duration_min: 38,
               target_zone: "70–72% 1RM | RIR 3",
               summary: "Sesión ligera y técnica cerrando el gimnasio de la semana.",
               steps: [
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.72, rir: "RIR 3" },
                 { name: "Remo en Polea / Barra", lift: "row_bar", sets: 3, reps: "10", pct: 0.70, rir: "RIR 3" },
-                { name: "Fondos + Core", target: "2 series × 6 reps + Planchas" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 2, reps: "6", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 3)", target: "2 series × 6 reps @ Peso Corporal (RIR 3)" },
+                { name: "Swing de Kettlebell (Activación)", aux_type: "kb_swing", sets: 2, reps: "10", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "2 series × 10 reps @ 24 kg (explosivos)" }
               ]
             },
             {
@@ -793,15 +868,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.86} Militar) + Potencia Híbrida",
+              title: "Tren Superior B ({ohp:0.86} Militar) + Fondos & KB Swing",
               duration_min: 50,
               target_zone: "84–86% 1RM | RIR 2",
-              summary: "Fuerza de torso y cadena posterior explosiva.",
+              summary: "Fuerza de torso, fondos en paralelas y cadena posterior explosiva con Kettlebell.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.86, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.84, rir: "RIR 2" },
-                { name: "Fondos + Kettlebell Swings", target: "3 superseries: 8 Fondos + 15 Swings @ 24 kg" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 Fondos @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 Swings @ 24 kg" }
               ]
             },
             {
@@ -915,15 +991,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.88} Militar) — Nochebuena",
-              duration_min: 45,
+              title: "Tren Superior B ({ohp:0.88} Militar) + Fondos & KB Swing — Nochebuena",
+              duration_min: 48,
               target_zone: "85–88% 1RM | RIR 2",
-              summary: "Completamos los 3 días de gimnasio (L-M-J) al mediodía.",
+              summary: "Completamos los 3 días de gimnasio (L-M-J) al mediodía incluyendo Fondos y Swing de Kettlebell.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3-4", pct: 0.88, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
                 { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8-10", pct: 0.85, rir: "RIR 2" },
-                { name: "Fondos + Core", target: "3 series × 8 reps" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 Swings @ 24 kg" }
               ]
             },
             {
@@ -1039,15 +1116,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.90} Militar) — Fin de Año",
+              title: "Tren Superior B ({ohp:0.90} Militar) + Fondos & KB Swing — Fin de Año",
               duration_min: 50,
               target_zone: "86–90% 1RM | RIR 1-2",
-              summary: "Última sesión de gimnasio del año el jueves al mediodía.",
+              summary: "Última sesión de gimnasio del año el jueves al mediodía con Fondos y Swing de Kettlebell.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3", pct: 0.90, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.88, rir: "RIR 1-2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 4, reps: "8", pct: 0.86, rir: "RIR 2" },
-                { name: "Fondos en Paralelas", target: "3 series × 8 reps" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 1-2)", target: "3 series × 8 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "15", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 15 Swings @ 24 kg" }
               ]
             },
             {
@@ -1160,14 +1238,15 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Descarga Upper B",
-              title: "Tren Superior B Ligero ({incline_db:0.74})",
+              title: "Tren Superior B Ligero ({incline_db:0.74}) + Fondos & KB Swing",
               duration_min: 38,
               target_zone: "72–74% 1RM | RIR 3",
               summary: "Bombeo articular sin estrés sistémico.",
               steps: [
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.74, rir: "RIR 3" },
                 { name: "Remo en Polea / Barra", lift: "row_bar", sets: 3, reps: "8-10", pct: 0.72, rir: "RIR 3" },
-                { name: "Fondos + Core", target: "2 series × 7 reps" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 2, reps: "7", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 3)", target: "2 series × 7 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Activación)", aux_type: "kb_swing", sets: 2, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Fluido @ 24 kg", target: "2 series × 12 Swings @ 24 kg" }
               ]
             },
             {
@@ -1292,15 +1371,17 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.88} Militar) + Core Antirotación",
-              duration_min: 48,
+              title: "Tren Superior B ({ohp:0.88} Militar) + Fondos, KB Swing & Core",
+              duration_min: 50,
               target_zone: "85–88% 1RM | RIR 2",
-              summary: "Estabilidad de tronco para mantener la postura en los kilómetros finales del 10K.",
+              summary: "Empuje, tracción, fondos en paralelas, swing de kettlebell y estabilidad de tronco.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "4", pct: 0.88, rir: "RIR 2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
                 { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8", pct: 0.85, rir: "RIR 2" },
-                { name: "Press Pallof + Plancha Lateral", target: "3 series × 12 reps/lado" }
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 Swings @ 24 kg" },
+                { name: "Press Pallof + Plancha Lateral", aux_type: "core", sets: 3, reps: "12", weight_kg: 0, rest_sec: 45, rir: "Core antirotación", target: "3 series × 12 reps/lado" }
               ]
             },
             {
@@ -1414,14 +1495,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B ({ohp:0.90} Militar) + Potencia",
+              title: "Tren Superior B ({ohp:0.90} Militar) + Fondos & KB Swing",
               duration_min: 48,
               target_zone: "86–90% 1RM | RIR 2",
-              summary: "Tercer día de gimnasio (Jueves): torso fuerte sin fatiga de piernas.",
+              summary: "Tercer día de gimnasio (Jueves): torso fuerte, fondos en paralelas y swing de kettlebell sin fatiga de piernas.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 4, reps: "3", pct: 0.90, rir: "RIR 1-2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.88, rir: "RIR 2" },
-                { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" }
+                { name: "Remo con Mancuerna", lift: "row_db", sets: 3, reps: "8", pct: 0.86, rir: "RIR 2" },
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 Swings @ 24 kg" }
               ]
             },
             {
@@ -1534,14 +1617,16 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Upper B",
-              title: "Tren Superior B — Mantenimiento ({ohp:0.85} Militar)",
-              duration_min: 45,
+              title: "Tren Superior B — Mantenimiento ({ohp:0.85} Militar) + Fondos & KB Swing",
+              duration_min: 48,
               target_zone: "84–85% 1RM | RIR 2",
-              summary: "Sesión limpia de torso cerrando el gimnasio semanal.",
+              summary: "Sesión limpia de torso con Fondos y Swing de Kettlebell cerrando el gimnasio semanal.",
               steps: [
                 { name: "Press Militar Barra", lift: "ohp", sets: 3, reps: "4-5", pct: 0.85, rir: "RIR 2" },
                 { name: "Press Inclinado Mancuernas", lift: "incline_db", sets: 3, reps: "8", pct: 0.84, rir: "RIR 2" },
-                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8", pct: 0.82, rir: "RIR 2" }
+                { name: "Remo con Barra / Polea", lift: "row_bar", sets: 3, reps: "8", pct: 0.82, rir: "RIR 2" },
+                { name: "Fondos en Paralelas (Dips)", aux_type: "dips", sets: 3, reps: "8", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 2)", target: "3 series × 8 reps @ Peso Corporal" },
+                { name: "Swing de Kettlebell (Potencia Cadera)", aux_type: "kb_swing", sets: 3, reps: "12", weight_kg: 24, rest_sec: 75, rir: "Explosivos @ 24 kg", target: "3 series × 12 Swings @ 24 kg" }
               ]
             },
             {
@@ -1656,13 +1741,14 @@ window.HYBRID_TRAINING_PLAN = {
               day_name: "Jueves",
               modality: "strength",
               modality_label: "Gimnasio 3 · Movilidad & Core",
-              title: "Sesión Ligera de Torso ({incline_db:0.68}), Core & Movilidad",
+              title: "Sesión Ligera de Torso ({incline_db:0.68}), Fondos & Movilidad",
               duration_min: 30,
               target_zone: "65–68% 1RM | RIR 4",
               summary: "Aprovechamos el jueves de gimnasio para bombeo suave de torso y liberación miofascial.",
               steps: [
                 { name: "Press Inclinado Mancuernas Ligero", lift: "incline_db", sets: 2, reps: "8", pct: 0.68, rir: "RIR 4" },
                 { name: "Remo Polea Ligero", lift: "row_bar", sets: 2, reps: "8", pct: 0.65, rir: "RIR 4" },
+                { name: "Fondos en Paralelas (Activación)", aux_type: "dips", sets: 2, reps: "6", weight_kg: 0, rest_sec: 75, rir: "Peso Corporal (RIR 4)", target: "2 series × 6 reps @ Peso Corporal (RIR 4)" },
                 { name: "Estiramientos Dinámicos & Foam Roller", target: "12 min" }
               ]
             },

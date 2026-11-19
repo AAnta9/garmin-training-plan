@@ -136,8 +136,88 @@
     });
   }
 
+  function resolveWorkoutStepDescriptor(st) {
+    if (!st) return null;
+    if (st.lift) {
+      const cfg = getLiftConfig(st.lift);
+      const setsCount = parseInt(st.sets, 10) || 3;
+      const repsCount = parseRepsCount(st.reps);
+      const weightKg = calcLiftWeight(st.lift, st.pct || 0);
+      const restSec = st.rest_sec || cfg.rest_sec || 90;
+      const pctStr = st.pct > 0 ? `${Math.round(st.pct * 100)}% 1RM` : "Peso corporal";
+      const stepNote =
+        weightKg > 0
+          ? `${setsCount}x${repsCount} @ ${formatNumberClean(weightKg)}kg (${pctStr})`
+          : `${setsCount}x${repsCount} (${pctStr})`;
+      const jsonDesc = `${pctStr} · ${st.rir || "RIR 2"}`;
+      return {
+        title_es: cfg.title_es || cfg.name || st.name,
+        cat_id: cfg.cat_id,
+        name_id: cfg.name_id,
+        category_key: cfg.category_key,
+        exercise_key: cfg.exercise_key,
+        setsCount,
+        repsCount,
+        weightKg,
+        restSec,
+        stepNote,
+        jsonDesc
+      };
+    }
+
+    const auxMap = window.AUX_EXERCISES_CONFIG || {};
+    let auxKey = st.aux_type || null;
+    if (!auxKey) {
+      const lower = `${st.name || ""} ${st.target || ""}`.toLowerCase();
+      if (lower.includes("fondo") || lower.includes("dip")) auxKey = "dips";
+      else if (lower.includes("kettlebell") || lower.includes("swing") || lower.includes("kb ")) auxKey = "kb_swing";
+      else if (lower.includes("plancha") || lower.includes("plank") || lower.includes("deadbug")) auxKey = "plank";
+      else if (lower.includes("pallof") || lower.includes("antirotaci")) auxKey = "core";
+      else if (lower.includes("femoral")) auxKey = "leg_curl";
+      else if (lower.includes("hanging") || lower.includes("knee raise")) auxKey = "knee_raise";
+      else if (lower.includes("bíceps") || lower.includes("biceps")) auxKey = "arm_superset";
+    }
+    if (!auxKey || !auxMap[auxKey]) return null;
+
+    const auxCfg = auxMap[auxKey];
+    const setsCount = parseInt(st.sets, 10) || 3;
+    const repsCount = parseRepsCount(st.reps || st.target || "10");
+    const weightKg =
+      st.weight_kg !== undefined ? parseFloat(st.weight_kg) || 0 : auxCfg.default_weight_kg || 0;
+    const restSec = st.rest_sec || auxCfg.rest_sec || 75;
+    const rirLabel = st.rir || (weightKg > 0 ? `${formatNumberClean(weightKg)} kg` : "Peso Corporal");
+    const stepNote =
+      weightKg > 0
+        ? `${setsCount}x${repsCount} @ ${formatNumberClean(weightKg)}kg (${rirLabel})`
+        : `${setsCount}x${repsCount} (${rirLabel})`;
+    const jsonDesc =
+      weightKg > 0
+        ? `${setsCount}x${repsCount} @ ${formatNumberClean(weightKg)} kg · ${rirLabel}`
+        : `${setsCount}x${repsCount} · ${rirLabel}`;
+
+    return {
+      title_es: auxCfg.title_es || st.name,
+      cat_id: auxCfg.cat_id,
+      name_id: auxCfg.name_id,
+      category_key: auxCfg.category_key,
+      exercise_key: auxCfg.exercise_key,
+      setsCount,
+      repsCount,
+      weightKg,
+      restSec,
+      stepNote,
+      jsonDesc
+    };
+  }
+
   function formatStepPrescription(st) {
     if (!st.lift) {
+      if (st.aux_type && st.sets && st.reps) {
+        const w = st.weight_kg !== undefined ? parseFloat(st.weight_kg) || 0 : 0;
+        const wBadge = w > 0 ? `${formatNumberClean(w)} kg` : "Peso Corporal";
+        const rirPart = st.rir ? ` <span style="opacity:0.82;">(${st.rir})</span>` : "";
+        return `${st.sets} series × ${st.reps} reps @ <strong style="color:var(--accent-strength);">${wBadge}</strong>${rirPart}`;
+      }
       return resolveDynamicText(st.target || "");
     }
     const weightStr = formatWeightForLift(st.lift, st.pct);
@@ -296,41 +376,33 @@
     });
 
     (dayObj.steps || []).forEach((st) => {
-      if (!st.lift) return;
-      const cfg = getLiftConfig(st.lift);
-      const setsCount = parseInt(st.sets, 10) || 3;
-      const repsCount = parseRepsCount(st.reps);
-      const weightKg = calcLiftWeight(st.lift, st.pct || 0);
-      const exWeightVal = weightKg > 0 ? Math.round(weightKg * 100) : 0xffff;
-      const restMs = (cfg.rest_sec || 90) * 1000;
-      const pctStr = st.pct > 0 ? `${Math.round(st.pct * 100)}% 1RM` : "Peso corporal";
-      const stepNote =
-        weightKg > 0
-          ? `${setsCount}x${repsCount} @ ${formatNumberClean(weightKg)}kg (${pctStr})`
-          : `${setsCount}x${repsCount} (${pctStr})`;
+      const desc = resolveWorkoutStepDescriptor(st);
+      if (!desc) return;
+      const exWeightVal = desc.weightKg > 0 ? Math.round(desc.weightKg * 100) : 0xffff;
+      const restMs = (desc.restSec || 90) * 1000;
 
       const workIdx = stepRecords.length;
       stepRecords.push({
-        stepName: cfg.title_es || cfg.name,
+        stepName: desc.title_es,
         durType: 29,
-        durVal: repsCount,
+        durVal: desc.repsCount,
         tgtType: 2,
         tgtVal: 0,
         intensity: 0,
-        notes: stepNote,
-        exCat: cfg.cat_id,
-        exName: cfg.name_id,
+        notes: desc.stepNote,
+        exCat: desc.cat_id,
+        exName: desc.name_id,
         exWeight: exWeightVal,
         wtUnit: 1
       });
 
-      const tkey = `${cfg.cat_id}:${cfg.name_id}`;
+      const tkey = `${desc.cat_id}:${desc.name_id}`;
       if (!seenTitleKeys.has(tkey)) {
         seenTitleKeys.add(tkey);
         usedTitles.push({
-          cat_id: cfg.cat_id,
-          name_id: cfg.name_id,
-          title_es: cfg.title_es || cfg.name
+          cat_id: desc.cat_id,
+          name_id: desc.name_id,
+          title_es: desc.title_es
         });
       }
 
@@ -353,7 +425,7 @@
         durType: 6,
         durVal: workIdx,
         tgtType: 2,
-        tgtVal: setsCount,
+        tgtVal: desc.setsCount,
         intensity: 0xff,
         notes: "",
         exCat: 0xffff,
@@ -627,29 +699,25 @@
 
     let childId = 1;
     (dayObj.steps || []).forEach((st) => {
-      if (!st.lift) return;
-      const cfg = getLiftConfig(st.lift);
-      const setsCount = parseInt(st.sets, 10) || 3;
-      const repsCount = parseRepsCount(st.reps);
-      const weightKg = calcLiftWeight(st.lift, st.pct || 0);
-      const restSec = cfg.rest_sec || 90;
+      const desc = resolveWorkoutStepDescriptor(st);
+      if (!desc) return;
 
       const workStep = {
         type: "ExecutableStepDTO",
         stepId: null,
         stepOrder: stepOrder + 1,
         childStepId: childId,
-        description: `${Math.round((st.pct || 0) * 100)}% 1RM · ${st.rir || "RIR 2"}`,
+        description: desc.jsonDesc,
         stepType: { stepTypeId: 3, stepTypeKey: "interval", displayOrder: 3 },
         endCondition: { conditionTypeId: 10, conditionTypeKey: "reps", displayOrder: 10, displayable: true },
-        endConditionValue: repsCount,
+        endConditionValue: desc.repsCount,
         targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 },
-        category: cfg.category_key,
-        exerciseName: cfg.exercise_key
+        category: desc.category_key,
+        exerciseName: desc.exercise_key
       };
 
-      if (weightKg > 0) {
-        workStep.weightValue = weightKg;
+      if (desc.weightKg > 0) {
+        workStep.weightValue = desc.weightKg;
         workStep.weightUnit = { unitId: 8, unitKey: "kilogram", factor: 1000.0 };
       }
 
@@ -661,7 +729,7 @@
         description: "Descanso entre series",
         stepType: { stepTypeId: 4, stepTypeKey: "rest", displayOrder: 4 },
         endCondition: { conditionTypeId: 2, conditionTypeKey: "time", displayOrder: 2, displayable: true },
-        endConditionValue: restSec,
+        endConditionValue: desc.restSec,
         targetType: { workoutTargetTypeId: 1, workoutTargetTypeKey: "no.target", displayOrder: 1 }
       };
 
@@ -671,10 +739,10 @@
         stepOrder: stepOrder,
         stepType: { stepTypeId: 6, stepTypeKey: "repeat", displayOrder: 6 },
         childStepId: childId,
-        numberOfIterations: setsCount,
+        numberOfIterations: desc.setsCount,
         smartRepeat: false,
         endCondition: { conditionTypeId: 7, conditionTypeKey: "iterations", displayOrder: 7, displayable: false },
-        endConditionValue: setsCount,
+        endConditionValue: desc.setsCount,
         workoutSteps: [workStep, restStep]
       });
 

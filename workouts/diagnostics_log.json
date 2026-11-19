@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17 16:50:20 UTC",
+  "generated_at": "2026-11-19 12:27:37 UTC",
   "default_1rm_kg": {
     "bench": 120.0,
     "squat": 130.0,
@@ -13,6 +13,9 @@
     "split_squat_db": 35.0,
     "hip_thrust": 90.0,
     "soleus": 60.0,
+    "dips": 0.0,
+    "kb_swing": 24.0,
+    "plank": 0.0,
     "core": 0.0
   },
   "root_causes_explained": [
@@ -97,7 +100,7 @@
       "json_file": "workouts/json/Martes_Lower.json",
       "size_bytes": 2717,
       "header_crc_hex": "0x60f8",
-      "file_crc_hex": "0x5bd",
+      "file_crc_hex": "0x2637",
       "sdk_validation": {
         "sdk_available": true,
         "is_fit": true,
@@ -158,9 +161,9 @@
           },
           {
             "idx": 13,
-            "name": "Press Pallof / Core",
-            "cat": "core",
-            "ex_name": 6,
+            "name": "Plancha abdominal",
+            "cat": "plank",
+            "ex_name": 43,
             "reps": 12,
             "weight_kg": null,
             "notes": "3x12 (Peso corporal)"
@@ -173,9 +176,9 @@
       "day": "Jueves",
       "fit_file": "workouts/fit/Jueves_Upper_B.fit",
       "json_file": "workouts/json/Jueves_Upper_B.json",
-      "size_bytes": 2265,
-      "header_crc_hex": "0x63de",
-      "file_crc_hex": "0xe5a1",
+      "size_bytes": 2717,
+      "header_crc_hex": "0x60f8",
+      "file_crc_hex": "0x8254",
       "sdk_validation": {
         "sdk_available": true,
         "is_fit": true,
@@ -194,45 +197,54 @@
         "workout_name": "HYBRID Jueves Upper B",
         "sport": "training",
         "sub_sport": "strength_training",
-        "num_valid_steps": 14,
-        "decoded_steps_count": 14,
-        "decoded_titles_count": 4,
+        "num_valid_steps": 17,
+        "decoded_steps_count": 17,
+        "decoded_titles_count": 5,
         "sample_work_steps": [
           {
             "idx": 1,
             "name": "Press militar con barra",
             "cat": "shoulder_press",
             "ex_name": 25,
-            "reps": 6,
+            "reps": 5,
             "weight_kg": 52.5,
-            "notes": "4x6 @ 52.5kg (80% 1RM)"
+            "notes": "4x5 @ 52.5kg (82% 1RM)"
           },
           {
             "idx": 4,
+            "name": "Press inclinado con mancuernas",
+            "cat": "bench_press",
+            "ex_name": 9,
+            "reps": 10,
+            "weight_kg": 30.0,
+            "notes": "3x10 @ 30kg (76% 1RM)"
+          },
+          {
+            "idx": 7,
             "name": "Remo con barra",
             "cat": "row",
             "ex_name": 45,
             "reps": 8,
-            "weight_kg": 70.0,
-            "notes": "4x8 @ 70kg (78% 1RM)"
-          },
-          {
-            "idx": 7,
-            "name": "Press inclinado con mancuernas",
-            "cat": "bench_press",
-            "ex_name": 9,
-            "reps": 8,
-            "weight_kg": 32.0,
-            "notes": "3x8 @ 32kg (79% 1RM)"
+            "weight_kg": 67.5,
+            "notes": "4x8 @ 67.5kg (75% 1RM)"
           },
           {
             "idx": 10,
-            "name": "Dominadas",
-            "cat": "pull_up",
-            "ex_name": 38,
+            "name": "Fondos en paralelas",
+            "cat": "triceps_extension",
+            "ex_name": 2,
             "reps": 8,
             "weight_kg": null,
             "notes": "3x8 (Peso corporal)"
+          },
+          {
+            "idx": 13,
+            "name": "Swing con pesa rusa (Kettlebell",
+            "cat": "hip_raise",
+            "ex_name": 23,
+            "reps": 12,
+            "weight_kg": 24.0,
+            "notes": "3x12 @ 24kg (Explosivos @ 24 kg)"
           }
         ]
       }
