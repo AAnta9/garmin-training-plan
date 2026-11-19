@@ -98,6 +98,13 @@
       notesMap["b1-w1-d3"] =
         "Sincronizado de Garmin (18 Nov): 3.51 km @ 6:14/km (21.9 min), FC media 143 ppm (Z2 clavada), Cadencia 166 spm";
     }
+    if (completedMap["b1-w1-d4"] === undefined) {
+      completedMap["b1-w1-d4"] = true;
+    }
+    if (!notesMap["b1-w1-d4"]) {
+      notesMap["b1-w1-d4"] =
+        "Sincronizado de Garmin (19 Nov): HYBRID Sem 1 Jueves (43.3 min) · Militar 4x4 @ 52.5kg, Inclinado 3x8-10 @ 30kg, Remo 4x10 @ 67.5kg, Fondos y Swings 20kg";
+    }
   }
 
   function saveLocalState() {
