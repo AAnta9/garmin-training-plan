@@ -1,6 +1,6 @@
 window.GARMIN_DATA = {
   "metadata": {
-    "last_sync": "2026-11-19 17:16:16",
+    "last_sync": "2026-11-19 17:51:10",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
     "analysis_window_start": "2026-05-23",
@@ -130,8 +130,8 @@ window.GARMIN_DATA = {
   "morning_check_in": {
     "date": "2026-11-19",
     "semaphore": "AMBER",
-    "readiness_score": 51,
-    "headline": "Jueves · Gimnasio 3 (Upper B) — Carga Adaptada (Readiness 51/100 · VFC 7d 48 ms)",
+    "readiness_score": 50,
+    "headline": "Jueves · Gimnasio 3 (Upper B) — Carga Adaptada (Readiness 50/100 · VFC 7d 48 ms)",
     "coach_advice": "Sueño anoche: 6.13h (score 54/100), Body Battery 33/100, VFC anoche 46 ms (media 7d 48 ms en UNBALANCED) y FC en reposo 52 ppm (+6.3 ppm sobre tu media de 45.7). Toca Tren Superior B (Press Militar, Press Inclinado Mancuernas, Remo Barra, Fondos en Paralelas y Arrancada con Mancuerna a 1 Mano @ 25 kg) sin fatigar el tren inferior.",
     "metrics_today": {
       "hrv_last_night_ms": 46,
@@ -180,9 +180,9 @@ window.GARMIN_DATA = {
       "rhr_mean_bpm": 45.7,
       "sleep_mean_hours": 6.53,
       "sleep_mean_score": 73.5,
-      "stress_mean": 28.1,
+      "stress_mean": 28.2,
       "body_battery_max_mean": 73.3,
-      "steps_mean": 10794
+      "steps_mean": 10808
     }
   },
   "monthly_progression": [
@@ -4962,11 +4962,11 @@ window.GARMIN_DATA = {
     {
       "date": "2026-11-19",
       "rhr": 52,
-      "stress": 38,
+      "stress": 40,
       "bb_max": 33,
       "bb_min": 5,
-      "steps": 2856,
-      "active_kcal": 62,
+      "steps": 5452,
+      "active_kcal": 250,
       "sleep_score": 54,
       "sleep_hours": 6.13,
       "deep_hours": 1.17,
@@ -4976,7 +4976,7 @@ window.GARMIN_DATA = {
       "hrv_status": "UNBALANCED",
       "hrv_base_low": 50,
       "hrv_base_high": 59,
-      "readiness": 51,
+      "readiness": 50,
       "load": 4.6,
       "acute_load": 287,
       "chronic_load": 252,
