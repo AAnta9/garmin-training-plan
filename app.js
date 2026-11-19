@@ -84,6 +84,20 @@
       notesMap["b1-w1-d1"] =
         "Sincronizado de Garmin: 56.4 min, 13 series, Press Banca 85kg (3x8), Dominadas 4x6, Militar 45kg";
     }
+    if (completedMap["b1-w1-d2"] === undefined) {
+      completedMap["b1-w1-d2"] = true;
+    }
+    if (!notesMap["b1-w1-d2"]) {
+      notesMap["b1-w1-d2"] =
+        "Sincronizado de Garmin (17 Nov): 56.4 min, 17 series (114 reps), Sentadilla/PM 105kg, Búlgara 25kg, Sóleo 50kg";
+    }
+    if (completedMap["b1-w1-d3"] === undefined) {
+      completedMap["b1-w1-d3"] = true;
+    }
+    if (!notesMap["b1-w1-d3"]) {
+      notesMap["b1-w1-d3"] =
+        "Sincronizado de Garmin (18 Nov): 3.51 km @ 6:14/km (21.9 min), FC media 143 ppm (Z2 clavada), Cadencia 166 spm";
+    }
   }
 
   function saveLocalState() {
