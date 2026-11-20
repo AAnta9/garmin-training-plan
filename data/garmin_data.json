@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "last_sync": "2026-11-20 17:26:03",
+    "last_sync": "2026-11-20 17:54:24",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
     "analysis_window_start": "2026-05-24",
@@ -182,7 +182,7 @@
       "sleep_mean_score": 73.5,
       "stress_mean": 28.2,
       "body_battery_max_mean": 73.1,
-      "steps_mean": 10786
+      "steps_mean": 10787
     }
   },
   "monthly_progression": [
@@ -4962,11 +4962,11 @@
     {
       "date": "2026-11-20",
       "rhr": 52,
-      "stress": 39,
+      "stress": 42,
       "bb_max": 50,
       "bb_min": 5,
-      "steps": 2828,
-      "active_kcal": 51,
+      "steps": 3088,
+      "active_kcal": 55,
       "sleep_score": 78,
       "sleep_hours": 7.13,
       "deep_hours": 1.03,
