@@ -1,6 +1,6 @@
 window.GARMIN_DATA = {
   "metadata": {
-    "last_sync": "2026-11-20 10:31:46",
+    "last_sync": "2026-11-20 17:26:03",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
     "analysis_window_start": "2026-05-24",
@@ -130,8 +130,8 @@ window.GARMIN_DATA = {
   "morning_check_in": {
     "date": "2026-11-20",
     "semaphore": "AMBER",
-    "readiness_score": 72,
-    "headline": "Viernes · Carrera 2 (Calidad / Base Z2) — Carga Adaptada (Readiness 72/100 · VFC 7d 48 ms)",
+    "readiness_score": 68,
+    "headline": "Viernes · Carrera 2 (Calidad / Base Z2) — Carga Adaptada (Readiness 68/100 · VFC 7d 48 ms)",
     "coach_advice": "Sueño anoche: 7.13h (score 78/100), Body Battery 50/100, VFC anoche 55 ms (media 7d 48 ms en UNBALANCED) y FC en reposo 52 ppm (+6.3 ppm sobre tu media de 45.7). Sesión de carrera (tus piernas llevan >100 horas sin gimnasio de pierna desde el lunes). Calienta bien y mantén cadencia >=168 spm.",
     "metrics_today": {
       "hrv_last_night_ms": 55,
@@ -180,9 +180,9 @@ window.GARMIN_DATA = {
       "rhr_mean_bpm": 45.7,
       "sleep_mean_hours": 6.52,
       "sleep_mean_score": 73.5,
-      "stress_mean": 28.1,
+      "stress_mean": 28.2,
       "body_battery_max_mean": 73.1,
-      "steps_mean": 10773
+      "steps_mean": 10786
     }
   },
   "monthly_progression": [
@@ -4962,11 +4962,11 @@ window.GARMIN_DATA = {
     {
       "date": "2026-11-20",
       "rhr": 52,
-      "stress": 26,
+      "stress": 39,
       "bb_max": 50,
       "bb_min": 5,
-      "steps": 412,
-      "active_kcal": 4,
+      "steps": 2828,
+      "active_kcal": 51,
       "sleep_score": 78,
       "sleep_hours": 7.13,
       "deep_hours": 1.03,
@@ -4976,7 +4976,7 @@ window.GARMIN_DATA = {
       "hrv_status": "UNBALANCED",
       "hrv_base_low": 50,
       "hrv_base_high": 59,
-      "readiness": 72,
+      "readiness": 68,
       "load": 0.0,
       "acute_load": 236,
       "chronic_load": 252,
