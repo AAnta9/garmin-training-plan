@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19 23:47:04 UTC",
+  "generated_at": "2026-11-20 12:18:18 UTC",
   "default_1rm_kg": {
     "bench": 120.0,
     "squat": 130.0,
@@ -17,7 +17,13 @@
     "db_snatch": 25.0,
     "kb_swing": 24.0,
     "plank": 0.0,
-    "core": 0.0
+    "core": 0.0,
+    "single_leg_press": 50.0,
+    "step_up_db": 16.0,
+    "single_leg_extension": 25.0,
+    "single_leg_curl": 25.0,
+    "single_leg_hip_thrust": 15.0,
+    "single_leg_calf": 25.0
   },
   "root_causes_explained": [
     "CAUSA 1 (Garmin Connect Web 'Importar Datos'): La página connect.garmin.com/modern/import-data SOLO acepta archivos .FIT de ACTIVIDADES completadas (FileType=4) y rechaza TODOS los archivos .FIT de ENTRENAMIENTOS (FileType=5) con un error genérico sin log.",
@@ -30,9 +36,9 @@
       "day": "Lunes",
       "fit_file": "workouts/fit/Lunes_Lower.fit",
       "json_file": "workouts/json/Lunes_Lower.json",
-      "size_bytes": 2717,
-      "header_crc_hex": "0x60f8",
-      "file_crc_hex": "0x991a",
+      "size_bytes": 3169,
+      "header_crc_hex": "0x6993",
+      "file_crc_hex": "0xc206",
       "sdk_validation": {
         "sdk_available": true,
         "is_fit": true,
@@ -48,57 +54,66 @@
         "file_type": "workout",
         "garmin_product": "fenix8",
         "workout_slot_number": 1,
-        "workout_name": "HYBRID Lunes Lower",
+        "workout_name": "HYBRID Lunes Lower Unilat",
         "sport": "training",
         "sub_sport": "strength_training",
-        "num_valid_steps": 17,
-        "decoded_steps_count": 17,
-        "decoded_titles_count": 5,
+        "num_valid_steps": 20,
+        "decoded_steps_count": 20,
+        "decoded_titles_count": 6,
         "sample_work_steps": [
           {
             "idx": 1,
-            "name": "Sentadilla trasera con barra",
-            "cat": "squat",
-            "ex_name": 6,
-            "reps": 5,
-            "weight_kg": 105.0,
-            "notes": "4x5 @ 105kg (80% 1RM)"
-          },
-          {
-            "idx": 4,
-            "name": "Peso muerto rumano",
-            "cat": "deadlift",
-            "ex_name": 23,
-            "reps": 6,
-            "weight_kg": 110.0,
-            "notes": "3x6 @ 110kg (78% 1RM)"
-          },
-          {
-            "idx": 7,
             "name": "Sentadilla bulgara con mancuern",
             "cat": "lunge",
             "ex_name": 27,
             "reps": 8,
-            "weight_kg": 26.0,
-            "notes": "3x8 @ 26kg (75% 1RM)"
+            "weight_kg": 25.0,
+            "notes": "3x8 @ 25kg (72% 1RM)"
+          },
+          {
+            "idx": 4,
+            "name": "Prensa a 1 pierna / Step-Up",
+            "cat": "squat",
+            "ex_name": 0,
+            "reps": 10,
+            "weight_kg": 50.0,
+            "notes": "3x10 @ 50kg (Test Izq vs Der (10/pierna en Prensa o Step-Up))"
+          },
+          {
+            "idx": 7,
+            "name": "Extension cuadriceps a 1 pierna",
+            "cat": "squat",
+            "ex_name": 45,
+            "reps": 12,
+            "weight_kg": 25.0,
+            "notes": "3x12 @ 25kg (Test Izq vs Der (12/pierna, 2s pausa arriba))"
           },
           {
             "idx": 10,
-            "name": "Elevacion de gemelos sentado",
-            "cat": "calf_raise",
-            "ex_name": 6,
-            "reps": 12,
-            "weight_kg": 47.5,
-            "notes": "4x12 @ 47.5kg (78% 1RM)"
+            "name": "Curl femoral a 1 pierna",
+            "cat": "leg_curl",
+            "ex_name": 1,
+            "reps": 10,
+            "weight_kg": 25.0,
+            "notes": "3x10 @ 25kg (Test Izq vs Der (10-12/pierna, excentrica 3s))"
           },
           {
             "idx": 13,
-            "name": "Plancha abdominal",
-            "cat": "plank",
-            "ex_name": 43,
+            "name": "Hip Thrust / Puente gluteo 1 pi",
+            "cat": "hip_raise",
+            "ex_name": 33,
+            "reps": 10,
+            "weight_kg": 15.0,
+            "notes": "3x10 @ 15kg (Test Izq vs Der (10/pierna, pelvis estable))"
+          },
+          {
+            "idx": 16,
+            "name": "Elevacion soleo/gemelo a 1 pier",
+            "cat": "calf_raise",
+            "ex_name": 10,
             "reps": 12,
-            "weight_kg": null,
-            "notes": "3x12 (Peso corporal)"
+            "weight_kg": 25.0,
+            "notes": "3x12 @ 25kg (Test Izq vs Der (12-15/pierna, 1s pausa arriba))"
           }
         ]
       }

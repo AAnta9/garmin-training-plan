@@ -194,6 +194,66 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "step": 1.0,
         "default_1rm": 0.0,
     },
+    "single_leg_press": {
+        "cat_id": 28,
+        "name_id": 0,
+        "category_key": "SQUAT",
+        "exercise_key": "LEG_PRESS",
+        "title_es": "Prensa a 1 pierna / Step-Up",
+        "rest_sec": 75,
+        "step": 2.5,
+        "default_1rm": 50.0,
+    },
+    "step_up_db": {
+        "cat_id": 28,
+        "name_id": 32,
+        "category_key": "SQUAT",
+        "exercise_key": "DUMBBELL_STEP_UP",
+        "title_es": "Step-Up / Subida a cajon 1 pierna",
+        "rest_sec": 75,
+        "step": 2.0,
+        "default_1rm": 16.0,
+    },
+    "single_leg_extension": {
+        "cat_id": 28,
+        "name_id": 45,
+        "category_key": "SQUAT",
+        "exercise_key": "PARTIAL_SINGLE_LEG_SQUAT",
+        "title_es": "Extension cuadriceps a 1 pierna",
+        "rest_sec": 60,
+        "step": 2.5,
+        "default_1rm": 25.0,
+    },
+    "single_leg_curl": {
+        "cat_id": 15,
+        "name_id": 1,
+        "category_key": "LEG_CURL",
+        "exercise_key": "WEIGHTED_LEG_CURL",
+        "title_es": "Curl femoral a 1 pierna",
+        "rest_sec": 60,
+        "step": 2.5,
+        "default_1rm": 25.0,
+    },
+    "single_leg_hip_thrust": {
+        "cat_id": 10,
+        "name_id": 33,
+        "category_key": "HIP_RAISE",
+        "exercise_key": "WEIGHTED_SINGLE_LEG_HIP_RAISE_WITH_FOOT_ON_BENCH",
+        "title_es": "Hip Thrust / Puente gluteo 1 pierna",
+        "rest_sec": 60,
+        "step": 2.5,
+        "default_1rm": 15.0,
+    },
+    "single_leg_calf": {
+        "cat_id": 1,
+        "name_id": 10,
+        "category_key": "CALF_RAISE",
+        "exercise_key": "WEIGHTED_SINGLE_LEG_BENT_KNEE_CALF_RAISE",
+        "title_es": "Elevacion soleo/gemelo a 1 pierna",
+        "rest_sec": 60,
+        "step": 2.5,
+        "default_1rm": 25.0,
+    },
 }
 
 
@@ -233,7 +293,7 @@ def calc_weight_kg(lift_key: str, pct: float, one_rm_map: dict[str, float], fixe
         return round_step(rm * pct, cfg["step"])
     if lift_key in ("core", "dips", "plank"):
         return 0.0
-    if lift_key in ("kb_swing", "db_snatch"):
+    if lift_key in ("kb_swing", "db_snatch", "single_leg_press", "step_up_db", "single_leg_extension", "single_leg_curl", "single_leg_hip_thrust", "single_leg_calf"):
         return float(rm if pct <= 0 else round_step(rm * pct, cfg["step"]))
     return max(cfg["step"], round_step(rm * pct, cfg["step"]))
 
@@ -659,14 +719,15 @@ THREE_CORE_DAYS = [
         "slot": 1,
         "slug": "Lunes_Lower",
         "day": "Lunes",
-        "workoutName": "HYBRID Lunes Lower",
-        "description": "Gimnasio Dia 1 (Lunes 13:30) - Tren Inferior Hibrido & Proteccion Rodilla/Aquiles (53.5h antes de correr el Miercoles). 1RM: Sentadilla 130kg, RDL 140kg, Bulgara 35kg, Soleo 60kg.",
+        "workoutName": "HYBRID Lunes Lower Unilat",
+        "description": "Gimnasio Dia 1 (Lunes 13:30) - Evaluacion de Asimetria Unilateral (Izquierda vs Derecha) & Blindaje Rotuliano: Sentadilla Bulgara, Prensa 1 Pierna / Step-Up, Extension Cuadriceps 1 Pierna, Curl Femoral 1 Pierna, Hip Thrust 1 Pierna y Soleo 1 Pierna.",
         "exercises": [
-            {"lift": "squat", "sets": 4, "reps": 5, "pct": 0.80, "rest_sec": 150, "rir": "RIR 2 (concentrica explosiva)"},
-            {"lift": "rdl", "sets": 3, "reps": 6, "pct": 0.78, "rest_sec": 105, "rir": "RIR 2 (isquios)"},
-            {"lift": "split_squat_db", "sets": 3, "reps": 8, "pct": 0.75, "rest_sec": 75, "rir": "8 reps por pierna"},
-            {"lift": "soleus", "sets": 4, "reps": 12, "pct": 0.78, "rest_sec": 60, "rir": "1s pausa arriba (Aquiles)"},
-            {"lift": "plank", "sets": 3, "reps": 12, "pct": 0.0, "rest_sec": 45, "rir": "Plancha RKC + Deadbug"},
+            {"lift": "split_squat_db", "sets": 3, "reps": 8, "pct": 0.72, "rest_sec": 75, "rir": "Test Izq vs Der (8/pierna, tibia vertical)"},
+            {"lift": "single_leg_press", "sets": 3, "reps": 10, "pct": 0.0, "weight_kg": 50.0, "rest_sec": 75, "rir": "Test Izq vs Der (10/pierna en Prensa o Step-Up)"},
+            {"lift": "single_leg_extension", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "Test Izq vs Der (12/pierna, 2s pausa arriba)"},
+            {"lift": "single_leg_curl", "sets": 3, "reps": 10, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "Test Izq vs Der (10-12/pierna, excentrica 3s)"},
+            {"lift": "single_leg_hip_thrust", "sets": 3, "reps": 10, "pct": 0.0, "weight_kg": 15.0, "rest_sec": 60, "rir": "Test Izq vs Der (10/pierna, pelvis estable)"},
+            {"lift": "single_leg_calf", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "Test Izq vs Der (12-15/pierna, 1s pausa arriba)"},
         ],
     },
     {

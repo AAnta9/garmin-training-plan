@@ -453,7 +453,7 @@ def build_dashboard_data() -> dict[str, Any]:
     acwr_today = today_row.get("acwr") or 1.15
 
     weekday_plan_map = {
-        0: ("Lunes · Gimnasio 1 (Lower · Pierna)", "Toca Tren Inferior Híbrido (Sentadilla, RDL, Búlgara y Sóleo) dejando 2 repeticiones en recámara (RIR 2). Tienes 53.5h sin impacto hasta la carrera del miércoles y >100h hasta el viernes."),
+        0: ("Lunes · Gimnasio 1 (Lower Unilateral · Evaluación Izq/Der)", "Toca Tren Inferior Unilateral (Sentadilla Búlgara, Prensa 1 Pierna / Step-Up, Extensión Cuádriceps 1 Pierna, Curl Femoral 1 Pierna, Hip Thrust Unilateral y Sóleo 1 Pierna). Empieza por la pierna menos dominante y anota diferencias Izq vs Der. Tienes 53.5h sin impacto hasta el miércoles."),
         1: ("Martes · Gimnasio 2 (Upper A · Torso)", "Prioriza Tren Superior A (Press Banca, Dominadas, Militar y Remo) según tu % de 1RM con 0 impacto articular en las rodillas."),
         2: ("Miércoles · Carrera 1 (Base Z2)", "Toca Rodaje Aeróbico en Zona 2 estricta (135–151 ppm, cadencia >=168 spm) para oxigenar piernas con rodillas descansadas desde el lunes."),
         3: ("Jueves · Gimnasio 3 (Upper B · Torso)", "Toca Tren Superior B (Press Militar, Press Inclinado Mancuernas, Remo Barra, Fondos en Paralelas y Arrancada con Mancuerna a 1 Mano @ 25 kg) sin fatigar el tren inferior."),

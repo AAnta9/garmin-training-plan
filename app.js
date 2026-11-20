@@ -201,6 +201,11 @@
       if (lower.includes("fondo") || lower.includes("dip")) auxKey = "dips";
       else if (lower.includes("arrancada") || lower.includes("snatch")) auxKey = "db_snatch";
       else if (lower.includes("kettlebell") || lower.includes("swing") || lower.includes("kb ")) auxKey = "kb_swing";
+      else if (lower.includes("prensa") || lower.includes("step-up") || lower.includes("cajón")) auxKey = "single_leg_press";
+      else if (lower.includes("extensión") && lower.includes("cuádriceps")) auxKey = "single_leg_extension";
+      else if (lower.includes("femoral") && lower.includes("1 pierna")) auxKey = "single_leg_curl";
+      else if (lower.includes("hip thrust") && lower.includes("1 pierna")) auxKey = "single_leg_hip_thrust";
+      else if (lower.includes("sóleo") && lower.includes("1 pierna")) auxKey = "single_leg_calf";
       else if (lower.includes("plancha") || lower.includes("plank") || lower.includes("deadbug")) auxKey = "plank";
       else if (lower.includes("pallof") || lower.includes("antirotaci")) auxKey = "core";
       else if (lower.includes("femoral")) auxKey = "leg_curl";

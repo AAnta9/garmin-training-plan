@@ -1,6 +1,6 @@
 {
-  "workoutName": "HYBRID Lunes Lower",
-  "description": "Gimnasio Dia 1 (Lunes 13:30) - Tren Inferior Hibrido & Proteccion Rodilla/Aquiles (53.5h antes de correr el Miercoles). 1RM: Sentadilla 130kg, RDL 140kg, Bulgara 35kg, Soleo 60kg.",
+  "workoutName": "HYBRID Lunes Lower Unilat",
+  "description": "Gimnasio Dia 1 (Lunes 13:30) - Evaluacion de Asimetria Unilateral (Izquierda vs Derecha) & Blindaje Rotuliano: Sentadilla Bulgara, Prensa 1 Pierna / Step-Up, Extension Cuadriceps 1 Pierna, Curl Femoral 1 Pierna, Hip Thrust 1 Pierna y Soleo 1 Pierna.",
   "sportType": {
     "sportTypeId": 5,
     "sportTypeKey": "strength_training",
@@ -50,7 +50,7 @@
             "displayOrder": 6
           },
           "childStepId": 1,
-          "numberOfIterations": 4,
+          "numberOfIterations": 3,
           "smartRepeat": false,
           "endCondition": {
             "conditionTypeId": 7,
@@ -58,14 +58,14 @@
             "displayOrder": 7,
             "displayable": false
           },
-          "endConditionValue": 4.0,
+          "endConditionValue": 3.0,
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
               "stepId": null,
               "stepOrder": 3,
               "childStepId": 1,
-              "description": "80% 1RM · RIR 2 (concentrica explosiva)",
+              "description": "72% 1RM · Test Izq vs Der (8/pierna, tibia vertical)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -77,15 +77,15 @@
                 "displayOrder": 10,
                 "displayable": true
               },
-              "endConditionValue": 5.0,
+              "endConditionValue": 8.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "SQUAT",
-              "exerciseName": "BARBELL_BACK_SQUAT",
-              "weightValue": 105.0,
+              "category": "LUNGE",
+              "exerciseName": "FRONT_FOOT_ELEVATED_DUMBBELL_SPLIT_SQUAT",
+              "weightValue": 25.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -109,7 +109,7 @@
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 150.0,
+              "endConditionValue": 75.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
@@ -143,7 +143,7 @@
               "stepId": null,
               "stepOrder": 6,
               "childStepId": 2,
-              "description": "78% 1RM · RIR 2 (isquios)",
+              "description": "3x10 @ 50 kg · Test Izq vs Der (10/pierna en Prensa o Step-Up)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -155,15 +155,15 @@
                 "displayOrder": 10,
                 "displayable": true
               },
-              "endConditionValue": 6.0,
+              "endConditionValue": 10.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "DEADLIFT",
-              "exerciseName": "ROMANIAN_DEADLIFT",
-              "weightValue": 110.0,
+              "category": "SQUAT",
+              "exerciseName": "LEG_PRESS",
+              "weightValue": 50.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -187,7 +187,7 @@
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 105.0,
+              "endConditionValue": 75.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
@@ -221,7 +221,7 @@
               "stepId": null,
               "stepOrder": 9,
               "childStepId": 3,
-              "description": "75% 1RM · 8 reps por pierna",
+              "description": "3x12 @ 25 kg · Test Izq vs Der (12/pierna, 2s pausa arriba)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -233,15 +233,15 @@
                 "displayOrder": 10,
                 "displayable": true
               },
-              "endConditionValue": 8.0,
+              "endConditionValue": 12.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "LUNGE",
-              "exerciseName": "FRONT_FOOT_ELEVATED_DUMBBELL_SPLIT_SQUAT",
-              "weightValue": 26.0,
+              "category": "SQUAT",
+              "exerciseName": "PARTIAL_SINGLE_LEG_SQUAT",
+              "weightValue": 25.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -265,7 +265,7 @@
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 75.0,
+              "endConditionValue": 60.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
@@ -284,7 +284,7 @@
             "displayOrder": 6
           },
           "childStepId": 4,
-          "numberOfIterations": 4,
+          "numberOfIterations": 3,
           "smartRepeat": false,
           "endCondition": {
             "conditionTypeId": 7,
@@ -292,14 +292,14 @@
             "displayOrder": 7,
             "displayable": false
           },
-          "endConditionValue": 4.0,
+          "endConditionValue": 3.0,
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
               "stepId": null,
               "stepOrder": 12,
               "childStepId": 4,
-              "description": "78% 1RM · 1s pausa arriba (Aquiles)",
+              "description": "3x10 @ 25 kg · Test Izq vs Der (10-12/pierna, excentrica 3s)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -311,15 +311,15 @@
                 "displayOrder": 10,
                 "displayable": true
               },
-              "endConditionValue": 12.0,
+              "endConditionValue": 10.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "CALF_RAISE",
-              "exerciseName": "WEIGHTED_SEATED_CALF_RAISE",
-              "weightValue": 47.5,
+              "category": "LEG_CURL",
+              "exerciseName": "WEIGHTED_LEG_CURL",
+              "weightValue": 25.0,
               "weightUnit": {
                 "unitId": 8,
                 "unitKey": "kilogram",
@@ -377,7 +377,7 @@
               "stepId": null,
               "stepOrder": 15,
               "childStepId": 5,
-              "description": "3x12 · Plancha RKC + Deadbug",
+              "description": "3x10 @ 15 kg · Test Izq vs Der (10/pierna, pelvis estable)",
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
@@ -389,14 +389,20 @@
                 "displayOrder": 10,
                 "displayable": true
               },
-              "endConditionValue": 12.0,
+              "endConditionValue": 10.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
                 "displayOrder": 1
               },
-              "category": "PLANK",
-              "exerciseName": "PLANK"
+              "category": "HIP_RAISE",
+              "exerciseName": "WEIGHTED_SINGLE_LEG_HIP_RAISE_WITH_FOOT_ON_BENCH",
+              "weightValue": 15.0,
+              "weightUnit": {
+                "unitId": 8,
+                "unitKey": "kilogram",
+                "factor": 1000.0
+              }
             },
             {
               "type": "ExecutableStepDTO",
@@ -415,7 +421,85 @@
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 45.0,
+              "endConditionValue": 60.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "RepeatGroupDTO",
+          "stepId": null,
+          "stepOrder": 17,
+          "stepType": {
+            "stepTypeId": 6,
+            "stepTypeKey": "repeat",
+            "displayOrder": 6
+          },
+          "childStepId": 6,
+          "numberOfIterations": 3,
+          "smartRepeat": false,
+          "endCondition": {
+            "conditionTypeId": 7,
+            "conditionTypeKey": "iterations",
+            "displayOrder": 7,
+            "displayable": false
+          },
+          "endConditionValue": 3.0,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 18,
+              "childStepId": 6,
+              "description": "3x12 @ 25 kg · Test Izq vs Der (12-15/pierna, 1s pausa arriba)",
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "endCondition": {
+                "conditionTypeId": 10,
+                "conditionTypeKey": "reps",
+                "displayOrder": 10,
+                "displayable": true
+              },
+              "endConditionValue": 12.0,
+              "targetType": {
+                "workoutTargetTypeId": 1,
+                "workoutTargetTypeKey": "no.target",
+                "displayOrder": 1
+              },
+              "category": "CALF_RAISE",
+              "exerciseName": "WEIGHTED_SINGLE_LEG_BENT_KNEE_CALF_RAISE",
+              "weightValue": 25.0,
+              "weightUnit": {
+                "unitId": 8,
+                "unitKey": "kilogram",
+                "factor": 1000.0
+              }
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": null,
+              "stepOrder": 19,
+              "childStepId": 6,
+              "description": "Descanso entre series",
+              "stepType": {
+                "stepTypeId": 4,
+                "stepTypeKey": "rest",
+                "displayOrder": 4
+              },
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 60.0,
               "targetType": {
                 "workoutTargetTypeId": 1,
                 "workoutTargetTypeKey": "no.target",
@@ -427,7 +511,7 @@
         {
           "type": "ExecutableStepDTO",
           "stepId": null,
-          "stepOrder": 17,
+          "stepOrder": 20,
           "childStepId": null,
           "description": "Vuelta a la calma y movilidad",
           "stepType": {
