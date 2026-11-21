@@ -1,20 +1,20 @@
 window.GARMIN_DATA = {
   "metadata": {
-    "last_sync": "2026-11-20 17:54:24",
+    "last_sync": "2026-11-21 16:40:24",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
-    "analysis_window_start": "2026-05-24",
-    "analysis_window_end": "2026-11-20",
+    "analysis_window_start": "2026-05-25",
+    "analysis_window_end": "2026-11-21",
     "total_days_analyzed": 181
   },
   "athlete_profile": {
     "age": 33,
-    "fitness_age": 32.4,
+    "fitness_age": 32.5,
     "achievable_fitness_age": 27.0,
     "weight_kg": 100.4,
     "weight_prev_kg": 101.9,
     "bmi": 32.0,
-    "rhr_6m_avg": 45.7,
+    "rhr_6m_avg": 45.8,
     "max_hr": 183,
     "lthr_running": 165,
     "hrv_baseline_low": 50,
@@ -128,35 +128,35 @@ window.GARMIN_DATA = {
     ]
   },
   "morning_check_in": {
-    "date": "2026-11-20",
-    "semaphore": "AMBER",
-    "readiness_score": 68,
-    "headline": "Viernes · Carrera 2 (Calidad / Base Z2) — Carga Adaptada (Readiness 68/100 · VFC 7d 48 ms)",
-    "coach_advice": "Sueño anoche: 7.13h (score 78/100), Body Battery 50/100, VFC anoche 55 ms (media 7d 48 ms en UNBALANCED) y FC en reposo 52 ppm (+6.3 ppm sobre tu media de 45.7). Sesión de carrera (tus piernas llevan >100 horas sin gimnasio de pierna desde el lunes). Calienta bien y mantén cadencia >=168 spm.",
+    "date": "2026-11-21",
+    "semaphore": "RED",
+    "readiness_score": 23,
+    "headline": "Sábado · Carrera 3 (Tirada Larga Z2) — Prioridad Descanso & Regeneración Parasimpática",
+    "coach_advice": "Tus biomarcadores hoy muestran fatiga acumulada (VFC anoche 38 ms, sueño 3.03h, BB 8/100). Reduce el volumen un 30% o sustituye la sesión por movilidad y paseo suave Z1.",
     "metrics_today": {
-      "hrv_last_night_ms": 55,
-      "hrv_weekly_avg_ms": 48,
-      "hrv_status": "UNBALANCED",
+      "hrv_last_night_ms": 38,
+      "hrv_weekly_avg_ms": 46,
+      "hrv_status": "LOW",
       "hrv_baseline": "50 - 60 ms",
-      "rhr_bpm": 52,
-      "rhr_delta_vs_avg": 6.3,
-      "sleep_hours": 7.13,
-      "sleep_score": 78,
-      "deep_sleep_hours": 1.03,
-      "rem_sleep_hours": 1.03,
-      "body_battery_wake": 50,
-      "stress_yesterday": 42,
-      "acute_load": 236,
+      "rhr_bpm": 53,
+      "rhr_delta_vs_avg": 7.2,
+      "sleep_hours": 3.03,
+      "sleep_score": 28,
+      "deep_sleep_hours": 0.82,
+      "rem_sleep_hours": 0.28,
+      "body_battery_wake": 8,
+      "stress_yesterday": 54,
+      "acute_load": 194,
       "chronic_load": 252,
-      "acwr": 0.94,
-      "ctl": 30.4,
-      "atl": 34.0,
-      "tsb": -8.5
+      "acwr": 0.77,
+      "ctl": 29.7,
+      "atl": 29.1,
+      "tsb": -3.6
     }
   },
   "six_month_summary": {
-    "total_activities": 119,
-    "total_hours": 85.9,
+    "total_activities": 118,
+    "total_hours": 85.3,
     "running": {
       "sessions": 28,
       "total_km": 124.4,
@@ -176,21 +176,21 @@ window.GARMIN_DATA = {
     },
     "health_averages": {
       "hrv_mean_ms": 51.8,
-      "hrv_balanced_days_pct": 74,
-      "rhr_mean_bpm": 45.7,
-      "sleep_mean_hours": 6.52,
-      "sleep_mean_score": 73.5,
-      "stress_mean": 28.2,
-      "body_battery_max_mean": 73.1,
-      "steps_mean": 10787
+      "hrv_balanced_days_pct": 73,
+      "rhr_mean_bpm": 45.8,
+      "sleep_mean_hours": 6.5,
+      "sleep_mean_score": 73.3,
+      "stress_mean": 28.5,
+      "body_battery_max_mean": 72.7,
+      "steps_mean": 10736
     }
   },
   "monthly_progression": [
     {
       "month": "2026-05",
-      "total_sessions": 5,
-      "total_hours": 4.0,
-      "total_load": 183,
+      "total_sessions": 4,
+      "total_hours": 3.4,
+      "total_load": 150,
       "run_sessions": 0,
       "run_km": 0.0,
       "strength_sessions": 1,
@@ -280,32 +280,6 @@ window.GARMIN_DATA = {
   ],
   "daily_series": [
     {
-      "date": "2026-05-24",
-      "rhr": 45,
-      "stress": 32,
-      "bb_max": 71,
-      "bb_min": 20,
-      "steps": 13227,
-      "active_kcal": 437,
-      "sleep_score": 67,
-      "sleep_hours": 7.57,
-      "deep_hours": 1.4,
-      "rem_hours": 1.58,
-      "hrv_night": 54,
-      "hrv_weekly": 56,
-      "hrv_status": "BALANCED",
-      "hrv_base_low": 49,
-      "hrv_base_high": 69,
-      "readiness": 72,
-      "load": 33.0,
-      "acute_load": 242,
-      "chronic_load": 245,
-      "acwr": 0.99,
-      "ctl": 39.3,
-      "atl": 34.6,
-      "tsb": 4.6
-    },
-    {
       "date": "2026-05-25",
       "rhr": 44,
       "stress": 23,
@@ -327,9 +301,9 @@ window.GARMIN_DATA = {
       "acute_load": 199,
       "chronic_load": 238,
       "acwr": 0.83,
-      "ctl": 38.4,
+      "ctl": 38.3,
       "atl": 29.6,
-      "tsb": 4.8
+      "tsb": 4.7
     },
     {
       "date": "2026-05-26",
@@ -355,7 +329,7 @@ window.GARMIN_DATA = {
       "acwr": 0.95,
       "ctl": 38.5,
       "atl": 31.6,
-      "tsb": 8.8
+      "tsb": 8.7
     },
     {
       "date": "2026-05-27",
@@ -407,7 +381,7 @@ window.GARMIN_DATA = {
       "acwr": 0.98,
       "ctl": 38.8,
       "atl": 34.8,
-      "tsb": 2.4
+      "tsb": 2.3
     },
     {
       "date": "2026-05-29",
@@ -511,7 +485,7 @@ window.GARMIN_DATA = {
       "acwr": 0.83,
       "ctl": 37.1,
       "atl": 29.4,
-      "tsb": 12.8
+      "tsb": 12.7
     },
     {
       "date": "2026-06-02",
@@ -537,7 +511,7 @@ window.GARMIN_DATA = {
       "acwr": 1.13,
       "ctl": 38.4,
       "atl": 38.3,
-      "tsb": 7.8
+      "tsb": 7.7
     },
     {
       "date": "2026-06-03",
@@ -563,7 +537,7 @@ window.GARMIN_DATA = {
       "acwr": 0.97,
       "ctl": 37.5,
       "atl": 32.8,
-      "tsb": 0.2
+      "tsb": 0.1
     },
     {
       "date": "2026-06-04",
@@ -615,7 +589,7 @@ window.GARMIN_DATA = {
       "acwr": 0.96,
       "ctl": 37.0,
       "atl": 30.9,
-      "tsb": 4.7
+      "tsb": 4.6
     },
     {
       "date": "2026-06-06",
@@ -691,7 +665,7 @@ window.GARMIN_DATA = {
       "acute_load": 206,
       "chronic_load": 233,
       "acwr": 0.88,
-      "ctl": 36.0,
+      "ctl": 35.9,
       "atl": 28.8,
       "tsb": 12.5
     },
@@ -717,9 +691,9 @@ window.GARMIN_DATA = {
       "acute_load": 205,
       "chronic_load": 204,
       "acwr": 1.0,
-      "ctl": 35.8,
+      "ctl": 35.7,
       "atl": 28.6,
-      "tsb": 7.2
+      "tsb": 7.1
     },
     {
       "date": "2026-06-10",
@@ -795,7 +769,7 @@ window.GARMIN_DATA = {
       "acute_load": 232,
       "chronic_load": 231,
       "acwr": 1.0,
-      "ctl": 36.1,
+      "ctl": 36.0,
       "atl": 32.0,
       "tsb": -0.4
     },
@@ -821,7 +795,7 @@ window.GARMIN_DATA = {
       "acute_load": 313,
       "chronic_load": 255,
       "acwr": 1.23,
-      "ctl": 37.5,
+      "ctl": 37.4,
       "atl": 41.0,
       "tsb": 4.1
     },
@@ -849,7 +823,7 @@ window.GARMIN_DATA = {
       "acwr": 1.21,
       "ctl": 36.6,
       "atl": 35.2,
-      "tsb": -3.5
+      "tsb": -3.6
     },
     {
       "date": "2026-06-15",
@@ -899,9 +873,9 @@ window.GARMIN_DATA = {
       "acute_load": 330,
       "chronic_load": 238,
       "acwr": 1.39,
-      "ctl": 37.9,
+      "ctl": 37.8,
       "atl": 43.4,
-      "tsb": 2.5
+      "tsb": 2.4
     },
     {
       "date": "2026-06-17",
@@ -925,9 +899,9 @@ window.GARMIN_DATA = {
       "acute_load": 304,
       "chronic_load": 240,
       "acwr": 1.27,
-      "ctl": 37.6,
+      "ctl": 37.5,
       "atl": 40.8,
-      "tsb": -5.5
+      "tsb": -5.6
     },
     {
       "date": "2026-06-18",
@@ -951,7 +925,7 @@ window.GARMIN_DATA = {
       "acute_load": 320,
       "chronic_load": 237,
       "acwr": 1.35,
-      "ctl": 38.0,
+      "ctl": 37.9,
       "atl": 42.8,
       "tsb": -3.3
     },
@@ -977,7 +951,7 @@ window.GARMIN_DATA = {
       "acute_load": 263,
       "chronic_load": 228,
       "acwr": 1.16,
-      "ctl": 37.1,
+      "ctl": 37.0,
       "atl": 36.7,
       "tsb": -4.8
     },
@@ -1213,7 +1187,7 @@ window.GARMIN_DATA = {
       "acwr": 0.57,
       "ctl": 33.4,
       "atl": 20.5,
-      "tsb": 10.4
+      "tsb": 10.3
     },
     {
       "date": "2026-06-29",
@@ -1239,7 +1213,7 @@ window.GARMIN_DATA = {
       "acwr": 0.51,
       "ctl": 32.6,
       "atl": 17.5,
-      "tsb": 13.0
+      "tsb": 12.9
     },
     {
       "date": "2026-06-30",
@@ -1317,7 +1291,7 @@ window.GARMIN_DATA = {
       "acwr": 0.74,
       "ctl": 32.4,
       "atl": 21.4,
-      "tsb": 9.9
+      "tsb": 9.8
     },
     {
       "date": "2026-07-03",
@@ -1367,7 +1341,7 @@ window.GARMIN_DATA = {
       "acute_load": 245,
       "chronic_load": 223,
       "acwr": 1.1,
-      "ctl": 33.7,
+      "ctl": 33.6,
       "atl": 32.0,
       "tsb": 10.5
     },
@@ -1393,7 +1367,7 @@ window.GARMIN_DATA = {
       "acute_load": 201,
       "chronic_load": 223,
       "acwr": 0.9,
-      "ctl": 32.9,
+      "ctl": 32.8,
       "atl": 27.5,
       "tsb": 1.6
     },
@@ -1445,7 +1419,7 @@ window.GARMIN_DATA = {
       "acute_load": 161,
       "chronic_load": 206,
       "acwr": 0.78,
-      "ctl": 31.9,
+      "ctl": 31.8,
       "atl": 23.1,
       "tsb": 5.7
     },
@@ -1551,7 +1525,7 @@ window.GARMIN_DATA = {
       "acwr": 0.7,
       "ctl": 30.1,
       "atl": 17.6,
-      "tsb": 10.4
+      "tsb": 10.3
     },
     {
       "date": "2026-07-12",
@@ -1577,7 +1551,7 @@ window.GARMIN_DATA = {
       "acwr": 0.73,
       "ctl": 30.0,
       "atl": 18.6,
-      "tsb": 12.6
+      "tsb": 12.5
     },
     {
       "date": "2026-07-13",
@@ -1653,7 +1627,7 @@ window.GARMIN_DATA = {
       "acute_load": 182,
       "chronic_load": 157,
       "acwr": 1.16,
-      "ctl": 30.2,
+      "ctl": 30.1,
       "atl": 24.4,
       "tsb": 9.4
     },
@@ -1759,7 +1733,7 @@ window.GARMIN_DATA = {
       "acwr": 1.09,
       "ctl": 30.1,
       "atl": 25.9,
-      "tsb": 0.7
+      "tsb": 0.6
     },
     {
       "date": "2026-07-20",
@@ -2043,9 +2017,9 @@ window.GARMIN_DATA = {
       "acute_load": 312,
       "chronic_load": 229,
       "acwr": 1.36,
-      "ctl": 33.4,
+      "ctl": 33.3,
       "atl": 41.6,
-      "tsb": -4.5
+      "tsb": -4.6
     },
     {
       "date": "2026-07-31",
@@ -2069,7 +2043,7 @@ window.GARMIN_DATA = {
       "acute_load": 256,
       "chronic_load": 223,
       "acwr": 1.15,
-      "ctl": 32.6,
+      "ctl": 32.5,
       "atl": 35.7,
       "tsb": -8.3
     },
@@ -2097,7 +2071,7 @@ window.GARMIN_DATA = {
       "acwr": 1.06,
       "ctl": 31.8,
       "atl": 30.6,
-      "tsb": -3.1
+      "tsb": -3.2
     },
     {
       "date": "2026-08-02",
@@ -2277,7 +2251,7 @@ window.GARMIN_DATA = {
       "acute_load": 188,
       "chronic_load": 227,
       "acwr": 0.83,
-      "ctl": 31.0,
+      "ctl": 30.9,
       "atl": 27.3,
       "tsb": 0.5
     },
@@ -2331,7 +2305,7 @@ window.GARMIN_DATA = {
       "acwr": 1.1,
       "ctl": 32.2,
       "atl": 36.2,
-      "tsb": 6.9
+      "tsb": 6.8
     },
     {
       "date": "2026-08-11",
@@ -2381,7 +2355,7 @@ window.GARMIN_DATA = {
       "acute_load": 206,
       "chronic_load": 230,
       "acwr": 0.9,
-      "ctl": 31.2,
+      "ctl": 31.1,
       "atl": 29.1,
       "tsb": -1.7
     },
@@ -2511,7 +2485,7 @@ window.GARMIN_DATA = {
       "acute_load": 167,
       "chronic_load": 222,
       "acwr": 0.75,
-      "ctl": 29.7,
+      "ctl": 29.6,
       "atl": 23.9,
       "tsb": 2.5
     },
@@ -2563,7 +2537,7 @@ window.GARMIN_DATA = {
       "acute_load": 253,
       "chronic_load": 228,
       "acwr": 1.11,
-      "ctl": 31.4,
+      "ctl": 31.3,
       "atl": 33.9,
       "tsb": -7.4
     },
@@ -2589,7 +2563,7 @@ window.GARMIN_DATA = {
       "acute_load": 216,
       "chronic_load": 215,
       "acwr": 1.0,
-      "ctl": 30.8,
+      "ctl": 30.7,
       "atl": 29.9,
       "tsb": -2.5
     },
@@ -2903,7 +2877,7 @@ window.GARMIN_DATA = {
       "acwr": 0.9,
       "ctl": 30.9,
       "atl": 28.8,
-      "tsb": -1.2
+      "tsb": -1.3
     },
     {
       "date": "2026-09-02",
@@ -3631,7 +3605,7 @@ window.GARMIN_DATA = {
       "acwr": 0.8,
       "ctl": 26.8,
       "atl": 19.2,
-      "tsb": 5.6
+      "tsb": 5.5
     },
     {
       "date": "2026-09-30",
@@ -4409,7 +4383,7 @@ window.GARMIN_DATA = {
       "acute_load": 162,
       "chronic_load": 176,
       "acwr": 0.92,
-      "ctl": 26.2,
+      "ctl": 26.1,
       "atl": 23.6,
       "tsb": -0.8
     },
@@ -4962,11 +4936,11 @@ window.GARMIN_DATA = {
     {
       "date": "2026-11-20",
       "rhr": 52,
-      "stress": 42,
+      "stress": 54,
       "bb_max": 50,
       "bb_min": 5,
-      "steps": 3088,
-      "active_kcal": 55,
+      "steps": 5386,
+      "active_kcal": 222,
       "sleep_score": 78,
       "sleep_hours": 7.13,
       "deep_hours": 1.03,
@@ -4976,7 +4950,7 @@ window.GARMIN_DATA = {
       "hrv_status": "UNBALANCED",
       "hrv_base_low": 50,
       "hrv_base_high": 59,
-      "readiness": 68,
+      "readiness": 64,
       "load": 0.0,
       "acute_load": 236,
       "chronic_load": 252,
@@ -4984,6 +4958,32 @@ window.GARMIN_DATA = {
       "ctl": 30.4,
       "atl": 34.0,
       "tsb": -8.5
+    },
+    {
+      "date": "2026-11-21",
+      "rhr": 53,
+      "stress": 65,
+      "bb_max": 8,
+      "bb_min": 5,
+      "steps": 1700,
+      "active_kcal": 178,
+      "sleep_score": 28,
+      "sleep_hours": 3.03,
+      "deep_hours": 0.82,
+      "rem_hours": 0.28,
+      "hrv_night": 38,
+      "hrv_weekly": 46,
+      "hrv_status": "LOW",
+      "hrv_base_low": 50,
+      "hrv_base_high": 59,
+      "readiness": 23,
+      "load": 0.0,
+      "acute_load": 194,
+      "chronic_load": 252,
+      "acwr": 0.77,
+      "ctl": 29.7,
+      "atl": 29.1,
+      "tsb": -3.6
     }
   ],
   "recent_activities": [
