@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "last_sync": "2026-11-22 16:43:13",
+    "last_sync": "2026-11-22 17:11:06",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
     "analysis_window_start": "2026-05-26",
@@ -130,8 +130,8 @@
   "morning_check_in": {
     "date": "2026-11-22",
     "semaphore": "GREEN",
-    "readiness_score": 87,
-    "headline": "Domingo · Descanso Total — Buena recuperación nocturna (VFC anoche 61 ms · Readiness 87/100)",
+    "readiness_score": 86,
+    "headline": "Domingo · Descanso Total — Buena recuperación nocturna (VFC anoche 61 ms · Readiness 86/100)",
     "coach_advice": "Anoche dormiste 7.93h (score 89/100), tu Body Battery subió a 73/100, tu FC en reposo está en 46 ppm (+0.2 vs tu media de 45.8) y tu VFC nocturna alcanzó 61 ms (media 7d: 51 ms, estado BALANCED). Día fijo de descanso total y supercompensación. Hidratación, pasos suaves y dormir 7.5–8h.",
     "metrics_today": {
       "hrv_last_night_ms": 61,
@@ -182,7 +182,7 @@
       "sleep_mean_score": 73.2,
       "stress_mean": 28.5,
       "body_battery_max_mean": 72.7,
-      "steps_mean": 10715
+      "steps_mean": 10727
     }
   },
   "monthly_progression": [
@@ -4962,11 +4962,11 @@
     {
       "date": "2026-11-22",
       "rhr": 46,
-      "stress": 25,
+      "stress": 28,
       "bb_max": 73,
       "bb_min": 5,
-      "steps": 2264,
-      "active_kcal": 35,
+      "steps": 4411,
+      "active_kcal": 74,
       "sleep_score": 89,
       "sleep_hours": 7.93,
       "deep_hours": 1.1,
@@ -4976,7 +4976,7 @@
       "hrv_status": "BALANCED",
       "hrv_base_low": 49,
       "hrv_base_high": 60,
-      "readiness": 87,
+      "readiness": 86,
       "load": 0.0,
       "acute_load": 159,
       "chronic_load": 200,
