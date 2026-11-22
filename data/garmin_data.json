@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "last_sync": "2026-11-21 17:04:06",
+    "last_sync": "2026-11-22 16:43:13",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
-    "analysis_window_start": "2026-05-25",
-    "analysis_window_end": "2026-11-21",
+    "analysis_window_start": "2026-05-26",
+    "analysis_window_end": "2026-11-22",
     "total_days_analyzed": 181
   },
   "athlete_profile": {
     "age": 33,
-    "fitness_age": 32.5,
+    "fitness_age": 32.8,
     "achievable_fitness_age": 27.0,
     "weight_kg": 100.4,
     "weight_prev_kg": 101.9,
@@ -128,30 +128,30 @@
     ]
   },
   "morning_check_in": {
-    "date": "2026-11-21",
-    "semaphore": "RED",
-    "readiness_score": 23,
-    "headline": "Sábado · Carrera 3 (Tirada Larga Z2) — Prioridad Descanso & Regeneración Parasimpática",
-    "coach_advice": "Tus biomarcadores hoy muestran fatiga acumulada (VFC anoche 38 ms, sueño 3.03h, BB 8/100). Reduce el volumen un 30% o sustituye la sesión por movilidad y paseo suave Z1.",
+    "date": "2026-11-22",
+    "semaphore": "GREEN",
+    "readiness_score": 87,
+    "headline": "Domingo · Descanso Total — Buena recuperación nocturna (VFC anoche 61 ms · Readiness 87/100)",
+    "coach_advice": "Anoche dormiste 7.93h (score 89/100), tu Body Battery subió a 73/100, tu FC en reposo está en 46 ppm (+0.2 vs tu media de 45.8) y tu VFC nocturna alcanzó 61 ms (media 7d: 51 ms, estado BALANCED). Día fijo de descanso total y supercompensación. Hidratación, pasos suaves y dormir 7.5–8h.",
     "metrics_today": {
-      "hrv_last_night_ms": 38,
-      "hrv_weekly_avg_ms": 46,
-      "hrv_status": "LOW",
+      "hrv_last_night_ms": 61,
+      "hrv_weekly_avg_ms": 51,
+      "hrv_status": "BALANCED",
       "hrv_baseline": "50 - 60 ms",
-      "rhr_bpm": 53,
-      "rhr_delta_vs_avg": 7.2,
-      "sleep_hours": 3.03,
-      "sleep_score": 28,
-      "deep_sleep_hours": 0.82,
-      "rem_sleep_hours": 0.28,
-      "body_battery_wake": 8,
-      "stress_yesterday": 54,
-      "acute_load": 194,
-      "chronic_load": 252,
-      "acwr": 0.77,
-      "ctl": 29.7,
-      "atl": 29.1,
-      "tsb": -3.6
+      "rhr_bpm": 46,
+      "rhr_delta_vs_avg": 0.2,
+      "sleep_hours": 7.93,
+      "sleep_score": 89,
+      "deep_sleep_hours": 1.1,
+      "rem_sleep_hours": 1.85,
+      "body_battery_wake": 73,
+      "stress_yesterday": 61,
+      "acute_load": 159,
+      "chronic_load": 200,
+      "acwr": 0.8,
+      "ctl": 29.0,
+      "atl": 25.0,
+      "tsb": 0.6
     }
   },
   "six_month_summary": {
@@ -179,10 +179,10 @@
       "hrv_balanced_days_pct": 73,
       "rhr_mean_bpm": 45.8,
       "sleep_mean_hours": 6.5,
-      "sleep_mean_score": 73.3,
+      "sleep_mean_score": 73.2,
       "stress_mean": 28.5,
       "body_battery_max_mean": 72.7,
-      "steps_mean": 10736
+      "steps_mean": 10715
     }
   },
   "monthly_progression": [
@@ -280,32 +280,6 @@
   ],
   "daily_series": [
     {
-      "date": "2026-05-25",
-      "rhr": 44,
-      "stress": 23,
-      "bb_max": 81,
-      "bb_min": 18,
-      "steps": 10635,
-      "active_kcal": 163,
-      "sleep_score": 90,
-      "sleep_hours": 7.08,
-      "deep_hours": 1.43,
-      "rem_hours": 1.58,
-      "hrv_night": 61,
-      "hrv_weekly": 56,
-      "hrv_status": "BALANCED",
-      "hrv_base_low": 50,
-      "hrv_base_high": 69,
-      "readiness": 89,
-      "load": 0.0,
-      "acute_load": 199,
-      "chronic_load": 238,
-      "acwr": 0.83,
-      "ctl": 38.3,
-      "atl": 29.6,
-      "tsb": 4.7
-    },
-    {
       "date": "2026-05-26",
       "rhr": 43,
       "stress": 29,
@@ -327,9 +301,9 @@
       "acute_load": 219,
       "chronic_load": 232,
       "acwr": 0.95,
-      "ctl": 38.5,
+      "ctl": 38.4,
       "atl": 31.6,
-      "tsb": 8.7
+      "tsb": 8.6
     },
     {
       "date": "2026-05-27",
@@ -353,9 +327,9 @@
       "acute_load": 268,
       "chronic_load": 249,
       "acwr": 1.08,
-      "ctl": 39.2,
+      "ctl": 39.1,
       "atl": 36.8,
-      "tsb": 6.9
+      "tsb": 6.8
     },
     {
       "date": "2026-05-28",
@@ -379,7 +353,7 @@
       "acute_load": 249,
       "chronic_load": 254,
       "acwr": 0.98,
-      "ctl": 38.8,
+      "ctl": 38.7,
       "atl": 34.8,
       "tsb": 2.3
     },
@@ -405,9 +379,9 @@
       "acute_load": 227,
       "chronic_load": 259,
       "acwr": 0.88,
-      "ctl": 38.3,
+      "ctl": 38.2,
       "atl": 32.3,
-      "tsb": 4.0
+      "tsb": 3.9
     },
     {
       "date": "2026-05-30",
@@ -431,9 +405,9 @@
       "acute_load": 186,
       "chronic_load": 250,
       "acwr": 0.75,
-      "ctl": 37.4,
+      "ctl": 37.3,
       "atl": 27.7,
-      "tsb": 6.0
+      "tsb": 5.9
     },
     {
       "date": "2026-05-31",
@@ -457,9 +431,9 @@
       "acute_load": 153,
       "chronic_load": 250,
       "acwr": 0.61,
-      "ctl": 36.5,
+      "ctl": 36.4,
       "atl": 23.7,
-      "tsb": 9.7
+      "tsb": 9.6
     },
     {
       "date": "2026-06-01",
@@ -483,7 +457,7 @@
       "acute_load": 207,
       "chronic_load": 248,
       "acwr": 0.83,
-      "ctl": 37.1,
+      "ctl": 37.0,
       "atl": 29.4,
       "tsb": 12.7
     },
@@ -509,7 +483,7 @@
       "acute_load": 288,
       "chronic_load": 256,
       "acwr": 1.13,
-      "ctl": 38.4,
+      "ctl": 38.3,
       "atl": 38.3,
       "tsb": 7.7
     },
@@ -535,7 +509,7 @@
       "acute_load": 237,
       "chronic_load": 245,
       "acwr": 0.97,
-      "ctl": 37.5,
+      "ctl": 37.4,
       "atl": 32.8,
       "tsb": 0.1
     },
@@ -561,9 +535,9 @@
       "acute_load": 236,
       "chronic_load": 253,
       "acwr": 0.93,
-      "ctl": 37.4,
+      "ctl": 37.3,
       "atl": 32.7,
-      "tsb": 4.7
+      "tsb": 4.6
     },
     {
       "date": "2026-06-05",
@@ -587,7 +561,7 @@
       "acute_load": 220,
       "chronic_load": 229,
       "acwr": 0.96,
-      "ctl": 37.0,
+      "ctl": 36.9,
       "atl": 30.9,
       "tsb": 4.6
     },
@@ -613,7 +587,7 @@
       "acute_load": 181,
       "chronic_load": 229,
       "acwr": 0.79,
-      "ctl": 36.1,
+      "ctl": 36.0,
       "atl": 26.5,
       "tsb": 6.0
     },
@@ -641,7 +615,7 @@
       "acwr": 0.65,
       "ctl": 35.2,
       "atl": 22.7,
-      "tsb": 9.6
+      "tsb": 9.5
     },
     {
       "date": "2026-06-08",
@@ -667,7 +641,7 @@
       "acwr": 0.88,
       "ctl": 35.9,
       "atl": 28.8,
-      "tsb": 12.5
+      "tsb": 12.4
     },
     {
       "date": "2026-06-09",
@@ -717,9 +691,9 @@
       "acute_load": 238,
       "chronic_load": 214,
       "acwr": 1.11,
-      "ctl": 36.2,
+      "ctl": 36.1,
       "atl": 32.3,
-      "tsb": 7.1
+      "tsb": 7.0
     },
     {
       "date": "2026-06-11",
@@ -745,7 +719,7 @@
       "acwr": 1.22,
       "ctl": 36.9,
       "atl": 37.3,
-      "tsb": 3.9
+      "tsb": 3.8
     },
     {
       "date": "2026-06-12",
@@ -797,7 +771,7 @@
       "acwr": 1.23,
       "ctl": 37.4,
       "atl": 41.0,
-      "tsb": 4.1
+      "tsb": 4.0
     },
     {
       "date": "2026-06-14",
@@ -821,7 +795,7 @@
       "acute_load": 257,
       "chronic_load": 213,
       "acwr": 1.21,
-      "ctl": 36.6,
+      "ctl": 36.5,
       "atl": 35.2,
       "tsb": -3.6
     },
@@ -849,7 +823,7 @@
       "acwr": 1.11,
       "ctl": 36.3,
       "atl": 33.9,
-      "tsb": 1.4
+      "tsb": 1.3
     },
     {
       "date": "2026-06-16",
@@ -953,7 +927,7 @@
       "acwr": 1.16,
       "ctl": 37.0,
       "atl": 36.7,
-      "tsb": -4.8
+      "tsb": -4.9
     },
     {
       "date": "2026-06-20",
@@ -977,9 +951,9 @@
       "acute_load": 216,
       "chronic_load": 227,
       "acwr": 0.95,
-      "ctl": 36.2,
+      "ctl": 36.1,
       "atl": 31.4,
-      "tsb": 0.4
+      "tsb": 0.3
     },
     {
       "date": "2026-06-21",
@@ -1029,9 +1003,9 @@
       "acute_load": 244,
       "chronic_load": 238,
       "acwr": 1.03,
-      "ctl": 36.3,
+      "ctl": 36.2,
       "atl": 34.0,
-      "tsb": 8.4
+      "tsb": 8.3
     },
     {
       "date": "2026-06-23",
@@ -1057,7 +1031,7 @@
       "acwr": 0.98,
       "ctl": 35.9,
       "atl": 32.1,
-      "tsb": 2.3
+      "tsb": 2.2
     },
     {
       "date": "2026-06-24",
@@ -1109,7 +1083,7 @@
       "acwr": 1.01,
       "ctl": 35.9,
       "atl": 32.5,
-      "tsb": -1.1
+      "tsb": -1.2
     },
     {
       "date": "2026-06-26",
@@ -1133,7 +1107,7 @@
       "acute_load": 189,
       "chronic_load": 223,
       "acwr": 0.85,
-      "ctl": 35.1,
+      "ctl": 35.0,
       "atl": 27.9,
       "tsb": 3.4
     },
@@ -1237,9 +1211,9 @@
       "acute_load": 142,
       "chronic_load": 196,
       "acwr": 0.73,
-      "ctl": 32.9,
+      "ctl": 32.8,
       "atl": 21.2,
-      "tsb": 15.1
+      "tsb": 15.0
     },
     {
       "date": "2026-07-01",
@@ -1265,7 +1239,7 @@
       "acwr": 0.79,
       "ctl": 32.9,
       "atl": 23.0,
-      "tsb": 11.7
+      "tsb": 11.6
     },
     {
       "date": "2026-07-02",
@@ -1289,7 +1263,7 @@
       "acute_load": 146,
       "chronic_load": 199,
       "acwr": 0.74,
-      "ctl": 32.4,
+      "ctl": 32.3,
       "atl": 21.4,
       "tsb": 9.8
     },
@@ -1315,7 +1289,7 @@
       "acute_load": 151,
       "chronic_load": 200,
       "acwr": 0.76,
-      "ctl": 32.2,
+      "ctl": 32.1,
       "atl": 21.7,
       "tsb": 11.0
     },
@@ -1343,7 +1317,7 @@
       "acwr": 1.1,
       "ctl": 33.6,
       "atl": 32.0,
-      "tsb": 10.5
+      "tsb": 10.4
     },
     {
       "date": "2026-07-05",
@@ -1497,7 +1471,7 @@
       "acute_load": 140,
       "chronic_load": 189,
       "acwr": 0.74,
-      "ctl": 30.9,
+      "ctl": 30.8,
       "atl": 20.5,
       "tsb": 7.7
     },
@@ -1603,7 +1577,7 @@
       "acwr": 0.96,
       "ctl": 29.7,
       "atl": 20.3,
-      "tsb": 13.4
+      "tsb": 13.3
     },
     {
       "date": "2026-07-15",
@@ -1653,9 +1627,9 @@
       "acute_load": 227,
       "chronic_load": 159,
       "acwr": 1.43,
-      "ctl": 30.9,
+      "ctl": 30.8,
       "atl": 29.6,
-      "tsb": 5.8
+      "tsb": 5.7
     },
     {
       "date": "2026-07-17",
@@ -1783,7 +1757,7 @@
       "acute_load": 202,
       "chronic_load": 164,
       "acwr": 1.24,
-      "ctl": 30.1,
+      "ctl": 30.0,
       "atl": 27.3,
       "tsb": 7.2
     },
@@ -1837,7 +1811,7 @@
       "acwr": 1.54,
       "ctl": 31.2,
       "atl": 34.7,
-      "tsb": 0.1
+      "tsb": 0.0
     },
     {
       "date": "2026-07-24",
@@ -1991,7 +1965,7 @@
       "acute_load": 271,
       "chronic_load": 215,
       "acwr": 1.26,
-      "ctl": 32.5,
+      "ctl": 32.4,
       "atl": 37.0,
       "tsb": -8.5
     },
@@ -2175,7 +2149,7 @@
       "acwr": 1.24,
       "ctl": 32.3,
       "atl": 36.8,
-      "tsb": 5.5
+      "tsb": 5.4
     },
     {
       "date": "2026-08-06",
@@ -2487,7 +2461,7 @@
       "acwr": 0.75,
       "ctl": 29.6,
       "atl": 23.9,
-      "tsb": 2.5
+      "tsb": 2.4
     },
     {
       "date": "2026-08-18",
@@ -2825,7 +2799,7 @@
       "acwr": 1.21,
       "ctl": 32.1,
       "atl": 37.2,
-      "tsb": -10.5
+      "tsb": -10.6
     },
     {
       "date": "2026-08-31",
@@ -2903,7 +2877,7 @@
       "acwr": 0.84,
       "ctl": 30.1,
       "atl": 24.7,
-      "tsb": 2.1
+      "tsb": 2.0
     },
     {
       "date": "2026-09-03",
@@ -3059,7 +3033,7 @@
       "acwr": 0.91,
       "ctl": 30.0,
       "atl": 25.8,
-      "tsb": 1.2
+      "tsb": 1.1
     },
     {
       "date": "2026-09-09",
@@ -3083,7 +3057,7 @@
       "acute_load": 146,
       "chronic_load": 195,
       "acwr": 0.75,
-      "ctl": 29.3,
+      "ctl": 29.2,
       "atl": 22.1,
       "tsb": 4.2
     },
@@ -3111,7 +3085,7 @@
       "acwr": 0.66,
       "ctl": 28.7,
       "atl": 20.0,
-      "tsb": 7.2
+      "tsb": 7.1
     },
     {
       "date": "2026-09-11",
@@ -3161,7 +3135,7 @@
       "acute_load": 269,
       "chronic_load": 230,
       "acwr": 1.17,
-      "ctl": 30.8,
+      "ctl": 30.7,
       "atl": 34.9,
       "tsb": 10.5
     },
@@ -3631,7 +3605,7 @@
       "acwr": 1.04,
       "ctl": 27.6,
       "atl": 25.0,
-      "tsb": 7.7
+      "tsb": 7.6
     },
     {
       "date": "2026-10-01",
@@ -3865,7 +3839,7 @@
       "acwr": 0.85,
       "ctl": 25.4,
       "atl": 19.7,
-      "tsb": 3.0
+      "tsb": 2.9
     },
     {
       "date": "2026-10-10",
@@ -4962,11 +4936,11 @@
     {
       "date": "2026-11-21",
       "rhr": 53,
-      "stress": 65,
+      "stress": 61,
       "bb_max": 8,
       "bb_min": 5,
-      "steps": 1700,
-      "active_kcal": 178,
+      "steps": 6183,
+      "active_kcal": 281,
       "sleep_score": 28,
       "sleep_hours": 3.03,
       "deep_hours": 0.82,
@@ -4976,7 +4950,7 @@
       "hrv_status": "LOW",
       "hrv_base_low": 50,
       "hrv_base_high": 59,
-      "readiness": 23,
+      "readiness": 24,
       "load": 0.0,
       "acute_load": 194,
       "chronic_load": 252,
@@ -4984,6 +4958,32 @@
       "ctl": 29.7,
       "atl": 29.1,
       "tsb": -3.6
+    },
+    {
+      "date": "2026-11-22",
+      "rhr": 46,
+      "stress": 25,
+      "bb_max": 73,
+      "bb_min": 5,
+      "steps": 2264,
+      "active_kcal": 35,
+      "sleep_score": 89,
+      "sleep_hours": 7.93,
+      "deep_hours": 1.1,
+      "rem_hours": 1.85,
+      "hrv_night": 61,
+      "hrv_weekly": 51,
+      "hrv_status": "BALANCED",
+      "hrv_base_low": 49,
+      "hrv_base_high": 60,
+      "readiness": 87,
+      "load": 0.0,
+      "acute_load": 159,
+      "chronic_load": 200,
+      "acwr": 0.8,
+      "ctl": 29.0,
+      "atl": 25.0,
+      "tsb": 0.6
     }
   ],
   "recent_activities": [
