@@ -113,6 +113,13 @@
       notesMap["b1-w1-d6"] =
         "Adaptado por dolor de rodilla: 0 km impacto · Activación glúteo medio + recuperación completa para el Lunes de Pierna";
     }
+    if (completedMap["b1-w2-d1"] === undefined) {
+      completedMap["b1-w2-d1"] = true;
+    }
+    if (!notesMap["b1-w2-d1"]) {
+      notesMap["b1-w2-d1"] =
+        "Test Asimetría 23 Nov: Déficit global Pierna Derecha (~25-35%) -> Ext. Cuádriceps RIR 0 DER vs 4 IZQ (0 dolor), Femoral RIR 1 vs 4, Gemelo 10 vs 15, Búlgara 25-30kg inestabilidad/valgo leve DER, Hip Thrust 0kg sin bloqueo completo. Prensa eliminada por dolor rotuliano.";
+    }
   }
 
   function saveLocalState() {
@@ -201,6 +208,7 @@
       if (lower.includes("fondo") || lower.includes("dip")) auxKey = "dips";
       else if (lower.includes("arrancada") || lower.includes("snatch")) auxKey = "db_snatch";
       else if (lower.includes("kettlebell") || lower.includes("swing") || lower.includes("kb ")) auxKey = "kb_swing";
+      else if (lower.includes("glúteo medio") || lower.includes("clamshell") || lower.includes("monster walk")) auxKey = "glute_med_band";
       else if (lower.includes("prensa") || lower.includes("step-up") || lower.includes("cajón")) auxKey = "single_leg_press";
       else if (lower.includes("extensión") && lower.includes("cuádriceps")) auxKey = "single_leg_extension";
       else if (lower.includes("femoral") && lower.includes("1 pierna")) auxKey = "single_leg_curl";

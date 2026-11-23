@@ -1,7 +1,7 @@
 /**
  * Configuración de 1RM (Repetición Máxima) y Plan de Entrenamiento Híbrido Dinámico (12 Semanas).
- * Distribución optimizada para protección articular de rodilla y evaluación de simetría unilateral (Izquierda vs Derecha):
- * - Lunes (13:30): Gimnasio 1 · Pierna Unilateral & Fuerza (Lower) -> 53.5h de descanso antes de correr el Miércoles y >100h antes del Viernes/Sábado.
+ * Distribución optimizada para protección articular de rodilla y corrección de asimetría Pierna Derecha (Protocolo 4:2):
+ * - Lunes (13:30): Gimnasio 1 · Pierna Unilateral Correctiva 4:2 (Lower) -> 53.5h antes de correr el Miércoles y >100h antes del Viernes/Sábado.
  * - Martes (13:30): Gimnasio 2 · Torso A (Upper A)
  * - Miércoles (19:00): Carrera 1 · Rodaje Z2
  * - Jueves (13:30): Gimnasio 3 · Torso B (Upper B)
@@ -322,7 +322,7 @@ window.AUX_EXERCISES_CONFIG = {
     "exercise_key": "WEIGHTED_SINGLE_LEG_HIP_RAISE_WITH_FOOT_ON_BENCH",
     "title_es": "Hip Thrust / Puente glúteo a 1 pierna",
     "rest_sec": 60,
-    "default_weight_kg": 15
+    "default_weight_kg": 0
   },
   "single_leg_calf": {
     "key": "single_leg_calf",
@@ -333,6 +333,16 @@ window.AUX_EXERCISES_CONFIG = {
     "title_es": "Elevación sóleo/gemelo a 1 pierna",
     "rest_sec": 60,
     "default_weight_kg": 25
+  },
+  "glute_med_band": {
+    "key": "glute_med_band",
+    "cat_id": 11,
+    "name_id": 1,
+    "category_key": "HIP_STABILITY",
+    "exercise_key": "CLAMSHELL",
+    "title_es": "Activacion gluteo medio (Banda)",
+    "rest_sec": 45,
+    "default_weight_kg": 0
   }
 };
 
@@ -345,8 +355,8 @@ window.HYBRID_TRAINING_PLAN = {
         "detail": "Todas las sesiones de Lunes (Pierna), Martes (Torso A) y Jueves (Torso B) calculan automáticamente los kilos exactos (redondeados a discos de 2.5 kg en barra y 1 kg en mancuerna) según los 1RM que introduzcas en la pestaña '1RM & Pesos'."
       },
       {
-        "name": "Evaluación & Corrección de Asimetría Unilateral (Izquierda vs Derecha) + Blindaje Rotuliano",
-        "detail": "Los Lunes de Pierna priorizan trabajo unilateral (Sentadilla Búlgara, Prensa a 1 Pierna / Step-Up en Cajón, Extensión de Cuádriceps y Curl Femoral a 1 Pierna, Hip Thrust Unilateral y Sóleo a 1 Pierna). Empieza siempre por la pierna más débil/molesta e iguala repeticiones y carga en la otra para eliminar descompensaciones."
+        "name": "Protocolo Correctivo 4:2 Pierna Derecha (Diagnóstico 23 Nov: Déficit Global Derecho ~25–35%)",
+        "detail": "El test del Lunes 23 Nov confirmó que la pierna DERECHA presenta un déficit de fuerza y estabilidad del 25–35% frente a la izquierda (Ext. Cuádriceps RIR 0 vs 4, Curl Femoral RIR 1 vs 4, Gemelo 10 vs 15 reps, leve valgo en Búlgara). Eliminamos la Prensa a 1 pierna (dolor rotuliano) y aplicamos volumen 4:2 (4 series Derecha / 2 series Izquierda) empezando siempre por la Derecha."
       },
       {
         "name": "Retorno Progresivo Sin Dolor Rotuliano & Polarización 80/20",
@@ -709,7 +719,8 @@ window.HYBRID_TRAINING_PLAN = {
                   "rir": "Test Izq vs Der · 1s pausa arriba y 2s bajada",
                   "target": "3 series × 12-15 reps/pierna"
                 }
-              ]
+              ],
+              "completed_in_garmin": true
             },
             {
               "id": "b1-w2-d2",
@@ -913,69 +924,81 @@ window.HYBRID_TRAINING_PLAN = {
         },
         {
           "week_number": 3,
-          "label": "Semana 3 (Consolidación 13.5 km · 85% 1RM)",
+          "label": "Semana 3 (Corrección Pierna Derecha 4:2 + 13.5 km)",
           "dates": "30 Nov – 06 Dic 2026",
-          "phase_type": "Sobrecarga Fuerza (85% 1RM) & Progresión Carrera 13.5 km",
+          "phase_type": "Protocolo Asimetría Derecha 4:2 (Sin Prensa) & Carrera 13.5 km",
           "run_km_target": 13.5,
           "strength_sessions_target": 3,
-          "coach_note": "Con los datos del test unilateral de la Semana 2, trabajamos la pierna más débil primero (añadiendo +1 serie compensatoria en el lado con déficit si superó el 10%): Lunes Pierna Unilateral + RDL ({rdl:0.80}), Martes Banca ({bench:0.85}), Miércoles 3.5 km Z2, Jueves Militar ({ohp:0.86}), Viernes Fartlek suave 4.5 km y Sábado 5.5 km Z2.",
+          "coach_note": "PROTOCOLO CORRECTIVO (Tras Test 23 Nov): Eliminamos la Prensa a 1 pierna (dolor rotuliano). El Lunes 30 Nov aplicamos volumen 4:2 (4 series Derecha / 2 series Izquierda) en Extensión Cuádriceps, Curl Femoral y Gemelo, Búlgara asistida con mano en rack (0 valgo) e Hip Thrust 1P sin peso buscando extensión completa.",
           "days": [
             {
               "id": "b1-w3-d1",
               "day_short": "LUN 30 NOV",
               "day_name": "Lunes",
               "modality": "strength",
-              "modality_label": "Gimnasio 1 · Lower Unilateral & Bisagra",
-              "title": "Tren Inferior Híbrido — Corrección Unilateral (Izq/Der) + RDL ({rdl:0.80})",
-              "duration_min": 54,
-              "target_zone": "78–82% 1RM | Corrección Asimetría",
-              "summary": "Iniciamos cada ejercicio unilateral por la pierna que mostró menor fuerza/estabilidad en el test del lunes pasado, igualando repeticiones en la pierna dominante.",
+              "modality_label": "Gimnasio 1 · Lower Correctivo (4:2 Derecha)",
+              "title": "Corrección Asimetría Pierna Derecha (4s DER / 2s IZQ) — Cero Dolor Rotuliano",
+              "duration_min": 55,
+              "target_zone": "Protocolo 4:2 (Derecha Primero) · RIR 1-2",
+              "summary": "Basado en tu test del 23 Nov: eliminamos Prensa a 1 pierna (causó molestia rotuliana) y priorizamos la pierna DERECHA con 4 series vs 2 de mantenimiento en la IZQUIERDA (mismas reps que saque la derecha). En Búlgara, sujeta ligeramente el rack con la mano contraria para anular el valgo.",
               "steps": [
                 {
-                  "name": "Sentadilla Búlgara Unilateral Mancuernas",
+                  "name": "1. Activación Glúteo Medio (Clamshell / Monster Walk con Banda)",
+                  "aux_type": "glute_med_band",
+                  "sets": 2,
+                  "reps": "15/lado",
+                  "weight_kg": 0,
+                  "rest_sec": 45,
+                  "rir": "Foco glúteo medio derecho (anti-valgo)",
+                  "target": "2 series × 15 reps/lado antes de cargar"
+                },
+                {
+                  "name": "2. Sentadilla Búlgara Asistida (Mano en Rack · 0 Valgo)",
                   "lift": "split_squat_db",
                   "sets": 3,
                   "reps": "8/pierna",
-                  "pct": 0.78,
-                  "rir": "RIR 2 (empezar por pierna débil)"
+                  "pct": 0.72,
+                  "rir": "3s DER / 2s IZQ · 1 mancuerna + mano libre en rack para estabilidad total"
                 },
                 {
-                  "name": "Peso Muerto Rumano (RDL)",
-                  "lift": "rdl",
-                  "sets": 3,
-                  "reps": "6",
-                  "pct": 0.8,
-                  "rir": "RIR 2"
+                  "name": "3. Extensión de Cuádriceps a 1 Pierna (Prioridad #1 · Sin Dolor)",
+                  "aux_type": "single_leg_extension",
+                  "sets": 4,
+                  "reps": "10-12",
+                  "weight_kg": 25,
+                  "rest_sec": 60,
+                  "rir": "4 series DER (RIR 1-2) / 2 series IZQ · Pausa 2s arriba",
+                  "target": "4 series DER × 10-12 reps / 2 series IZQ × 10-12 reps (pausa 2s arriba)"
                 },
                 {
-                  "name": "Prensa a 1 Pierna / Step-Up en Cajón",
-                  "aux_type": "single_leg_press",
-                  "sets": 3,
-                  "reps": "10/pierna",
-                  "weight_kg": 55,
-                  "rest_sec": 75,
-                  "rir": "Control rotuliano @ 55 kg",
-                  "target": "3 series × 10 reps/pierna"
-                },
-                {
-                  "name": "Extensión Cuádriceps 1 Pierna + Curl Femoral 1 Pierna",
+                  "name": "4. Curl Femoral Sentado a 1 Pierna (Prioridad #2)",
                   "aux_type": "single_leg_curl",
-                  "sets": 3,
-                  "reps": "12/pierna",
-                  "weight_kg": 27.5,
+                  "sets": 4,
+                  "reps": "10-12",
+                  "weight_kg": 25,
                   "rest_sec": 60,
-                  "rir": "Superserie unilateral Cuádriceps + Isquios",
-                  "target": "3 series × 12 reps/pierna (pausa 1s + excéntrica 3s)"
+                  "rir": "4 series DER (RIR 1-2) / 2 series IZQ · Excéntrica 3s",
+                  "target": "4 series DER × 10-12 reps / 2 series IZQ × 10-12 reps (excéntrica 3s)"
                 },
                 {
-                  "name": "Hip Thrust a 1 Pierna + Sóleo a 1 Pierna",
-                  "aux_type": "single_leg_calf",
+                  "name": "5. Hip Thrust a 1 Pierna Sin Peso (Bloqueo Extensión Cadera)",
+                  "aux_type": "single_leg_hip_thrust",
                   "sets": 3,
-                  "reps": "12/pierna",
-                  "weight_kg": 27.5,
+                  "reps": "10-12",
+                  "weight_kg": 0,
                   "rest_sec": 60,
-                  "rir": "Glúteo + Sóleo unilateral",
-                  "target": "3 series × 12 reps/pierna"
+                  "rir": "Peso Corporal · 3s DER / 2s IZQ · Pausa 2s en extensión TOTAL arriba",
+                  "target": "3 series DER / 2 series IZQ × 10-12 reps @ Peso Corporal (extensión completa arriba)"
+                },
+                {
+                  "name": "6. Elevación de Gemelo / Sóleo a 1 Pierna (Prioridad #3)",
+                  "aux_type": "single_leg_calf",
+                  "sets": 4,
+                  "reps": "10-12",
+                  "weight_kg": 25,
+                  "rest_sec": 60,
+                  "rir": "4 series DER (objetivo subir de 10 -> 13+ reps) / 2 series IZQ",
+                  "target": "4 series DER × 10-12 reps / 2 series IZQ × 10-12 reps (1s pausa arriba)"
                 }
               ]
             },
@@ -1180,49 +1203,69 @@ window.HYBRID_TRAINING_PLAN = {
               "day_short": "LUN 07 DIC",
               "day_name": "Lunes",
               "modality": "strength",
-              "modality_label": "Gimnasio 1 · Descarga Lower Unilateral",
-              "title": "Tren Inferior — Descarga Unilateral & Salud Tendinosa",
-              "duration_min": 38,
-              "target_zone": "70–72% 1RM | RIR 3-4",
-              "summary": "Piernas frescas y articulaciones recuperadas.",
+              "modality_label": "Gimnasio 1 · Descarga Lower Correctivo",
+              "title": "Tren Inferior — Descarga Unilateral & Control Progreso Pierna Derecha",
+              "duration_min": 42,
+              "target_zone": "Descarga 3:1 · Control Asimetría",
+              "summary": "Bajamos volumen total manteniendo el foco en la pierna derecha (3s DER / 2s IZQ) y comprobando si la extensión de cuádriceps y gemelo derecho ya se acercan a la izquierda.",
               "steps": [
                 {
-                  "name": "Sentadilla Búlgara Unilateral",
+                  "name": "Activación Glúteo Medio (Banda)",
+                  "aux_type": "glute_med_band",
+                  "sets": 2,
+                  "reps": "15/lado",
+                  "weight_kg": 0,
+                  "rest_sec": 45,
+                  "rir": "Estabilidad cadera derecha",
+                  "target": "2 series × 15 reps/lado"
+                },
+                {
+                  "name": "Sentadilla Búlgara Asistida (Mano en Rack)",
                   "lift": "split_squat_db",
                   "sets": 2,
                   "reps": "8/pierna",
                   "pct": 0.68,
-                  "rir": "RIR 3-4"
+                  "rir": "RIR 3 · Control alineación rodilla"
                 },
                 {
-                  "name": "Prensa a 1 Pierna / Step-Up Fluido",
-                  "aux_type": "single_leg_press",
-                  "sets": 2,
-                  "reps": "10/pierna",
-                  "weight_kg": 45,
-                  "rest_sec": 75,
-                  "rir": "RIR 3",
-                  "target": "2 series × 10 reps/pierna"
-                },
-                {
-                  "name": "Extensión Cuádriceps 1 Pierna + Curl Femoral 1 Pierna",
-                  "aux_type": "single_leg_curl",
-                  "sets": 2,
-                  "reps": "12/pierna",
-                  "weight_kg": 22.5,
+                  "name": "Extensión de Cuádriceps a 1 Pierna",
+                  "aux_type": "single_leg_extension",
+                  "sets": 3,
+                  "reps": "12",
+                  "weight_kg": 25,
                   "rest_sec": 60,
-                  "rir": "Bombeo tendinoso sin fatiga",
-                  "target": "2 series × 12 reps/pierna"
+                  "rir": "3s DER / 2s IZQ · Pausa 2s arriba",
+                  "target": "3 series DER / 2 series IZQ × 12 reps"
                 },
                 {
-                  "name": "Sóleo a 1 Pierna Isométrico + Dinámico",
+                  "name": "Curl Femoral Sentado a 1 Pierna",
+                  "aux_type": "single_leg_curl",
+                  "sets": 3,
+                  "reps": "12",
+                  "weight_kg": 25,
+                  "rest_sec": 60,
+                  "rir": "3s DER / 2s IZQ · Excéntrica 3s",
+                  "target": "3 series DER / 2 series IZQ × 12 reps"
+                },
+                {
+                  "name": "Hip Thrust a 1 Pierna Sin Peso",
+                  "aux_type": "single_leg_hip_thrust",
+                  "sets": 2,
+                  "reps": "12",
+                  "weight_kg": 0,
+                  "rest_sec": 60,
+                  "rir": "Peso Corporal · Extensión completa 2s",
+                  "target": "2 series × 12 reps/pierna @ Peso Corporal"
+                },
+                {
+                  "name": "Elevación de Gemelo / Sóleo a 1 Pierna",
                   "aux_type": "single_leg_calf",
                   "sets": 3,
-                  "reps": "12/pierna",
-                  "weight_kg": 22.5,
+                  "reps": "12",
+                  "weight_kg": 25,
                   "rest_sec": 60,
-                  "rir": "RIR 3",
-                  "target": "3 series × 12 reps/pierna"
+                  "rir": "3s DER / 2s IZQ",
+                  "target": "3 series DER / 2 series IZQ × 12 reps"
                 }
               ]
             },
@@ -1426,55 +1469,67 @@ window.HYBRID_TRAINING_PLAN = {
               "day_short": "LUN 14 DIC",
               "day_name": "Lunes",
               "modality": "strength",
-              "modality_label": "Gimnasio 1 · Lower",
-              "title": "Tren Inferior — Fuerza ({squat:0.85} Sentadilla) + Stiffness",
+              "modality_label": "Gimnasio 1 · Lower Correctivo (4:2) + RDL",
+              "title": "Tren Inferior — Corrección Derecha (4:2) + RDL ({rdl:0.82})",
               "duration_min": 50,
               "target_zone": "84–85% 1RM | RIR 2",
-              "summary": "Mejoramos la reactividad elástica del tobillo y cadera con 53.5h hasta el miércoles y >100h de margen hasta las series del viernes.",
+              "summary": "Seguimos cerrando la brecha de la pierna derecha (4s DER / 2s IZQ) e introducimos Peso Muerto Rumano (cero estrés rotuliano) para cadena posterior.",
               "steps": [
                 {
-                  "name": "Sentadilla Trasera Barra (o Prensa 1 Pierna si hay molestia)",
-                  "lift": "squat",
+                  "name": "Peso Muerto Rumano (RDL · Cadena Posterior sin dolor rotuliano)",
+                  "lift": "rdl",
                   "sets": 3,
-                  "reps": "4",
-                  "pct": 0.84,
+                  "reps": "6",
+                  "pct": 0.82,
                   "rir": "RIR 2"
                 },
                 {
-                  "name": "Sentadilla Búlgara Unilateral",
+                  "name": "Sentadilla Búlgara Asistida (Mano en Rack)",
                   "lift": "split_squat_db",
                   "sets": 3,
                   "reps": "8/pierna",
-                  "pct": 0.8,
-                  "rir": "RIR 2 (pierna débil primero)"
+                  "pct": 0.78,
+                  "rir": "3s DER / 2s IZQ (0 valgo)"
                 },
                 {
-                  "name": "Curl Femoral a 1 Pierna + Extensión Cuádriceps a 1 Pierna",
-                  "aux_type": "single_leg_curl",
-                  "sets": 3,
-                  "reps": "10/pierna",
-                  "weight_kg": 30,
-                  "rest_sec": 60,
-                  "rir": "Equilibrio Izq vs Der",
-                  "target": "3 series × 10 reps/pierna"
-                },
-                {
-                  "name": "Hip Thrust a 1 Pierna",
-                  "aux_type": "single_leg_hip_thrust",
-                  "sets": 3,
-                  "reps": "10/pierna",
-                  "weight_kg": 20,
-                  "rest_sec": 60,
-                  "rir": "Estabilidad pélvica",
-                  "target": "3 series × 10 reps/pierna"
-                },
-                {
-                  "name": "Sóleo Sentado / a 1 Pierna Pesado",
-                  "lift": "soleus",
+                  "name": "Extensión de Cuádriceps a 1 Pierna",
+                  "aux_type": "single_leg_extension",
                   "sets": 4,
                   "reps": "10-12",
-                  "pct": 0.82,
-                  "rir": "RIR 1-2"
+                  "weight_kg": 27.5,
+                  "rest_sec": 60,
+                  "rir": "4s DER / 2s IZQ · Pausa 2s arriba",
+                  "target": "4 series DER / 2 series IZQ × 10-12 reps"
+                },
+                {
+                  "name": "Curl Femoral Sentado a 1 Pierna",
+                  "aux_type": "single_leg_curl",
+                  "sets": 4,
+                  "reps": "10-12",
+                  "weight_kg": 27.5,
+                  "rest_sec": 60,
+                  "rir": "4s DER / 2s IZQ · Excéntrica 3s",
+                  "target": "4 series DER / 2 series IZQ × 10-12 reps"
+                },
+                {
+                  "name": "Hip Thrust a 1 Pierna (Sin Peso o +5 kg si ya bloqueas 12 reps)",
+                  "aux_type": "single_leg_hip_thrust",
+                  "sets": 3,
+                  "reps": "12",
+                  "weight_kg": 0,
+                  "rest_sec": 60,
+                  "rir": "Extensión completa 2s arriba",
+                  "target": "3 series × 12 reps/pierna"
+                },
+                {
+                  "name": "Elevación de Gemelo / Sóleo a 1 Pierna",
+                  "aux_type": "single_leg_calf",
+                  "sets": 4,
+                  "reps": "12-15",
+                  "weight_kg": 25,
+                  "rest_sec": 60,
+                  "rir": "4s DER / 2s IZQ (igualar 15 reps)",
+                  "target": "4 series DER / 2 series IZQ × 12-15 reps"
                 }
               ]
             },
@@ -1675,8 +1730,8 @@ window.HYBRID_TRAINING_PLAN = {
               "day_short": "LUN 21 DIC",
               "day_name": "Lunes",
               "modality": "strength",
-              "modality_label": "Gimnasio 1 · Lower",
-              "title": "Tren Inferior — Peso Muerto ({deadlift:0.88}) & Sentadilla ({squat:0.82})",
+              "modality_label": "Gimnasio 1 · Lower Correctivo (4:2) + PM",
+              "title": "Tren Inferior — Peso Muerto ({deadlift:0.86}) & Corrección Derecha (4:2)",
               "duration_min": 50,
               "target_zone": "82–88% 1RM | RIR 2",
               "summary": "3×3 al 88% 1RM en Peso Muerto con velocidad de barra alta.",
@@ -1685,37 +1740,47 @@ window.HYBRID_TRAINING_PLAN = {
                   "name": "Peso Muerto Barra (Deadlift)",
                   "lift": "deadlift",
                   "sets": 3,
-                  "reps": "3",
-                  "pct": 0.88,
-                  "rir": "RIR 1-2"
+                  "reps": "3-4",
+                  "pct": 0.86,
+                  "rir": "RIR 2"
                 },
                 {
-                  "name": "Prensa a 1 Pierna / Step-Up Pesado en Cajón",
-                  "aux_type": "single_leg_press",
+                  "name": "Sentadilla Búlgara Unilateral",
+                  "lift": "split_squat_db",
                   "sets": 3,
-                  "reps": "8-10/pierna",
-                  "weight_kg": 60,
-                  "rest_sec": 75,
-                  "rir": "Fuerza unilateral cuádriceps/glúteo",
-                  "target": "3 series × 8-10 reps/pierna"
+                  "reps": "8/pierna",
+                  "pct": 0.8,
+                  "rir": "3s DER / 2s IZQ (tibia vertical)"
                 },
                 {
-                  "name": "Extensión Cuádriceps 1 Pierna + Curl Femoral 1 Pierna",
+                  "name": "Extensión de Cuádriceps a 1 Pierna",
                   "aux_type": "single_leg_extension",
-                  "sets": 3,
-                  "reps": "10-12/pierna",
-                  "weight_kg": 30,
-                  "rest_sec": 60,
-                  "rir": "Control excéntrico 3s",
-                  "target": "3 series × 10-12 reps/pierna"
-                },
-                {
-                  "name": "Elevación de Sóleo Sentado / 1 Pierna",
-                  "lift": "soleus",
                   "sets": 4,
                   "reps": "10-12",
-                  "pct": 0.85,
-                  "rir": "RIR 1-2"
+                  "weight_kg": 30,
+                  "rest_sec": 60,
+                  "rir": "4s DER / 2s IZQ · Pausa 2s arriba",
+                  "target": "4 series DER / 2 series IZQ × 10-12 reps"
+                },
+                {
+                  "name": "Curl Femoral Sentado a 1 Pierna",
+                  "aux_type": "single_leg_curl",
+                  "sets": 4,
+                  "reps": "10-12",
+                  "weight_kg": 30,
+                  "rest_sec": 60,
+                  "rir": "4s DER / 2s IZQ · Excéntrica 3s",
+                  "target": "4 series DER / 2 series IZQ × 10-12 reps"
+                },
+                {
+                  "name": "Elevación de Gemelo / Sóleo a 1 Pierna",
+                  "aux_type": "single_leg_calf",
+                  "sets": 4,
+                  "reps": "12-15",
+                  "weight_kg": 27.5,
+                  "rest_sec": 60,
+                  "rir": "4s DER / 2s IZQ",
+                  "target": "4 series DER / 2 series IZQ × 12-15 reps"
                 }
               ]
             },
@@ -2174,32 +2239,42 @@ window.HYBRID_TRAINING_PLAN = {
               "summary": "Mantenimiento neuromuscular sin daño muscular.",
               "steps": [
                 {
-                  "name": "Sentadilla Búlgara Unilateral (Re-Test Simetría Mitad de Plan)",
+                  "name": "Re-Test Simetría: Sentadilla Búlgara Unilateral",
                   "lift": "split_squat_db",
                   "sets": 3,
                   "reps": "8/pierna",
-                  "pct": 0.75,
-                  "rir": "Comprobar igualdad Izq vs Der"
+                  "pct": 0.78,
+                  "rir": "Evaluar estabilidad y 0 valgo DER vs IZQ"
                 },
                 {
-                  "name": "Prensa a 1 Pierna + Curl Femoral a 1 Pierna",
-                  "aux_type": "single_leg_press",
-                  "sets": 2,
-                  "reps": "10/pierna",
-                  "weight_kg": 50,
-                  "rest_sec": 75,
-                  "rir": "RIR 3",
-                  "target": "2 series × 10 reps/pierna"
+                  "name": "Re-Test Simetría: Extensión Cuádriceps a 1 Pierna",
+                  "aux_type": "single_leg_extension",
+                  "sets": 3,
+                  "reps": "12",
+                  "weight_kg": 27.5,
+                  "rest_sec": 60,
+                  "rir": "Objetivo: diferencia <=1 RIR entre DER e IZQ",
+                  "target": "3 series × 12 reps/pierna (comparar RIR DER vs IZQ)"
                 },
                 {
-                  "name": "Elevación de Sóleo a 1 Pierna",
+                  "name": "Re-Test Simetría: Curl Femoral Sentado a 1 Pierna",
+                  "aux_type": "single_leg_curl",
+                  "sets": 3,
+                  "reps": "12",
+                  "weight_kg": 27.5,
+                  "rest_sec": 60,
+                  "rir": "Objetivo: diferencia <=1 RIR entre DER e IZQ",
+                  "target": "3 series × 12 reps/pierna"
+                },
+                {
+                  "name": "Re-Test Simetría: Gemelo / Sóleo a 1 Pierna",
                   "aux_type": "single_leg_calf",
                   "sets": 3,
-                  "reps": "12/pierna",
+                  "reps": "15",
                   "weight_kg": 25,
                   "rest_sec": 60,
-                  "rir": "RIR 3",
-                  "target": "3 series × 12 reps/pierna"
+                  "rir": "Objetivo: 15 reps en ambas piernas",
+                  "target": "3 series × 15 reps/pierna"
                 }
               ]
             },
@@ -2659,32 +2734,32 @@ window.HYBRID_TRAINING_PLAN = {
                   "rir": "RIR 1-2"
                 },
                 {
-                  "name": "Prensa a 1 Pierna / Step-Up Unilateral",
-                  "aux_type": "single_leg_press",
+                  "name": "Sentadilla Búlgara Unilateral",
+                  "lift": "split_squat_db",
                   "sets": 3,
                   "reps": "8/pierna",
-                  "weight_kg": 60,
-                  "rest_sec": 75,
-                  "rir": "RIR 2",
-                  "target": "3 series × 8 reps/pierna"
+                  "pct": 0.82,
+                  "rir": "RIR 2"
                 },
                 {
-                  "name": "Hip Thrust a 1 Pierna + Curl Femoral a 1 Pierna",
-                  "aux_type": "single_leg_hip_thrust",
+                  "name": "Extensión Cuádriceps 1 Pierna + Curl Femoral 1 Pierna",
+                  "aux_type": "single_leg_extension",
                   "sets": 3,
                   "reps": "10/pierna",
-                  "weight_kg": 20,
+                  "weight_kg": 30,
                   "rest_sec": 60,
-                  "rir": "Potencia glúteo/isquio",
+                  "rir": "Mantenimiento simetría Izq/Der",
                   "target": "3 series × 10 reps/pierna"
                 },
                 {
-                  "name": "Elevación de Sóleo Sentado",
-                  "lift": "soleus",
+                  "name": "Hip Thrust a 1 Pierna + Sóleo a 1 Pierna",
+                  "aux_type": "single_leg_calf",
                   "sets": 3,
-                  "reps": "10",
-                  "pct": 0.88,
-                  "rir": "RIR 2"
+                  "reps": "12/pierna",
+                  "weight_kg": 27.5,
+                  "rest_sec": 60,
+                  "rir": "Potencia glúteo/Aquiles",
+                  "target": "3 series × 12 reps/pierna"
                 }
               ]
             },

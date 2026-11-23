@@ -242,7 +242,7 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "title_es": "Hip Thrust / Puente gluteo 1 pierna",
         "rest_sec": 60,
         "step": 2.5,
-        "default_1rm": 15.0,
+        "default_1rm": 0.0,
     },
     "single_leg_calf": {
         "cat_id": 1,
@@ -253,6 +253,16 @@ GARMIN_EXERCISES: dict[str, dict[str, Any]] = {
         "rest_sec": 60,
         "step": 2.5,
         "default_1rm": 25.0,
+    },
+    "glute_med_band": {
+        "cat_id": 11,
+        "name_id": 1,
+        "category_key": "HIP_STABILITY",
+        "exercise_key": "CLAMSHELL",
+        "title_es": "Activacion gluteo medio (Banda)",
+        "rest_sec": 45,
+        "step": 1.0,
+        "default_1rm": 0.0,
     },
 }
 
@@ -291,7 +301,7 @@ def calc_weight_kg(lift_key: str, pct: float, one_rm_map: dict[str, float], fixe
         if not pct or pct <= 0 or rm <= 0:
             return 0.0
         return round_step(rm * pct, cfg["step"])
-    if lift_key in ("core", "dips", "plank"):
+    if lift_key in ("core", "dips", "plank", "glute_med_band"):
         return 0.0
     if lift_key in ("kb_swing", "db_snatch", "single_leg_press", "step_up_db", "single_leg_extension", "single_leg_curl", "single_leg_hip_thrust", "single_leg_calf"):
         return float(rm if pct <= 0 else round_step(rm * pct, cfg["step"]))
@@ -719,15 +729,15 @@ THREE_CORE_DAYS = [
         "slot": 1,
         "slug": "Lunes_Lower",
         "day": "Lunes",
-        "workoutName": "HYBRID Lunes Lower Unilat",
-        "description": "Gimnasio Dia 1 (Lunes 13:30) - Evaluacion de Asimetria Unilateral (Izquierda vs Derecha) & Blindaje Rotuliano: Sentadilla Bulgara, Prensa 1 Pierna / Step-Up, Extension Cuadriceps 1 Pierna, Curl Femoral 1 Pierna, Hip Thrust 1 Pierna y Soleo 1 Pierna.",
+        "workoutName": "HYBRID Lunes Lower 4:2 DER",
+        "description": "Gimnasio Dia 1 (Lunes 13:30) - Protocolo Correctivo 4:2 Pierna Derecha (Sin Prensa): Activacion Gluteo Medio, Bulgara Asistida (mano en rack, 0 valgo), Extension Cuadriceps 1P (4s DER/2s IZQ), Curl Femoral 1P (4s DER/2s IZQ), Hip Thrust 1P sin peso y Gemelo 1P (4s DER/2s IZQ).",
         "exercises": [
-            {"lift": "split_squat_db", "sets": 3, "reps": 8, "pct": 0.72, "rest_sec": 75, "rir": "Test Izq vs Der (8/pierna, tibia vertical)"},
-            {"lift": "single_leg_press", "sets": 3, "reps": 10, "pct": 0.0, "weight_kg": 50.0, "rest_sec": 75, "rir": "Test Izq vs Der (10/pierna en Prensa o Step-Up)"},
-            {"lift": "single_leg_extension", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "Test Izq vs Der (12/pierna, 2s pausa arriba)"},
-            {"lift": "single_leg_curl", "sets": 3, "reps": 10, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "Test Izq vs Der (10-12/pierna, excentrica 3s)"},
-            {"lift": "single_leg_hip_thrust", "sets": 3, "reps": 10, "pct": 0.0, "weight_kg": 15.0, "rest_sec": 60, "rir": "Test Izq vs Der (10/pierna, pelvis estable)"},
-            {"lift": "single_leg_calf", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "Test Izq vs Der (12-15/pierna, 1s pausa arriba)"},
+            {"lift": "glute_med_band", "sets": 2, "reps": 15, "pct": 0.0, "weight_kg": 0.0, "rest_sec": 45, "rir": "Gluteo medio derecho (anti-valgo)"},
+            {"lift": "split_squat_db", "sets": 3, "reps": 8, "pct": 0.72, "rest_sec": 75, "rir": "3s DER / 2s IZQ (mano en rack, 0 valgo)"},
+            {"lift": "single_leg_extension", "sets": 4, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "4s DER / 2s IZQ (pausa 2s arriba)"},
+            {"lift": "single_leg_curl", "sets": 4, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "4s DER / 2s IZQ (excentrica 3s)"},
+            {"lift": "single_leg_hip_thrust", "sets": 3, "reps": 12, "pct": 0.0, "weight_kg": 0.0, "rest_sec": 60, "rir": "Peso Corporal · 3s DER / 2s IZQ (bloqueo 2s)"},
+            {"lift": "single_leg_calf", "sets": 4, "reps": 12, "pct": 0.0, "weight_kg": 25.0, "rest_sec": 60, "rir": "4s DER / 2s IZQ (subir de 10 a 13+ reps)"},
         ],
     },
     {

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20 12:18:18 UTC",
+  "generated_at": "2026-11-23 14:59:48 UTC",
   "default_1rm_kg": {
     "bench": 120.0,
     "squat": 130.0,
@@ -22,8 +22,9 @@
     "step_up_db": 16.0,
     "single_leg_extension": 25.0,
     "single_leg_curl": 25.0,
-    "single_leg_hip_thrust": 15.0,
-    "single_leg_calf": 25.0
+    "single_leg_hip_thrust": 0.0,
+    "single_leg_calf": 25.0,
+    "glute_med_band": 0.0
   },
   "root_causes_explained": [
     "CAUSA 1 (Garmin Connect Web 'Importar Datos'): La página connect.garmin.com/modern/import-data SOLO acepta archivos .FIT de ACTIVIDADES completadas (FileType=4) y rechaza TODOS los archivos .FIT de ENTRENAMIENTOS (FileType=5) con un error genérico sin log.",
@@ -38,7 +39,7 @@
       "json_file": "workouts/json/Lunes_Lower.json",
       "size_bytes": 3169,
       "header_crc_hex": "0x6993",
-      "file_crc_hex": "0xc206",
+      "file_crc_hex": "0xe90c",
       "sdk_validation": {
         "sdk_available": true,
         "is_fit": true,
@@ -54,7 +55,7 @@
         "file_type": "workout",
         "garmin_product": "fenix8",
         "workout_slot_number": 1,
-        "workout_name": "HYBRID Lunes Lower Unilat",
+        "workout_name": "HYBRID Lunes Lower 4:2 DER",
         "sport": "training",
         "sub_sport": "strength_training",
         "num_valid_steps": 20,
@@ -63,6 +64,15 @@
         "sample_work_steps": [
           {
             "idx": 1,
+            "name": "Activacion gluteo medio (Banda)",
+            "cat": "hip_stability",
+            "ex_name": 1,
+            "reps": 15,
+            "weight_kg": null,
+            "notes": "2x15 (Peso corporal)"
+          },
+          {
+            "idx": 4,
             "name": "Sentadilla bulgara con mancuern",
             "cat": "lunge",
             "ex_name": 27,
@@ -71,40 +81,31 @@
             "notes": "3x8 @ 25kg (72% 1RM)"
           },
           {
-            "idx": 4,
-            "name": "Prensa a 1 pierna / Step-Up",
-            "cat": "squat",
-            "ex_name": 0,
-            "reps": 10,
-            "weight_kg": 50.0,
-            "notes": "3x10 @ 50kg (Test Izq vs Der (10/pierna en Prensa o Step-Up))"
-          },
-          {
             "idx": 7,
             "name": "Extension cuadriceps a 1 pierna",
             "cat": "squat",
             "ex_name": 45,
             "reps": 12,
             "weight_kg": 25.0,
-            "notes": "3x12 @ 25kg (Test Izq vs Der (12/pierna, 2s pausa arriba))"
+            "notes": "4x12 @ 25kg (4s DER / 2s IZQ (pausa 2s arriba))"
           },
           {
             "idx": 10,
             "name": "Curl femoral a 1 pierna",
             "cat": "leg_curl",
             "ex_name": 1,
-            "reps": 10,
+            "reps": 12,
             "weight_kg": 25.0,
-            "notes": "3x10 @ 25kg (Test Izq vs Der (10-12/pierna, excentrica 3s))"
+            "notes": "4x12 @ 25kg (4s DER / 2s IZQ (excentrica 3s))"
           },
           {
             "idx": 13,
             "name": "Hip Thrust / Puente gluteo 1 pi",
             "cat": "hip_raise",
             "ex_name": 33,
-            "reps": 10,
-            "weight_kg": 15.0,
-            "notes": "3x10 @ 15kg (Test Izq vs Der (10/pierna, pelvis estable))"
+            "reps": 12,
+            "weight_kg": null,
+            "notes": "3x12 (Peso corporal)"
           },
           {
             "idx": 16,
@@ -113,7 +114,7 @@
             "ex_name": 10,
             "reps": 12,
             "weight_kg": 25.0,
-            "notes": "3x12 @ 25kg (Test Izq vs Der (12-15/pierna, 1s pausa arriba))"
+            "notes": "4x12 @ 25kg (4s DER / 2s IZQ (subir de 10 a 13+ reps))"
           }
         ]
       }
