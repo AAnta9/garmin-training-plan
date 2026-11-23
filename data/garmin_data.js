@@ -1,10 +1,10 @@
 window.GARMIN_DATA = {
   "metadata": {
-    "last_sync": "2026-11-22 17:11:06",
+    "last_sync": "2026-11-23 20:32:18",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
-    "analysis_window_start": "2026-05-26",
-    "analysis_window_end": "2026-11-22",
+    "analysis_window_start": "2026-05-27",
+    "analysis_window_end": "2026-11-23",
     "total_days_analyzed": 181
   },
   "athlete_profile": {
@@ -128,35 +128,35 @@ window.GARMIN_DATA = {
     ]
   },
   "morning_check_in": {
-    "date": "2026-11-22",
-    "semaphore": "GREEN",
-    "readiness_score": 86,
-    "headline": "Domingo · Descanso Total — Buena recuperación nocturna (VFC anoche 61 ms · Readiness 86/100)",
-    "coach_advice": "Anoche dormiste 7.93h (score 89/100), tu Body Battery subió a 73/100, tu FC en reposo está en 46 ppm (+0.2 vs tu media de 45.8) y tu VFC nocturna alcanzó 61 ms (media 7d: 51 ms, estado BALANCED). Día fijo de descanso total y supercompensación. Hidratación, pasos suaves y dormir 7.5–8h.",
+    "date": "2026-11-23",
+    "semaphore": "AMBER",
+    "readiness_score": 63,
+    "headline": "Lunes · Gimnasio 1 (Lower Unilateral · Evaluación Izq/Der) — Carga Adaptada (Readiness 63/100 · VFC 7d 50 ms)",
+    "coach_advice": "Sueño anoche: 5.48h (score 68/100), Body Battery 54/100, VFC anoche 46 ms (media 7d 50 ms en BALANCED) y FC en reposo 51 ppm (+5.2 ppm sobre tu media de 45.8). Toca Tren Inferior Unilateral (Sentadilla Búlgara, Prensa 1 Pierna / Step-Up, Extensión Cuádriceps 1 Pierna, Curl Femoral 1 Pierna, Hip Thrust Unilateral y Sóleo 1 Pierna). Empieza por la pierna menos dominante y anota diferencias Izq vs Der. Tienes 53.5h sin impacto hasta el miércoles.",
     "metrics_today": {
-      "hrv_last_night_ms": 61,
-      "hrv_weekly_avg_ms": 51,
+      "hrv_last_night_ms": 46,
+      "hrv_weekly_avg_ms": 50,
       "hrv_status": "BALANCED",
       "hrv_baseline": "50 - 60 ms",
-      "rhr_bpm": 46,
-      "rhr_delta_vs_avg": 0.2,
-      "sleep_hours": 7.93,
-      "sleep_score": 89,
-      "deep_sleep_hours": 1.1,
-      "rem_sleep_hours": 1.85,
-      "body_battery_wake": 73,
-      "stress_yesterday": 61,
-      "acute_load": 159,
-      "chronic_load": 200,
-      "acwr": 0.8,
-      "ctl": 29.0,
-      "atl": 25.0,
-      "tsb": 0.6
+      "rhr_bpm": 51,
+      "rhr_delta_vs_avg": 5.2,
+      "sleep_hours": 5.48,
+      "sleep_score": 68,
+      "deep_sleep_hours": 0.92,
+      "rem_sleep_hours": 0.98,
+      "body_battery_wake": 54,
+      "stress_yesterday": 30,
+      "acute_load": 135,
+      "chronic_load": 201,
+      "acwr": 0.67,
+      "ctl": 28.4,
+      "atl": 21.8,
+      "tsb": 4.0
     }
   },
   "six_month_summary": {
     "total_activities": 118,
-    "total_hours": 85.3,
+    "total_hours": 85.0,
     "running": {
       "sessions": 28,
       "total_km": 124.4,
@@ -166,37 +166,37 @@ window.GARMIN_DATA = {
       "avg_distance_km": 4.44
     },
     "strength": {
-      "sessions": 43,
-      "total_hours": 31.4,
+      "sessions": 44,
+      "total_hours": 32.2,
       "avg_duration_min": 44
     },
     "hiit": {
-      "sessions": 37,
-      "total_hours": 36.6
+      "sessions": 36,
+      "total_hours": 35.5
     },
     "health_averages": {
-      "hrv_mean_ms": 51.8,
+      "hrv_mean_ms": 51.7,
       "hrv_balanced_days_pct": 73,
       "rhr_mean_bpm": 45.8,
       "sleep_mean_hours": 6.5,
       "sleep_mean_score": 73.2,
       "stress_mean": 28.5,
-      "body_battery_max_mean": 72.7,
-      "steps_mean": 10727
+      "body_battery_max_mean": 72.5,
+      "steps_mean": 10714
     }
   },
   "monthly_progression": [
     {
       "month": "2026-05",
-      "total_sessions": 4,
-      "total_hours": 3.4,
-      "total_load": 150,
+      "total_sessions": 3,
+      "total_hours": 2.3,
+      "total_load": 107,
       "run_sessions": 0,
       "run_km": 0.0,
       "strength_sessions": 1,
       "strength_hours": 0.5,
-      "hiit_sessions": 3,
-      "hiit_hours": 2.9,
+      "hiit_sessions": 2,
+      "hiit_hours": 1.8,
       "run_avg_pace": null
     },
     {
@@ -266,45 +266,19 @@ window.GARMIN_DATA = {
     },
     {
       "month": "2026-11",
-      "total_sessions": 13,
-      "total_hours": 9.1,
-      "total_load": 802,
+      "total_sessions": 14,
+      "total_hours": 9.9,
+      "total_load": 805,
       "run_sessions": 5,
       "run_km": 24.7,
-      "strength_sessions": 7,
-      "strength_hours": 5.9,
+      "strength_sessions": 8,
+      "strength_hours": 6.7,
       "hiit_sessions": 0,
       "hiit_hours": 0.0,
       "run_avg_pace": "5:47"
     }
   ],
   "daily_series": [
-    {
-      "date": "2026-05-26",
-      "rhr": 43,
-      "stress": 29,
-      "bb_max": 90,
-      "bb_min": 17,
-      "steps": 9118,
-      "active_kcal": 497,
-      "sleep_score": 78,
-      "sleep_hours": 5.83,
-      "deep_hours": 1.07,
-      "rem_hours": 1.05,
-      "hrv_night": 58,
-      "hrv_weekly": 56,
-      "hrv_status": "BALANCED",
-      "hrv_base_low": 50,
-      "hrv_base_high": 69,
-      "readiness": 83,
-      "load": 43.4,
-      "acute_load": 219,
-      "chronic_load": 232,
-      "acwr": 0.95,
-      "ctl": 38.4,
-      "atl": 31.6,
-      "tsb": 8.6
-    },
     {
       "date": "2026-05-27",
       "rhr": 46,
@@ -4962,11 +4936,11 @@ window.GARMIN_DATA = {
     {
       "date": "2026-11-22",
       "rhr": 46,
-      "stress": 28,
+      "stress": 30,
       "bb_max": 73,
       "bb_min": 5,
-      "steps": 4411,
-      "active_kcal": 74,
+      "steps": 7118,
+      "active_kcal": 94,
       "sleep_score": 89,
       "sleep_hours": 7.93,
       "deep_hours": 1.1,
@@ -4976,7 +4950,7 @@ window.GARMIN_DATA = {
       "hrv_status": "BALANCED",
       "hrv_base_low": 49,
       "hrv_base_high": 60,
-      "readiness": 86,
+      "readiness": 85,
       "load": 0.0,
       "acute_load": 159,
       "chronic_load": 200,
@@ -4984,9 +4958,86 @@ window.GARMIN_DATA = {
       "ctl": 29.0,
       "atl": 25.0,
       "tsb": 0.6
+    },
+    {
+      "date": "2026-11-23",
+      "rhr": 51,
+      "stress": 28,
+      "bb_max": 54,
+      "bb_min": 17,
+      "steps": 4041,
+      "active_kcal": 174,
+      "sleep_score": 68,
+      "sleep_hours": 5.48,
+      "deep_hours": 0.92,
+      "rem_hours": 0.98,
+      "hrv_night": 46,
+      "hrv_weekly": 50,
+      "hrv_status": "BALANCED",
+      "hrv_base_low": 49,
+      "hrv_base_high": 60,
+      "readiness": 63,
+      "load": 2.7,
+      "acute_load": 135,
+      "chronic_load": 201,
+      "acwr": 0.67,
+      "ctl": 28.4,
+      "atl": 21.8,
+      "tsb": 4.0
     }
   ],
   "recent_activities": [
+    {
+      "id": 25173168886,
+      "date": "2026-11-23",
+      "start_time": "2026-11-23 14:27:30",
+      "name": "Fuerza",
+      "type": "strength_training",
+      "duration_min": 50.0,
+      "distance_km": 0.0,
+      "pace_min_km": null,
+      "pace_sec": null,
+      "avg_hr": 80,
+      "max_hr": 108,
+      "cadence": null,
+      "load": 3,
+      "aerobic_te": 0.3,
+      "anaerobic_te": 0,
+      "te_label": "AEROBIC_BASE",
+      "calories": 207,
+      "total_sets": 19,
+      "total_reps": 174,
+      "hr_zones_min": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exercises": [
+        {
+          "name": "Dumbbell Flye",
+          "sets": 1,
+          "reps": 8,
+          "max_weight_kg": 25.0,
+          "volume_kg": 200.0
+        },
+        {
+          "name": "Unknown",
+          "sets": 16,
+          "reps": 150,
+          "max_weight_kg": 50.0,
+          "volume_kg": 3900.0
+        },
+        {
+          "name": "Squat",
+          "sets": 2,
+          "reps": 16,
+          "max_weight_kg": 30.0,
+          "volume_kg": 480.0
+        }
+      ]
+    },
     {
       "id": 25131018440,
       "date": "2026-11-19",
@@ -8218,85 +8269,6 @@ window.GARMIN_DATA = {
         0.0
       ],
       "exercises": []
-    },
-    {
-      "id": 24062274950,
-      "date": "2026-08-21",
-      "start_time": "2026-08-21 16:40:59",
-      "name": "Fuerza",
-      "type": "strength_training",
-      "duration_min": 42.4,
-      "distance_km": 0.0,
-      "pace_min_km": null,
-      "pace_sec": null,
-      "avg_hr": 96,
-      "max_hr": 123,
-      "cadence": null,
-      "load": 5,
-      "aerobic_te": 0.5,
-      "anaerobic_te": 0,
-      "te_label": "AEROBIC_BASE",
-      "calories": 208,
-      "total_sets": 18,
-      "total_reps": 169,
-      "hr_zones_min": [
-        0.8,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      "exercises": [
-        {
-          "name": "Pull Up",
-          "sets": 4,
-          "reps": 24,
-          "max_weight_kg": 0.0,
-          "volume_kg": 0.0
-        },
-        {
-          "name": "Barbell Bench Press",
-          "sets": 4,
-          "reps": 32,
-          "max_weight_kg": 80.0,
-          "volume_kg": 2560.0
-        },
-        {
-          "name": "Dumbbell Row",
-          "sets": 3,
-          "reps": 36,
-          "max_weight_kg": 20.0,
-          "volume_kg": 720.0
-        },
-        {
-          "name": "Unknown",
-          "sets": 2,
-          "reps": 27,
-          "max_weight_kg": 9.0,
-          "volume_kg": 243.0
-        },
-        {
-          "name": "Row",
-          "sets": 1,
-          "reps": 15,
-          "max_weight_kg": 9.0,
-          "volume_kg": 135.0
-        },
-        {
-          "name": "Shrug",
-          "sets": 1,
-          "reps": 11,
-          "max_weight_kg": 0.0,
-          "volume_kg": 0.0
-        },
-        {
-          "name": "Bench Dip",
-          "sets": 3,
-          "reps": 24,
-          "max_weight_kg": 0.0,
-          "volume_kg": 0.0
-        }
-      ]
     }
   ]
 };
