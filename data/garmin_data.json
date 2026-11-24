@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "last_sync": "2026-11-23 21:04:18",
+    "last_sync": "2026-11-24 20:07:44",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
-    "analysis_window_start": "2026-05-27",
-    "analysis_window_end": "2026-11-23",
+    "analysis_window_start": "2026-05-28",
+    "analysis_window_end": "2026-11-24",
     "total_days_analyzed": 181
   },
   "athlete_profile": {
@@ -128,35 +128,35 @@
     ]
   },
   "morning_check_in": {
-    "date": "2026-11-23",
+    "date": "2026-11-24",
     "semaphore": "AMBER",
-    "readiness_score": 63,
-    "headline": "Lunes · Gimnasio 1 (Lower Unilateral · Evaluación Izq/Der) — Carga Adaptada (Readiness 63/100 · VFC 7d 50 ms)",
-    "coach_advice": "Sueño anoche: 5.48h (score 68/100), Body Battery 54/100, VFC anoche 46 ms (media 7d 50 ms en BALANCED) y FC en reposo 51 ppm (+5.2 ppm sobre tu media de 45.8). Toca Tren Inferior Unilateral (Sentadilla Búlgara, Prensa 1 Pierna / Step-Up, Extensión Cuádriceps 1 Pierna, Curl Femoral 1 Pierna, Hip Thrust Unilateral y Sóleo 1 Pierna). Empieza por la pierna menos dominante y anota diferencias Izq vs Der. Tienes 53.5h sin impacto hasta el miércoles.",
+    "readiness_score": 67,
+    "headline": "Martes · Gimnasio 2 (Upper A · Torso) — Carga Adaptada (Readiness 67/100 · VFC 7d 50 ms)",
+    "coach_advice": "Sueño anoche: 4.25h (score 61/100), Body Battery 62/100, VFC anoche 51 ms (media 7d 50 ms en BALANCED) y FC en reposo 48 ppm (+2.2 ppm sobre tu media de 45.8). Prioriza Tren Superior A (Press Banca, Dominadas, Militar y Remo) según tu % de 1RM con 0 impacto articular en las rodillas.",
     "metrics_today": {
-      "hrv_last_night_ms": 46,
+      "hrv_last_night_ms": 51,
       "hrv_weekly_avg_ms": 50,
       "hrv_status": "BALANCED",
       "hrv_baseline": "50 - 60 ms",
-      "rhr_bpm": 51,
-      "rhr_delta_vs_avg": 5.2,
-      "sleep_hours": 5.48,
-      "sleep_score": 68,
-      "deep_sleep_hours": 0.92,
-      "rem_sleep_hours": 0.98,
-      "body_battery_wake": 54,
-      "stress_yesterday": 30,
-      "acute_load": 135,
+      "rhr_bpm": 48,
+      "rhr_delta_vs_avg": 2.2,
+      "sleep_hours": 4.25,
+      "sleep_score": 61,
+      "deep_sleep_hours": 0.53,
+      "rem_sleep_hours": 0.9,
+      "body_battery_wake": 62,
+      "stress_yesterday": 29,
+      "acute_load": 111,
       "chronic_load": 201,
-      "acwr": 0.67,
-      "ctl": 28.4,
-      "atl": 21.8,
-      "tsb": 4.0
+      "acwr": 0.55,
+      "ctl": 27.7,
+      "atl": 18.7,
+      "tsb": 6.6
     }
   },
   "six_month_summary": {
-    "total_activities": 118,
-    "total_hours": 85.0,
+    "total_activities": 117,
+    "total_hours": 84.0,
     "running": {
       "sessions": 28,
       "total_km": 124.4,
@@ -171,32 +171,32 @@
       "avg_duration_min": 44
     },
     "hiit": {
-      "sessions": 36,
-      "total_hours": 35.5
+      "sessions": 35,
+      "total_hours": 34.5
     },
     "health_averages": {
       "hrv_mean_ms": 51.7,
       "hrv_balanced_days_pct": 73,
       "rhr_mean_bpm": 45.8,
-      "sleep_mean_hours": 6.5,
-      "sleep_mean_score": 73.2,
-      "stress_mean": 28.5,
+      "sleep_mean_hours": 6.49,
+      "sleep_mean_score": 73.1,
+      "stress_mean": 28.4,
       "body_battery_max_mean": 72.5,
-      "steps_mean": 10714
+      "steps_mean": 10708
     }
   },
   "monthly_progression": [
     {
       "month": "2026-05",
-      "total_sessions": 3,
-      "total_hours": 2.3,
-      "total_load": 107,
+      "total_sessions": 2,
+      "total_hours": 1.3,
+      "total_load": 39,
       "run_sessions": 0,
       "run_km": 0.0,
       "strength_sessions": 1,
       "strength_hours": 0.5,
-      "hiit_sessions": 2,
-      "hiit_hours": 1.8,
+      "hiit_sessions": 1,
+      "hiit_hours": 0.8,
       "run_avg_pace": null
     },
     {
@@ -279,32 +279,6 @@
     }
   ],
   "daily_series": [
-    {
-      "date": "2026-05-27",
-      "rhr": 46,
-      "stress": 37,
-      "bb_max": 56,
-      "bb_min": 7,
-      "steps": 10719,
-      "active_kcal": 467,
-      "sleep_score": 70,
-      "sleep_hours": 5.62,
-      "deep_hours": 1.07,
-      "rem_hours": 0.75,
-      "hrv_night": 47,
-      "hrv_weekly": 54,
-      "hrv_status": "BALANCED",
-      "hrv_base_low": 50,
-      "hrv_base_high": 69,
-      "readiness": 62,
-      "load": 68.4,
-      "acute_load": 268,
-      "chronic_load": 249,
-      "acwr": 1.08,
-      "ctl": 39.1,
-      "atl": 36.8,
-      "tsb": 6.8
-    },
     {
       "date": "2026-05-28",
       "rhr": 46,
@@ -4962,11 +4936,11 @@
     {
       "date": "2026-11-23",
       "rhr": 51,
-      "stress": 28,
+      "stress": 29,
       "bb_max": 54,
       "bb_min": 17,
-      "steps": 4041,
-      "active_kcal": 174,
+      "steps": 8624,
+      "active_kcal": 284,
       "sleep_score": 68,
       "sleep_hours": 5.48,
       "deep_hours": 0.92,
@@ -4984,6 +4958,32 @@
       "ctl": 28.4,
       "atl": 21.8,
       "tsb": 4.0
+    },
+    {
+      "date": "2026-11-24",
+      "rhr": 48,
+      "stress": 28,
+      "bb_max": 62,
+      "bb_min": 17,
+      "steps": 5145,
+      "active_kcal": 74,
+      "sleep_score": 61,
+      "sleep_hours": 4.25,
+      "deep_hours": 0.53,
+      "rem_hours": 0.9,
+      "hrv_night": 51,
+      "hrv_weekly": 50,
+      "hrv_status": "BALANCED",
+      "hrv_base_low": 49,
+      "hrv_base_high": 60,
+      "readiness": 67,
+      "load": 0.0,
+      "acute_load": 111,
+      "chronic_load": 201,
+      "acwr": 0.55,
+      "ctl": 27.7,
+      "atl": 18.7,
+      "tsb": 6.6
     }
   ],
   "recent_activities": [
