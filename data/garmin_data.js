@@ -1,6 +1,6 @@
 window.GARMIN_DATA = {
   "metadata": {
-    "last_sync": "2026-11-26 18:54:42",
+    "last_sync": "2026-11-26 19:20:08",
     "scheduled_cron": "Todos los días a las 09:00 AM (Europe/Madrid)",
     "api_source": "Garmin Connect Official Personal API v1.0 (personal.connectapi.garmin.com)",
     "analysis_window_start": "2026-05-30",
